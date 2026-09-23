@@ -58,6 +58,45 @@ def test_cli_validates_both_inputs_before_writing(tmp_path, monkeypatch):
     assert not output.exists()
 
 
+def test_hourly_cli_requires_explicit_clock_assumptions(tmp_path, monkeypatch):
+    cli, paths, output = setup_cli(tmp_path, monkeypatch)
+    monkeypatch.setattr(sys, "argv", [*sys.argv, "--hourly"])
+
+    with pytest.raises(SystemExit) as exc:
+        cli.main()
+
+    assert exc.value.code == 2
+    assert not output.exists()
+
+
+def test_hourly_cli_writes_complete_targets_with_assumptions_and_source_hashes(tmp_path, monkeypatch):
+    cli, paths, output = setup_cli(tmp_path, monkeypatch)
+    for index, path in enumerate(paths, start=1):
+        header = path.read_text().splitlines()[0]
+        rows = [f"{i+1},2026-01-01 0:{i*10:02d}:00,5,0.4,2" for i in range(6)]
+        path.write_text(header + "\n" + "\n".join(rows))
+        cli.SOURCES[f"turbine_{index}"]["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
+    monkeypatch.setattr(sys, "argv", [
+        *sys.argv, "--hourly", "--history-timezone", "Etc/GMT-5",
+        "--source-timestamp-convention", "interval_start", "--reporting-delay-seconds", "0",
+        "--training-cutoff", "2025-12-31T20:00:00Z", "--assumption", "Test assumption",
+    ])
+
+    cli.main()
+
+    targets = pd.read_csv(output / "hourly-training.csv")
+    report = json.loads((output / "hourly-report.json").read_text())
+    assert len(targets) == 2
+    assert targets["sample_count"].tolist() == [6, 6]
+    assert targets["normalized_power"].tolist() == pytest.approx([0.4, 0.4])
+    assert pd.to_datetime(targets["valid_time"], utc=True).eq(
+        pd.Timestamp("2025-12-31T20:00:00Z")
+    ).all()
+    assert report["semantics"]["source_semantics_status"] == "assumed"
+    assert report["semantics"]["assumptions"] == ["Test assumption"]
+    assert set(report["source_sha256"]) == {"turbine_1", "turbine_2"}
+
+
 @pytest.mark.parametrize("alias_kind", ["source", "other_output"])
 def test_cli_rejects_output_hard_links_before_overwrite(tmp_path, monkeypatch, alias_kind):
     cli, paths, output = setup_cli(tmp_path, monkeypatch)
