@@ -174,9 +174,13 @@ def decode_point(raw: bytes, field: str, latitude: float, longitude: float,
     with DECODE_LOCK:
         handle = eccodes.codes_new_from_message(raw)
         try:
-            wanted = {"u100": ("100u", 100, "m s**-1"),
-                      "v100": ("100v", 100, "m s**-1"),
-                      "t2m": ("2t", 2, "K")}[field]
+            # ecCodes definitions may label GFS 100 m wind as u/v or 100u/100v.
+            # Validate canonical GRIB2 identifiers and height as well as aliases.
+            names, level, units, category, number = {
+                "u100": ({"u", "100u"}, 100, "m s**-1", 2, 2),
+                "v100": ({"v", "100v"}, 100, "m s**-1", 2, 3),
+                "t2m": ({"2t"}, 2, "K", 0, 0),
+            }[field]
             actual = tuple(eccodes.codes_get(handle, key) for key in ("shortName", "level", "units"))
             valid = model_run + timedelta(hours=lead)
             checks = {"dataDate": int(model_run.strftime("%Y%m%d")),
@@ -184,9 +188,11 @@ def decode_point(raw: bytes, field: str, latitude: float, longitude: float,
                       "validityDate": int(valid.strftime("%Y%m%d")),
                       "validityTime": valid.hour * 100,
                       "forecastTime": lead, "typeOfLevel": "heightAboveGround",
-                      "stepType": "instant"}
-            if actual != wanted or any(eccodes.codes_get(handle, key) != value
-                                       for key, value in checks.items()):
+                      "stepType": "instant", "edition": 2, "discipline": 0,
+                      "parameterCategory": category, "parameterNumber": number}
+            if (actual[0] not in names or actual[1:] != (level, units)
+                    or any(eccodes.codes_get(handle, key) != value
+                           for key, value in checks.items())):
                 raise WeatherUnavailable(f"GRIB metadata mismatch: {field}, {actual}")
             point = eccodes.codes_grib_find_nearest(handle, latitude, longitude)[0]
             value = float(point["value"])

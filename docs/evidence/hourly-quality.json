@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "semantics": {
+    "history_timezone": "Etc/GMT-5",
+    "source_timestamp_convention": "interval_start",
+    "target_reporting_delay_seconds": 0,
+    "source_semantics_status": "assumed",
+    "timestamp_convention": "hour_end",
+    "source_interval_minutes": 10,
+    "source_value_convention": "ten-minute mean assumed for each interval",
+    "target_unit": "normalized_power",
+    "target_definition": "hourly mean normalized active power; normalization unresolved",
+    "assumptions": [
+      "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved."
+    ]
+  },
+  "training_cutoff": "2026-01-31T18:00:00+00:00",
+  "runtime_versions": {
+    "pandas": "2.2.3",
+    "pytz": "2026.3.post1",
+    "tzdata": "2025.2"
+  },
+  "coverage_basis": "UTC hourly grid over each turbine's observed interval extent",
+  "eligibility_rule": "six observations and valid_time + reporting_delay <= training_cutoff",
+  "files": [
+    {
+      "turbine_id": "turbine_1",
+      "hourly_rows": 25392,
+      "complete_hours": 23667,
+      "partial_hours": 96,
+      "missing_hours": 1629,
+      "training_hours": 23666,
+      "complete_hours_after_cutoff": 1,
+      "first_interval_start": "2023-03-10T19:00:00+00:00",
+      "last_interval_end": "2026-01-31T19:00:00+00:00"
+    },
+    {
+      "turbine_id": "turbine_2",
+      "hourly_rows": 25392,
+      "complete_hours": 24785,
+      "partial_hours": 219,
+      "missing_hours": 388,
+      "training_hours": 24784,
+      "complete_hours_after_cutoff": 1,
+      "first_interval_start": "2023-03-10T19:00:00+00:00",
+      "last_interval_end": "2026-01-31T19:00:00+00:00"
+    }
+  ],
+  "warnings": [
+    "Source-clock semantics are assumptions, not organizer confirmations.",
+    "available_at is policy-derived; actual historical SCADA publication is unknown.",
+    "Hourly observed weather is diagnostic history, not a forecast input.",
+    "All-hours table includes incomplete and post-cutoff rows; fit only training_frame."
+  ],
+  "scope": "Hourly preparation only; no fitting, selection or forecast accuracy measurement.",
+  "source_sha256": {
+    "turbine_1": "c4c341582fb2dd348b7187f0128cff265fe055f469413871ebb5db50eef58b5b",
+    "turbine_2": "820578cd18bb557cd30c2e102f3ae5a386dfc6c489a5a15743339c2b017305e5"
+  }
+}

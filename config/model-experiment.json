@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "model_version": "wind-power-v1",
+  "selection_metric": "equal_turbine_mean_mae",
+  "tie_break": "candidate_order",
+  "holdout_policy": "Refit the tuning winner on train+tune; evaluate once on holdout. Never choose or change parameters from holdout.",
+  "production_policy": "Refit the already selected algorithm on all complete targets paired to the 59 preproduction origins and available by 2026-01-31T18:00:00Z.",
+  "candidates": [
+    {"name": "constant_mean", "algorithm": "constant_mean", "hyperparameters": {}},
+    {"name": "wind_curve", "algorithm": "wind_curve", "hyperparameters": {"bin_width": 1.0}},
+    {"name": "hgb_small", "algorithm": "hist_gradient_boosting", "hyperparameters": {"max_iter": 120, "max_leaf_nodes": 7, "min_samples_leaf": 20, "learning_rate": 0.05, "l2_regularization": 1.0}},
+    {"name": "hgb_medium", "algorithm": "hist_gradient_boosting", "hyperparameters": {"max_iter": 120, "max_leaf_nodes": 15, "min_samples_leaf": 20, "learning_rate": 0.08, "l2_regularization": 1.0}},
+    {"name": "hgb_wide", "algorithm": "hist_gradient_boosting", "hyperparameters": {"max_iter": 120, "max_leaf_nodes": 31, "min_samples_leaf": 20, "learning_rate": 0.05, "l2_regularization": 1.0}}
+  ]
+}

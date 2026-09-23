@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checked_at_utc": "2026-09-23T10:37:05.711554+00:00",
+  "scope": "Clean local clone and fresh Python environment: full automated tests, lint and dependency consistency at b90b8c1; final committed model runtime and complete offline candidate selection and retraining at 0d674ca. All reported tuning/holdout metrics and real-weather predictions reproduce exactly. This is local macOS verification, not executed GitHub CI or February accuracy.",
+  "checkout": {
+    "path": "/tmp/hackalem-model-verify-1DKNcV/repo",
+    "source_repository": "/Users/IT department/hackAlem/hack-7ea5e17b-edubridge-latest",
+    "branch": "feat/forecast-model",
+    "commit": "0d674cacef1a2c64e9f5399dffc98e48ecddfd54",
+    "clone_kind": "git clone --local --single-branch; no working-tree files copied",
+    "git_status_after_checks": "clean",
+    "retained_for_final_artifact_verification": true,
+    "automated_checks_commit": "b90b8c1db29a5369290e69944948429386d2b168",
+    "source_and_dependency_files_unchanged_between_verified_commits": true
+  },
+  "environment": {
+    "python": "3.11.16 (main, Sep 1 2026, 14:08:22) [Clang 22.1.3]",
+    "python_implementation": "CPython",
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "virtual_environment": "/tmp/hackalem-model-verify-1DKNcV/repo/.venv",
+    "fresh_virtual_environment": true,
+    "uv": "0.12.18 (01cb90c1a 2026-09-22 aarch64-apple-darwin)",
+    "installed_package_count": 60,
+    "versions": {
+      "wind-agent": "0.1.0",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.7.2",
+      "joblib": "1.5.2",
+      "pandas": "2.2.3",
+      "fastapi": "0.115.12",
+      "pydantic": "2.11.4",
+      "httpx": "0.28.1",
+      "uvicorn": "0.34.2",
+      "tzdata": "2025.2",
+      "pytest": "8.3.5",
+      "ruff": "0.11.9",
+      "eccodes": "2.44.0",
+      "eccodeslib": "2.49.0.30",
+      "streamlit": "1.64.0",
+      "plotly": "6.9.0"
+    },
+    "eccodes_api_version": "2.49.0"
+  },
+  "commands": [
+    {
+      "command": "git clone --local --branch feat/forecast-model --single-branch '/Users/IT department/hackAlem/hack-7ea5e17b-edubridge-latest' /tmp/hackalem-model-verify-1DKNcV/repo",
+      "exit_code": 0
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": "/tmp/hackalem-python-bootstrap/bin/uv venv --python '/Users/IT department/hackAlem/hack-7ea5e17b-edubridge-latest/.venv/bin/python' .venv",
+      "exit_code": 0
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": "/tmp/hackalem-python-bootstrap/bin/uv pip install --python .venv/bin/python -e '.[dev,weather,model]' -r ui/requirements.txt",
+      "exit_code": 0,
+      "result": "Installed 60 packages; editable project resolved to the clean checkout"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": ".venv/bin/python -m pytest -q",
+      "exit_code": 0,
+      "passed": 321,
+      "failed": 0,
+      "warnings": 1,
+      "duration_seconds": 56.58,
+      "result": "321 passed, 1 warning in 56.58s",
+      "commit": "b90b8c1db29a5369290e69944948429386d2b168"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": ".venv/bin/python -m ruff check src/wind_agent tests/model tests/weather scripts/validate_model_package.py",
+      "exit_code": 0,
+      "result": "All checks passed!",
+      "commit": "b90b8c1db29a5369290e69944948429386d2b168"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": "/tmp/hackalem-python-bootstrap/bin/uv pip check --python .venv/bin/python",
+      "exit_code": 0,
+      "result": "Checked 60 packages; all installed packages are compatible"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": "git fetch origin feat/forecast-model && git merge --ff-only 0d674ca",
+      "exit_code": 0,
+      "commit": "0d674cacef1a2c64e9f5399dffc98e48ecddfd54"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": ".venv/bin/python /tmp/hackalem-model-verify-1DKNcV/verify_final_artifact.py",
+      "exit_code": 0,
+      "commit": "0d674cacef1a2c64e9f5399dffc98e48ecddfd54",
+      "result": "Six real-input runtime cases passed; complete retraining selected identical candidate with identical tuning/holdout metrics and final 48-hour predictions."
+    }
+  ],
+  "warnings": [
+    "Existing Starlette test client uses deprecated anyio.abc.BlockingPortal alias; all tests passed."
+  ],
+  "trained_package_real_input_smoke": {
+    "status": "passed",
+    "issue_time": "2026-01-31T18:00:00+00:00",
+    "cases": [
+      {
+        "horizon_hours": 24,
+        "turbine_ids": [
+          "turbine_1"
+        ],
+        "rows": 24,
+        "exact_reference_match": true,
+        "inputs_unchanged": true
+      },
+      {
+        "horizon_hours": 24,
+        "turbine_ids": [
+          "turbine_2"
+        ],
+        "rows": 24,
+        "exact_reference_match": true,
+        "inputs_unchanged": true
+      },
+      {
+        "horizon_hours": 24,
+        "turbine_ids": [
+          "turbine_1",
+          "turbine_2"
+        ],
+        "rows": 48,
+        "exact_reference_match": true,
+        "inputs_unchanged": true
+      },
+      {
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_1"
+        ],
+        "rows": 48,
+        "exact_reference_match": true,
+        "inputs_unchanged": true
+      },
+      {
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_2"
+        ],
+        "rows": 48,
+        "exact_reference_match": true,
+        "inputs_unchanged": true
+      },
+      {
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_1",
+          "turbine_2"
+        ],
+        "rows": 96,
+        "exact_reference_match": true,
+        "inputs_unchanged": true
+      }
+    ],
+    "comparison": "Exact values and all shared model output fields; only the additional AgentService uncertainty warning is excluded.",
+    "commit": "0d674cacef1a2c64e9f5399dffc98e48ecddfd54",
+    "checked_at_utc": "2026-09-23T10:37:05.711554+00:00",
+    "package": {
+      "model_version": "wind-power-v1",
+      "model_sha256": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4",
+      "metadata_sha256": "aae00965b562752605787f5307bec17378223f5ed9f33ea76284693a1fbf13a4",
+      "training_cutoff": "2026-01-31T18:00:00Z"
+    },
+    "reference": "docs/evidence/model-output-48h.json",
+    "reference_sha256": "bd7e06e3105863cc28775bfef1fcdc4e65d45db1724bb88e9802100db83a94bd",
+    "network_requests_needed": false
+  },
+  "limitations": [
+    "This is macOS arm64 verification, not a Windows or Linux result.",
+    "Real archived weather is used for final runtime smoke; no February ground truth is supplied.",
+    "January validation metrics reproduce, but source timezone, interval means, reporting delay and normalization remain provisional.",
+    "Complete February replay is outside this check; only the January 31 issue is smoke-tested here.",
+    "GitHub Actions executed no steps because of the recorded account billing block."
+  ],
+  "automated_checks_checked_at_utc": "2026-09-23T10:19:55Z",
+  "clean_retraining": {
+    "status": "passed",
+    "duration_seconds": 3.9841777500041644,
+    "result": {
+      "selected_candidate": "hgb_medium",
+      "package_dir": "/tmp/hackalem-model-verify-1DKNcV/final-artifact-verification/retrained-model",
+      "validation_path": "/tmp/hackalem-model-verify-1DKNcV/final-artifact-verification/retraining-experiment/validation.json",
+      "model_sha256": "e45466e538f40004fa829a2a8e50941107851c344922824d41b00d015a3b44bb",
+      "tune_mae": 0.2324636287509177,
+      "holdout_mae": 0.2269187054537401
+    },
+    "candidate_selection_identical": true,
+    "all_candidate_tuning_metrics_identical": true,
+    "all_reported_holdout_metrics_identical": true,
+    "real_weather_predictions_identical_to_committed_package": true,
+    "retrained_model_sha256": "e45466e538f40004fa829a2a8e50941107851c344922824d41b00d015a3b44bb",
+    "delivered_model_sha256": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4",
+    "artifact_byte_identity_required": false,
+    "artifact_hash_note": "Artifact includes timestamped experiment provenance; byte hash can differ even when models, selected parameters, metrics and forecasts reproduce exactly.",
+    "algorithm": "hist_gradient_boosting",
+    "commit": "0d674cacef1a2c64e9f5399dffc98e48ecddfd54",
+    "network_requests_needed": false,
+    "structured_input_copy": {
+      "file_count": 63,
+      "total_bytes": 15309394,
+      "all_source_copy_hashes_match": true,
+      "raw_weather_cache_copied": false,
+      "weather_origin_json_count": 60,
+      "primary_source_hashes": [
+        {
+          "name": "data/hourly-history.csv",
+          "bytes": 7792485,
+          "sha256": "00a01a8cfb6680f05f16e718fb70bbfbaea709aeb98f86809deb96c0ace529a6"
+        },
+        {
+          "name": "data/hourly-report.json",
+          "bytes": 2369,
+          "sha256": "9a4684228771e9e3e1084cd42f4e125fb68eafc28288758a79fd2848e1d4c16c"
+        },
+        {
+          "name": "weather/manifest.json",
+          "bytes": 37970,
+          "sha256": "58c33a53ef713886c67b008d7135c401b750646426329c0ebd480c4f222ac200"
+        }
+      ]
+    }
+  },
+  "github_ci": {
+    "status": "not_executed_billing_block",
+    "commit": "0d674cacef1a2c64e9f5399dffc98e48ecddfd54",
+    "run_id": 35849758782,
+    "check_run_id": 107144376461,
+    "url": "https://github.com/BAITC-Hacks/hack-7ea5e17b-edubridge/actions/runs/35849758782",
+    "steps_executed": false,
+    "annotation": "The job was not started because your account is locked due to a billing issue.",
+    "evidence_method": "Root agent verified GitHub run and check-run annotation with gh."
+  }
+}
