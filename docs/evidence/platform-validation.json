@@ -1,0 +1,89 @@
+{
+  "verified_at_utc": "2026-09-23T09:21:51.852332+00:00",
+  "commit": "398598c64d8667c87d2c14639228dfb9bcdfc0bb",
+  "branch": "feat/agent-platform",
+  "verification_directory": "platform-verification (separate clone)",
+  "clone_source": "local official-repository checkout; exact committed snapshot",
+  "worktree_clean": true,
+  "python_version": "3.11.9",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "python_executable": ".venv/Scripts/python.exe",
+  "wind_agent_import_path": "src/wind_agent/__init__.py",
+  "include_system_site_packages": false,
+  "packages": {
+    "fastapi": "0.115.12",
+    "pydantic": "2.11.4",
+    "httpx": "0.28.1",
+    "pandas": "2.2.3",
+    "numpy": "2.4.6",
+    "uvicorn": "0.34.2",
+    "eccodes": "2.44.0",
+    "pytest": "8.3.5",
+    "ruff": "0.11.9",
+    "tzdata": "2025.2",
+    "starlette": "0.46.2",
+    "anyio": "4.15.1"
+  },
+  "eccodes_api_version": "2.44.0",
+  "checks": {
+    "install": {
+      "command": "python -m pip install -e .[dev,weather]",
+      "exit_code": 0
+    },
+    "pytest": {
+      "command": "python -m pytest -q",
+      "exit_code": 0,
+      "passed": 79,
+      "warnings": 1,
+      "duration_seconds": 8.14,
+      "warning": "Starlette anyio.abc.BlockingPortal alias deprecation"
+    },
+    "pip_check": {
+      "command": "python -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    "eccodes_import": {
+      "status": "passed",
+      "api_version": "2.44.0"
+    },
+    "demo_24h": {
+      "exit_code": 0,
+      "status": "completed",
+      "run_id": "efae5e9e4103cada78eaba01",
+      "revision": 1,
+      "forecast_rows": 48,
+      "is_demo": true,
+      "all_revision_artifacts_present": true,
+      "run_path": "artifacts\\demo\\runs\\demo\\runs\\efae5e9e4103cada78eaba01\\run.json"
+    },
+    "demo_replay_48h": {
+      "exit_code": 0,
+      "status": "completed",
+      "is_demo": true,
+      "issues": 29,
+      "selected_rows": 1344,
+      "rows_per_turbine": {
+        "turbine_1": 672,
+        "turbine_2": 672
+      },
+      "failed_runs": 0,
+      "missing_hours": [],
+      "timestamp_convention": "hour_end",
+      "first_valid_time_local": "2026-02-01T01:00:00+05:00",
+      "last_valid_time_local": "2026-03-01T00:00:00+05:00",
+      "all_revision_artifacts_present": true,
+      "report_path": "artifacts\\demo\\runs\\demo\\replay\\2026-02-48h\\report.json"
+    }
+  },
+  "scope": "Fresh isolated local install and synthetic platform verification; no real weather download or trained model validation repeated in this clone. GitHub CI was not used as proof.",
+  "import_resolved_inside_verification_clone": true,
+  "path_display_note": "Machine-specific absolute prefixes omitted; executable and import paths are relative to the independent verification clone.",
+  "github_actions": {
+    "status": "not_started_billing_block",
+    "check_conclusion": "failure",
+    "message": "The job was not started because your account is locked due to a billing issue.",
+    "job_url": "https://github.com/BAITC-Hacks/hack-7ea5e17b-edubridge/actions/runs/35842246081/job/107119827946",
+    "executed_steps": 0
+  }
+}
