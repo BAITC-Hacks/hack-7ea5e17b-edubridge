@@ -228,6 +228,16 @@ const csvTimeFields = new Set([
   "forecast_available_at",
 ]);
 
+function csvTimeKey(value: unknown): string {
+  const milliseconds = time(value);
+  // Date.parse normalizes offsets but discards precision below milliseconds.
+  // Preserve the full fractional second; trailing zeros carry no information.
+  const fraction = typeof value === "string"
+    ? (/\.(\d+)(?:Z|[+-]\d{2}:\d{2})$/i.exec(value)?.[1] ?? "").replace(/0+$/, "")
+    : "";
+  return JSON.stringify([milliseconds, fraction]);
+}
+
 function csvValueMatches(
   field: string,
   actual: string,
@@ -239,7 +249,7 @@ function csvValueMatches(
   if (expected === undefined) return actual === "";
   if (typeof expected === "string")
     return csvTimeFields.has(field)
-      ? time(actual) === time(expected)
+      ? csvTimeKey(actual) === csvTimeKey(expected)
       : actual === expected;
   if (typeof expected === "number")
     return (
@@ -261,7 +271,7 @@ export function validateCsv(
     if (!rows.length || !content.trim()) throw new Error("Empty export");
     const expected = new Map(
       rows.map((row) => [
-        JSON.stringify([row.turbine_id, time(row.valid_time)]),
+        JSON.stringify([row.turbine_id, csvTimeKey(row.valid_time)]),
         row,
       ]),
     );
@@ -274,7 +284,7 @@ export function validateCsv(
         Object.keys(row).some((field) => !fields.has(field))
       )
         throw new Error("Different export fields");
-      const key = JSON.stringify([row.turbine_id, time(row.valid_time)]);
+      const key = JSON.stringify([row.turbine_id, csvTimeKey(row.valid_time)]);
       const source = expected.get(key);
       if (
         !source ||

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { formatTime } from "./data";
 import { appMessages } from "./locales/app";
 import { evaluationMessages } from "./locales/evaluation";
+import { analysisMessages } from "./locales/analysis";
 import { runtimeMessages, runtimePatterns } from "./locales/messages";
 
 export type Locale = "ru" | "kk" | "en";
@@ -27,7 +28,7 @@ export const commonMessages: Record<string, Translation> = {
   },
 };
 export const messages: Record<string, Translation> = {
-  ...commonMessages, ...appMessages, ...evaluationMessages, ...runtimeMessages,
+  ...commonMessages, ...appMessages, ...evaluationMessages, ...analysisMessages, ...runtimeMessages,
 };
 
 export function isLocale(value: unknown): value is Locale {

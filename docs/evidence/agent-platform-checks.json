@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-09-23T12:18:28.872211+00:00",
+  "base_commit": "4b864118d6c86c0fbc19c1bf3fe03ce04a92cda6",
+  "source_sha256": {
+    "src/wind_agent/cli.py": "033ca2217a5cd046c605e1b9c475b09fa4c62d37da083b799adab8535a4dee9e",
+    "src/wind_agent/agent/monitor.py": "fb38237f1e8dfc66f6a3a335f6296bbd856045446b1cb0fe1235e1cde0de0109",
+    "src/wind_agent/agent/analysis.py": "590c49f2b58a475ccec4aebf2fdfdb4c7eb1b6d2c70ac1d7261854ac26ab38f9",
+    "src/wind_agent/agent/service.py": "f5fdcade5e1409dc2724be5b3e70190ee4cfeef5cc3b7deedb901452d6e20f53",
+    "src/wind_agent/api/app.py": "071363f263b0c44347e88d808dd81869f6970228f43227ac00af619fc7f0881e",
+    "config/monitor-model.json": "af968163c8fdd9db5ca60c8690884894b24fe710e6f0753fc2f2e88cb9126aba"
+  },
+  "environment": {
+    "python": "3.11.9",
+    "system": "Windows"
+  },
+  "python_tests": {
+    "command": "python -m pytest -q",
+    "passed": 377,
+    "failed": 0,
+    "warnings": [
+      "Starlette testclient AnyIO BlockingPortal deprecation"
+    ],
+    "duration_seconds": 35.39
+  },
+  "ruff": {
+    "status": "passed",
+    "scope": "src/wind_agent, tests/model, tests/weather, tests/agent, tests/api, platform verification scripts"
+  },
+  "real_cli_watch": {
+    "command": "python -m wind_agent --config config/monitor-model.json watch --start-issue 2026-01-31T18:00:00Z --end-issue 2026-02-01T18:00:00Z --step-hours 24 --horizon-hours 48",
+    "exit_code": 0,
+    "is_demo": false,
+    "effective_artifact_directory": "artifacts\\agent-monitor\\monitor-jobs\\archive",
+    "session_counts": {
+      "status": "completed",
+      "tick_count": 2,
+      "executed_runs": 2,
+      "completed_runs": 2,
+      "failed_runs": 0
+    },
+    "actions": [
+      "created",
+      "new_issue"
+    ],
+    "runs": [
+      {
+        "run_id": "3a6186ffff1b1dc52a5cf2cd",
+        "revision": 1,
+        "rows": 96,
+        "forecast_sha256": "bf98b5bf4e6bf1fd41115b2a042a9188198cddb99e10d2fa465cd3a6fdb6ceff"
+      },
+      {
+        "run_id": "9a0819dda5b0f21797c1ea29",
+        "revision": 1,
+        "rows": 96,
+        "forecast_sha256": "f6d5a06cb49d2a8b3ffc51265d1146c7aa98e1fed78c86a06956df163a8e5592"
+      }
+    ],
+    "owner_lock_released": true
+  },
+  "github_actions": {
+    "status": "not_started",
+    "checked_commit": "fb7a057",
+    "check_run_ids": [
+      107175348506,
+      107175348386
+    ],
+    "reason": "The job was not started because your account is locked due to a billing issue."
+  },
+  "frontend_evidence": "agent-ui-validation.json",
+  "limits": [
+    "Local test results are not a GitHub Actions pass.",
+    "Historical ticks are accelerated; this does not measure long-running wall-clock scheduling reliability.",
+    "No forecast accuracy or SCADA source confirmation is claimed."
+  ]
+}

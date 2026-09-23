@@ -1,6 +1,6 @@
 import { Activity, TriangleAlert, Wind } from "lucide-react";
-import { formatTime } from "./data";
 import type { Run } from "./data";
+import { useI18n } from "./i18n";
 
 type JsonObject = Record<string, unknown>;
 const object = (value: unknown): JsonObject | null =>
@@ -9,12 +9,6 @@ const object = (value: unknown): JsonObject | null =>
     : null;
 const strings = (value: unknown): string[] =>
   Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
-const number = (value: unknown) =>
-  typeof value === "number" && Number.isFinite(value)
-    ? new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 4 }).format(value)
-    : "не предоставлено";
-const turbineName = (id: string) =>
-  ({ turbine_1: "Турбина 01", turbine_2: "Турбина 02" })[id] || id;
 
 function currentAnalysis(run: Run): JsonObject | null {
   if (run.status !== "completed" || !Number.isInteger(run.revision)) return null;
@@ -44,6 +38,11 @@ function currentAnalysis(run: Run): JsonObject | null {
 }
 
 export default function AgentAnalysisPanel({ run, zone = "UTC" }: { run: Run; zone?: string }) {
+  const { t, time, message, intlLocale, turbineName } = useI18n();
+  const number = (value: unknown) =>
+    typeof value === "number" && Number.isFinite(value)
+      ? new Intl.NumberFormat(intlLocale, { maximumFractionDigits: 4 }).format(value)
+      : t("Не предоставлено");
   const report = currentAnalysis(run);
   if (!report) return null;
   const turbines = object(report.per_turbine)!;
@@ -58,8 +57,8 @@ export default function AgentAnalysisPanel({ run, zone = "UTC" }: { run: Run; zo
       <div className="provenance-content">
         <div className="section-heading">
           <div>
-            <h2 id="agent-analysis-title">Анализ агента</h2>
-            <p>Диагностика прогноза · ревизия {run.revision} · не оценка точности</p>
+            <h2 id="agent-analysis-title">{t("Анализ агента")}</h2>
+            <p>{t("Диагностика прогноза · ревизия {revision} · не оценка точности", { revision: run.revision! })}</p>
           </div>
           <Activity size={23} />
         </div>
@@ -67,10 +66,10 @@ export default function AgentAnalysisPanel({ run, zone = "UTC" }: { run: Run; zo
           {report.decision === "review_required" ? <TriangleAlert size={17} /> : <Activity size={17} />}
           <div>
             <strong>
-              {report.next_action === "review_inputs" ? "Нужна проверка входов" : "Наблюдать обновления"}
+              {report.next_action === "review_inputs" ? t("Нужна проверка входов") : t("Наблюдать обновления")}
             </strong>
-            {fixture && <p>Синтетический fixture: анализ не описывает реальный эксплуатационный прогноз.</p>}
-            {reasons.map((reason, index) => <p key={index}>{reason}</p>)}
+            {fixture && <p>{t("Синтетический fixture: анализ не описывает реальный эксплуатационный прогноз.")}</p>}
+            {reasons.map((reason, index) => <p key={index}>{message(reason)}</p>)}
           </div>
         </div>
         <div className="provenance-grid">
@@ -81,29 +80,29 @@ export default function AgentAnalysisPanel({ run, zone = "UTC" }: { run: Run; zo
             const unit = String(turbine.target_unit);
             const delta = object(object(comparison?.per_turbine)?.[id]);
             return (
-              <section className="source-card" key={id} aria-label={`Анализ: ${turbineName(id)}`}>
+              <section className="source-card" key={id} aria-label={t("Анализ: {turbine}", { turbine: turbineName(id) })}>
                 <div className="source-title">
                   <Wind size={18} /><h3>{turbineName(id)}</h3>
                 </div>
                 <p className="fine-print muted">
-                  {unit === "fixture_dimensionless" ? "Демо-значение" : "Нормализованная мощность"} · {unit}
+                  {unit === "fixture_dimensionless" ? t("Демо-значение") : t("Нормализованная мощность")} · {unit}
                 </p>
                 {Object.entries({
                   "Минимум / максимум": `${number(turbine.prediction_min)} / ${number(turbine.prediction_max)}`,
                   "Среднее": number(turbine.prediction_mean),
-                  "Макс. изменение за час": ramp ? number(ramp.absolute_delta) : "не предоставлено",
+                  "Макс. изменение за час": ramp ? number(ramp.absolute_delta) : t("Не предоставлено"),
                   "Конец часа изменения": typeof ramp?.to_valid_time === "string"
-                    ? formatTime(ramp.to_valid_time, zone) : "не предоставлено",
-                  "Постоянный прогноз ≥ 24 ч": turbine.flat_forecast === true ? "Да — проверить входы"
-                    : turbine.flat_forecast === false ? "Не обнаружен" : "не предоставлено",
-                  "Ветер, мин. / макс., м/с": wind ? `${number(wind.min)} / ${number(wind.max)}` : "не предоставлено",
+                    ? time(ramp.to_valid_time, zone) : t("Не предоставлено"),
+                  "Постоянный прогноз ≥ 24 ч": turbine.flat_forecast === true ? t("Да — проверить входы")
+                    : turbine.flat_forecast === false ? t("Не обнаружен") : t("Не предоставлено"),
+                  "Ветер, мин. / макс., м/с": wind ? `${number(wind.min)} / ${number(wind.max)}` : t("Не предоставлено"),
                   "Средний ветер, м/с": number(wind?.mean),
                 }).map(([label, value]) => (
-                  <div className="metadata-row" key={label}><span>{label}</span><strong>{value}</strong></div>
+                  <div className="metadata-row" key={label}><span>{t(label)}</span><strong>{value}</strong></div>
                 ))}
                 {compared && delta?.status === "compared" && (
                   <div className="metadata-row">
-                    <span>Изменение к прошлой ревизии, среднее / максимум</span>
+                    <span>{t("Изменение к прошлой ревизии, среднее / максимум")}</span>
                     <strong>{number(delta.mean_absolute_delta)} / {number(delta.max_absolute_delta)} · {unit}</strong>
                   </div>
                 )}
@@ -113,15 +112,16 @@ export default function AgentAnalysisPanel({ run, zone = "UTC" }: { run: Run; zo
         </div>
         <p className="muted fine-print">
           {compared
-            ? `Сравнение ревизий: общих часов ${number(comparison.common_hours)}, изменено ${number(comparison.changed_count)}. Это разница прогнозов, не ошибка относительно факта.`
-            : "Сравнение с предыдущей ревизией недоступно для сопоставимых часов."}
+            ? t("Сравнение ревизий: общих часов {common}, изменено {changed}. Это разница прогнозов, не ошибка относительно факта.", {
+              common: number(comparison.common_hours), changed: number(comparison.changed_count),
+            })
+            : t("Сравнение с предыдущей ревизией недоступно для сопоставимых часов.")}
         </p>
         <p className="muted fine-print">
-          Фактическая выработка здесь не используется. Это рекомендация проверить входы или наблюдать обновления;
-          она не меняет прогноз. Для величины скачков порог тревоги не установлен.
+          {t("Фактическая выработка здесь не используется. Это рекомендация проверить входы или наблюдать обновления; она не меняет прогноз. Для величины скачков порог тревоги не установлен.")}
         </p>
         <details className="journal">
-          <summary>Полный анализ и ограничения</summary>
+          <summary>{t("Полный анализ и ограничения")}</summary>
           <pre>{JSON.stringify(report, null, 2)}</pre>
         </details>
       </div>

@@ -157,4 +157,31 @@ describe("CSV preserves the displayed JSON contract", () => {
       run,
     )).toThrow("CSV");
   });
+
+  it.each([
+    "issue_time", "valid_time", "weather_run_time", "training_cutoff", "forecast_available_at",
+  ])("rejects a one-microsecond change in %s", (field) => {
+    const source = record();
+    const changed = String(source[field]).replace(/Z$/, ".000001Z");
+    expect(() => validateCsv(csv([{ ...source, [field]: changed }]), [source], run))
+      .toThrow("CSV");
+  });
+
+  it("preserves sub-millisecond precision while allowing equivalent offsets and trailing zeros", () => {
+    const source = {
+      ...record(),
+      valid_time: "2026-01-31T19:00:00.000001Z",
+      training_cutoff: "2026-01-31T17:00:00.1234Z",
+    };
+    const equivalent = {
+      ...source,
+      valid_time: "2026-02-01T00:00:00.00000100+05:00",
+      training_cutoff: "2026-01-31T22:00:00.123400+05:00",
+    };
+    expect(() => validateCsv(csv([equivalent]), [source], run)).not.toThrow();
+    expect(() => validateCsv(
+      csv([{ ...equivalent, training_cutoff: "2026-01-31T22:00:00.123401+05:00" }]),
+      [source], run,
+    )).toThrow("CSV");
+  });
 });

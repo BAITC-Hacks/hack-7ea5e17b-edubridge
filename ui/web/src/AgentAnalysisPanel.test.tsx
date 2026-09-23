@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import AgentAnalysisPanel from "./AgentAnalysisPanel";
 import type { Run } from "./data";
+import { I18nProvider, LOCALE_STORAGE_KEY } from "./i18n";
 
 const baseRun: Run = { run_id: "analysis-run", status: "completed", revision: 2 };
 function report() {
@@ -35,7 +36,8 @@ function report() {
   };
 }
 const event = (analysis: unknown) => ({ step: "analysing", message: "Analysis", details: { analysis } });
-afterEach(cleanup);
+beforeEach(() => localStorage.clear());
+afterEach(() => { cleanup(); localStorage.clear(); });
 
 describe("agent diagnostic display", () => {
   it("labels fixture units, keeps the advisory limits and shows actual report values", () => {
@@ -98,5 +100,44 @@ describe("agent diagnostic display", () => {
     for (const text of ["Earlier event", "Stale revision", "Foreign run", "Синтетический fixture"])
       expect(screen.queryByText(text)).toBeNull();
     expect(screen.getByText(/Сравнение с предыдущей ревизией недоступно/)).toBeTruthy();
+  });
+
+  it.each([
+    {
+      locale: "kk", heading: "Агент талдауы", action: "Кіріс деректерін тексеру қажет",
+      units: "Демо мән · fixture_dimensionless", mean: "0,4", disclaimer: "дәлдікті бағалау емес",
+      warning: "Модель немесе кіріс деректері туралы ескертулерді тексеру қажет; толық есептегі model_warnings бөлімін қараңыз.",
+      scope: "ол болжамды өзгертпейді", comparison: "нақты мәнге қатысты қате емес",
+    },
+    {
+      locale: "en", heading: "Agent analysis", action: "Review inputs",
+      units: "Demo value · fixture_dimensionless", mean: "0.4", disclaimer: "not an accuracy evaluation",
+      warning: "Model or input warnings require review; see model_warnings in the full report.",
+      scope: "it does not change the forecast", comparison: "not an error against observations",
+    },
+  ])("localizes diagnostics in $locale while retaining units and source report", ({
+    locale, heading, action, units, mean, disclaimer, warning, scope, comparison,
+  }) => {
+    localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+    const source = { ...report(), reasons: ["Model or input warnings require review; see model_warnings."] };
+    const unchanged = JSON.stringify(source);
+    const { container } = render(<I18nProvider>
+      <AgentAnalysisPanel run={{ ...baseRun, events: [event(source)] }} zone="Asia/Almaty" />
+    </I18nProvider>);
+    expect(screen.getByRole("heading", { name: heading })).toBeTruthy();
+    expect(screen.getByText(action)).toBeTruthy();
+    expect(screen.getByText(units)).toBeTruthy();
+    expect(screen.getByText(mean)).toBeTruthy();
+    expect(screen.getByText(warning)).toBeTruthy();
+    const visible = container.cloneNode(true) as HTMLElement;
+    visible.querySelectorAll("pre").forEach((node) => node.remove());
+    expect(visible.textContent).toContain(disclaimer);
+    expect(visible.textContent).toContain(scope);
+    expect(visible.textContent).toContain(comparison);
+    expect(visible.textContent).toContain("05:00");
+    expect(visible.textContent).not.toContain("Нужна проверка входов");
+    expect(visible.textContent).not.toContain("Макс. изменение за час");
+    expect(container.querySelector("pre")?.textContent).toContain(source.reasons[0]);
+    expect(JSON.stringify(source)).toBe(unchanged);
   });
 });
