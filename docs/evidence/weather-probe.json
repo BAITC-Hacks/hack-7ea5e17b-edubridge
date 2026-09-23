@@ -1,0 +1,936 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-09-23T09:11:18.143875+00:00",
+  "source": "NOAA GFS operational archive, public AWS noaa-gfs-bdp-pds",
+  "availability_basis": "max S3 LastModified of every required single-part GRIB and index object; multipart ETags rejected; not original NOAA publication timestamp",
+  "coordinates": {
+    "turbine_1": {
+      "latitude": 43.64515,
+      "longitude": 78.535604,
+      "short_url": "https://maps.app.goo.gl/iN6svMt69D5qRpFU9",
+      "resolved_url": "https://www.google.com/maps/search/43.645150,+78.535604"
+    },
+    "turbine_2": {
+      "latitude": 43.643198,
+      "longitude": 78.538828,
+      "short_url": "https://maps.app.goo.gl/8UQMwsYavY6nLvFY8",
+      "resolved_url": "https://www.google.com/maps/search/43.643198,+78.538828"
+    }
+  },
+  "sample_grib_checks": [
+    {
+      "issue_time": "2026-02-01T18:00:00+00:00",
+      "forecast_available_at": "2026-02-01T16:01:19+00:00",
+      "listing_sha256": "3914fa61ee3821f3dd674936ab6409a61123683ffbb84e20fd1b3ef30e833ba2",
+      "model_run_time": "2026-02-01T12:00:00+00:00",
+      "lead_hours": 24,
+      "index": {
+        "request": {
+          "method": "GET",
+          "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260201/12/atmos/gfs.t12z.pgrb2.0p25.f024.idx",
+          "headers": {
+            "If-Match": "\"1c5046ceec94c259b3229e7b8a08dcc9\""
+          }
+        },
+        "status": 200,
+        "response_headers": {
+          "x-amz-id-2": "sOqt1vdxm4lFzBM/4N4iLs0SewWgXy5yJGSkLYs6Sn7GvteCiXuQu04Ym9wi0uEYGJSeU7RZ9o7Cisiy7TLucfdW6IjeKUFX",
+          "x-amz-request-id": "PF32GX3PBRNKT727",
+          "date": "Wed, 23 Sep 2026 09:04:08 GMT",
+          "last-modified": "Sun, 01 Feb 2026 15:38:37 GMT",
+          "etag": "\"1c5046ceec94c259b3229e7b8a08dcc9\"",
+          "x-amz-server-side-encryption": "AES256",
+          "accept-ranges": "bytes",
+          "content-type": "binary/octet-stream",
+          "content-length": "41255",
+          "server": "AmazonS3"
+        },
+        "retrieved_at": "2026-09-23T09:04:07.880778+00:00",
+        "sha256": "097faee16488b5a44cda9f9b4b53d233f73ae97e0d5879e73e67b071c55393e0",
+        "bytes": 41255
+      },
+      "fields": {
+        "t2m": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260201/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=419373530-420257539",
+                "If-Match": "\"cd125ebce1e57165c082f159d146008e\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "Qk54xz+yxDdFVSosUhttF+4lqd7s712hgI4JNw+kYgl0xC9nt5B6z3LbkgeEz7tit1YwCXIvUD4vwEMvpdNTl58J6qLfDhRB",
+              "x-amz-request-id": "1M9F4RRFM9MGG2XR",
+              "date": "Wed, 23 Sep 2026 09:04:09 GMT",
+              "last-modified": "Sun, 01 Feb 2026 15:38:14 GMT",
+              "etag": "\"cd125ebce1e57165c082f159d146008e\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 419373530-420257539/543633750",
+              "content-type": "binary/octet-stream",
+              "content-length": "884010",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:08.610698+00:00",
+            "sha256": "8b9a9754621d147e8b3b180bc077f03854f8a2a5e9afdecdd81d9fd1d85167f9",
+            "bytes": 884010
+          },
+          "points": {
+            "turbine_1": {
+              "value": 275.48310546875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": 275.48310546875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        },
+        "u100": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260201/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=502118648-503093330",
+                "If-Match": "\"cd125ebce1e57165c082f159d146008e\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "nQh7ctNDtTYWkvHYEvW+hXwNt+zFpos6TZbeCc0jMFFMgCQYmGsHyIk68m8xTWVsKmoYGuW/mpn1qackntoA+7yEo1WLz0jC",
+              "x-amz-request-id": "2XEB2TW67NE5XT1H",
+              "date": "Wed, 23 Sep 2026 09:04:10 GMT",
+              "last-modified": "Sun, 01 Feb 2026 15:38:14 GMT",
+              "etag": "\"cd125ebce1e57165c082f159d146008e\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 502118648-503093330/543633750",
+              "content-type": "binary/octet-stream",
+              "content-length": "974683",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:09.582229+00:00",
+            "sha256": "41acd5316a2f472cdc3988808dd35ce2f844c3d2ac1fb8de105ecf6eed7cd68b",
+            "bytes": 974683
+          },
+          "points": {
+            "turbine_1": {
+              "value": -9.50135498046875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": -9.50135498046875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        },
+        "v100": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260201/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=503093331-504057550",
+                "If-Match": "\"cd125ebce1e57165c082f159d146008e\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "H06chhJWtpxwrhBxB11UMvlKjati7FeUK74aX+OLk2iXgOBFTiu/OZ4StTJmt4n3ZqbkaABv/MHmA0WML4O6eSA4IrZUgejP",
+              "x-amz-request-id": "2XE6K3MHMQK7HJX1",
+              "date": "Wed, 23 Sep 2026 09:04:10 GMT",
+              "last-modified": "Sun, 01 Feb 2026 15:38:14 GMT",
+              "etag": "\"cd125ebce1e57165c082f159d146008e\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 503093331-504057550/543633750",
+              "content-type": "binary/octet-stream",
+              "content-length": "964220",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:09.895094+00:00",
+            "sha256": "9afa34cca01e2004518fedea51653bb5ce29afd7b7ee3e9d65d9e15d4213f3d4",
+            "bytes": 964220
+          },
+          "points": {
+            "turbine_1": {
+              "value": -3.6596728515625,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": -3.6596728515625,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "issue_time": "2026-02-14T18:00:00+00:00",
+      "forecast_available_at": "2026-02-14T15:59:17+00:00",
+      "listing_sha256": "e4dcab0487596c8d63ec37c6e7561be0dc97ecb031558a890860fddc0ac5b986",
+      "model_run_time": "2026-02-14T12:00:00+00:00",
+      "lead_hours": 24,
+      "index": {
+        "request": {
+          "method": "GET",
+          "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260214/12/atmos/gfs.t12z.pgrb2.0p25.f024.idx",
+          "headers": {
+            "If-Match": "\"9664a255c2944b2df972ea2b3d5f797f\""
+          }
+        },
+        "status": 200,
+        "response_headers": {
+          "x-amz-id-2": "MVw1EVjOIpueSY1QiLedaqwdeTeq7CraWg616akcaM32Qu3mvutZkHZznMhsQzejhGGci/AZMb5qN8LdaplzeOqbyRgUH/tM",
+          "x-amz-request-id": "1M93B5HJTCSJHDKJ",
+          "date": "Wed, 23 Sep 2026 09:04:09 GMT",
+          "last-modified": "Sat, 14 Feb 2026 15:52:02 GMT",
+          "etag": "\"9664a255c2944b2df972ea2b3d5f797f\"",
+          "x-amz-server-side-encryption": "AES256",
+          "accept-ranges": "bytes",
+          "content-type": "binary/octet-stream",
+          "content-length": "41259",
+          "server": "AmazonS3"
+        },
+        "retrieved_at": "2026-09-23T09:04:08.046470+00:00",
+        "sha256": "6854ff0fd5cc1fc491f0fa044440e83bca5f7021182fec6b83ae90dc4aeb6cb6",
+        "bytes": 41259
+      },
+      "fields": {
+        "t2m": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260214/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=415869531-416758727",
+                "If-Match": "\"7ecfe2d0be14e1f3366a193c5838ca36\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "F/8HwzWWtckLImfNYf8JbLrFCm+HqzL26ZK1vwrO7hJN7Q6ajWLnc8GxV9KBd/H2uWiEdN8zB5qCiTP+NlSJNYZG89FAGyGh",
+              "x-amz-request-id": "1M98FFSX2CT7807M",
+              "date": "Wed, 23 Sep 2026 09:04:09 GMT",
+              "last-modified": "Sat, 14 Feb 2026 15:51:27 GMT",
+              "etag": "\"7ecfe2d0be14e1f3366a193c5838ca36\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 415869531-416758727/539569949",
+              "content-type": "binary/octet-stream",
+              "content-length": "889197",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:08.649445+00:00",
+            "sha256": "c90856629cd14c3715e8d70bfd23c7282a9cc47d4eec093c16c04579c6a5e25a",
+            "bytes": 889197
+          },
+          "points": {
+            "turbine_1": {
+              "value": 278.1196875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": 278.1196875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        },
+        "u100": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260214/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=497797198-498776104",
+                "If-Match": "\"7ecfe2d0be14e1f3366a193c5838ca36\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "JnNpShvkRUQIDZGdFOPcW0P/ySkHy7CTswu1nJoWQnwF/cLTQ+Jlkl3uwJZtDw88DT/FKX3HNe/MLUztWb3t+w9cP/6ld2/V",
+              "x-amz-request-id": "2XE75319JE0ZADR1",
+              "date": "Wed, 23 Sep 2026 09:04:10 GMT",
+              "last-modified": "Sat, 14 Feb 2026 15:51:27 GMT",
+              "etag": "\"7ecfe2d0be14e1f3366a193c5838ca36\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 497797198-498776104/539569949",
+              "content-type": "binary/octet-stream",
+              "content-length": "978907",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:09.602648+00:00",
+            "sha256": "5dac1acea4824f76724d8be5d121bd59f705571db1b7be879fd937b56be8f996",
+            "bytes": 978907
+          },
+          "points": {
+            "turbine_1": {
+              "value": -11.7619873046875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": -11.7619873046875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        },
+        "v100": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260214/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=498776105-499741203",
+                "If-Match": "\"7ecfe2d0be14e1f3366a193c5838ca36\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "XtAiwEH45QowyC8Gdkw+QEt7/QG2H6/gmI7ttj++cT4DZO7P9OixfihLVKoaJqq5awxTxH/U+1hnyQHM8t1cMWfedb+m3/pc",
+              "x-amz-request-id": "91V264YNJH3AKHNK",
+              "date": "Wed, 23 Sep 2026 09:04:11 GMT",
+              "last-modified": "Sat, 14 Feb 2026 15:51:27 GMT",
+              "etag": "\"7ecfe2d0be14e1f3366a193c5838ca36\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 498776105-499741203/539569949",
+              "content-type": "binary/octet-stream",
+              "content-length": "965099",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:09.962668+00:00",
+            "sha256": "d35ac34c3b1dfcc290ee2ebe670010753fed74e91e45ef279b7b8779c3fa785b",
+            "bytes": 965099
+          },
+          "points": {
+            "turbine_1": {
+              "value": -3.6183593750000003,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": -3.6183593750000003,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "issue_time": "2026-02-28T18:00:00+00:00",
+      "forecast_available_at": "2026-02-28T16:01:38+00:00",
+      "listing_sha256": "547bd3c1f576e5685c6e935af7e38a4e84958893c5761c7c3a0a417057cb71f2",
+      "model_run_time": "2026-02-28T12:00:00+00:00",
+      "lead_hours": 24,
+      "index": {
+        "request": {
+          "method": "GET",
+          "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260228/12/atmos/gfs.t12z.pgrb2.0p25.f024.idx",
+          "headers": {
+            "If-Match": "\"a63becf2a36a58fe33d95c184a740cfb\""
+          }
+        },
+        "status": 200,
+        "response_headers": {
+          "x-amz-id-2": "COLBtvReI2wp74s4KchnPUgnrBi+8CfF7h2CqtlCfvJjqkcb5ZBIfwiMQ0BXDJEckO+4+j0Y9EGEpKHE1dWVxSMdumMlmzPB",
+          "x-amz-request-id": "1M923AQSH7H7BBD4",
+          "date": "Wed, 23 Sep 2026 09:04:09 GMT",
+          "last-modified": "Sat, 28 Feb 2026 15:39:56 GMT",
+          "etag": "\"a63becf2a36a58fe33d95c184a740cfb\"",
+          "x-amz-server-side-encryption": "AES256",
+          "accept-ranges": "bytes",
+          "content-type": "binary/octet-stream",
+          "content-length": "41258",
+          "server": "AmazonS3"
+        },
+        "retrieved_at": "2026-09-23T09:04:07.898243+00:00",
+        "sha256": "b1d9385c41e6faadfba2bed80f95b26529446b32324fc7986bf0b56a8a84b503",
+        "bytes": 41258
+      },
+      "fields": {
+        "t2m": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260228/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=416150520-417039483",
+                "If-Match": "\"976c554456d513a2d0054ebbcec6fdf5\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "T8rr1CuJuY52M9Ej2aAph/Ig9PhTxxlt0GO4ZX003dD3V9aoUnavt3ExqgvoyY4jkuy7wBaRWYG+zfRxzDvAZfVbEImzcllM",
+              "x-amz-request-id": "1M9CNVQZKQ61D52G",
+              "date": "Wed, 23 Sep 2026 09:04:09 GMT",
+              "last-modified": "Sat, 28 Feb 2026 15:39:18 GMT",
+              "etag": "\"976c554456d513a2d0054ebbcec6fdf5\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 416150520-417039483/540788531",
+              "content-type": "binary/octet-stream",
+              "content-length": "888964",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:08.665761+00:00",
+            "sha256": "71a044c1e00767496c514c0b1fc6fcbc549468f749a73b3de4f560443d3181b6",
+            "bytes": 888964
+          },
+          "points": {
+            "turbine_1": {
+              "value": 273.016171875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": 273.016171875,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        },
+        "u100": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260228/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=498796588-499778559",
+                "If-Match": "\"976c554456d513a2d0054ebbcec6fdf5\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "WrZ2JzQvtpFNZDRMKhR+gdCpoJ3y7MgFP/twnFn6XP5dw5F3oCMR4loU55PMtM0BP9J8mst/uFKygEemEYeYRjZIlVY6dJmI",
+              "x-amz-request-id": "2XECRHH72DDJX08G",
+              "date": "Wed, 23 Sep 2026 09:04:10 GMT",
+              "last-modified": "Sat, 28 Feb 2026 15:39:18 GMT",
+              "etag": "\"976c554456d513a2d0054ebbcec6fdf5\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 498796588-499778559/540788531",
+              "content-type": "binary/octet-stream",
+              "content-length": "981972",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:09.686770+00:00",
+            "sha256": "1784735ebbc6126fd9a29e36950cbc349f92fdf1f9047f971717045120740260",
+            "bytes": 981972
+          },
+          "points": {
+            "turbine_1": {
+              "value": 2.0323876953125,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": 2.0323876953125,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        },
+        "v100": {
+          "http": {
+            "request": {
+              "method": "GET",
+              "url": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260228/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+              "headers": {
+                "Range": "bytes=499778560-500745906",
+                "If-Match": "\"976c554456d513a2d0054ebbcec6fdf5\""
+              }
+            },
+            "status": 206,
+            "response_headers": {
+              "x-amz-id-2": "d9Cqmgr9CEqMt+GvC/K03Dzf5vAsu5GiH4nVrMyHL+n5LDvS7+zsw6mypBUrdyBQglGEKC6tTt/BMrD+po3MoN7l1kOWPHOr",
+              "x-amz-request-id": "91V671VCTARVF3PX",
+              "date": "Wed, 23 Sep 2026 09:04:11 GMT",
+              "last-modified": "Sat, 28 Feb 2026 15:39:18 GMT",
+              "etag": "\"976c554456d513a2d0054ebbcec6fdf5\"",
+              "x-amz-server-side-encryption": "AES256",
+              "accept-ranges": "bytes",
+              "content-range": "bytes 499778560-500745906/540788531",
+              "content-type": "binary/octet-stream",
+              "content-length": "967347",
+              "server": "AmazonS3"
+            },
+            "retrieved_at": "2026-09-23T09:04:10.483531+00:00",
+            "sha256": "2da892882e020ca58a0b444b3cdd952de83efc22cab403bd8c22532904aee6a0",
+            "bytes": 967347
+          },
+          "points": {
+            "turbine_1": {
+              "value": -1.38690673828125,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.005441734408462
+              }
+            },
+            "turbine_2": {
+              "value": -1.38690673828125,
+              "grid": {
+                "latitude": 43.75,
+                "longitude": 78.5,
+                "distance_km": 12.279683298070932
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "february_metadata_audit": {
+    "description": "29 daily issues Jan31 through Feb28 at18UTC for hour-end coverage through Mar1 00:00 Asia/Almaty; complete48h object availability, not full-month download or power forecasts",
+    "timestamp_semantics": "hour_end",
+    "feature_time_basis": "instant_at_end",
+    "issue_count": 29,
+    "objects_checked": 2784,
+    "issues": [
+      {
+        "issue_time": "2026-01-31T18:00:00+00:00",
+        "model_run_time": "2026-01-31T12:00:00+00:00",
+        "forecast_available_at": "2026-01-31T15:59:20+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "7406781549c3f94a15906d919f7c0343882696520e93993396324906aef55d87"
+      },
+      {
+        "issue_time": "2026-02-01T18:00:00+00:00",
+        "model_run_time": "2026-02-01T12:00:00+00:00",
+        "forecast_available_at": "2026-02-01T16:01:19+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "3914fa61ee3821f3dd674936ab6409a61123683ffbb84e20fd1b3ef30e833ba2"
+      },
+      {
+        "issue_time": "2026-02-02T18:00:00+00:00",
+        "model_run_time": "2026-02-02T12:00:00+00:00",
+        "forecast_available_at": "2026-02-02T16:00:22+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "f15ba364ffb374131c5801816ba2275f8f8c3ac2dd1670f44500a84929ca9b77"
+      },
+      {
+        "issue_time": "2026-02-03T18:00:00+00:00",
+        "model_run_time": "2026-02-03T12:00:00+00:00",
+        "forecast_available_at": "2026-02-03T16:01:27+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "d12b00bce83a73a4df040a838558aec5e3610f50260ae0375032f0d5c148f633"
+      },
+      {
+        "issue_time": "2026-02-04T18:00:00+00:00",
+        "model_run_time": "2026-02-04T12:00:00+00:00",
+        "forecast_available_at": "2026-02-04T16:00:58+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "8e9c017e43be19fd33f550241634ace90f4cc5e1fb688270881572709d72234f"
+      },
+      {
+        "issue_time": "2026-02-05T18:00:00+00:00",
+        "model_run_time": "2026-02-05T12:00:00+00:00",
+        "forecast_available_at": "2026-02-05T16:00:53+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "bc88d2aab0b6927c0de05b22f4300cb6c5c5e7668ce57f59d751906a3bb262fe"
+      },
+      {
+        "issue_time": "2026-02-06T18:00:00+00:00",
+        "model_run_time": "2026-02-06T12:00:00+00:00",
+        "forecast_available_at": "2026-02-06T16:01:23+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "44f82b798708929189d3f898da6363b8c4443ac0905d067e8559462dcf0ed926"
+      },
+      {
+        "issue_time": "2026-02-07T18:00:00+00:00",
+        "model_run_time": "2026-02-07T12:00:00+00:00",
+        "forecast_available_at": "2026-02-07T16:01:21+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "514f0cf0f3a206430c39a266cddee753de8988e2b76099cbd1f14eed26909975"
+      },
+      {
+        "issue_time": "2026-02-08T18:00:00+00:00",
+        "model_run_time": "2026-02-08T12:00:00+00:00",
+        "forecast_available_at": "2026-02-08T16:02:14+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "d57076186d21cdf0cf557481bc5ede5abfd0569b7e3835b1c4bca10f296db558"
+      },
+      {
+        "issue_time": "2026-02-09T18:00:00+00:00",
+        "model_run_time": "2026-02-09T12:00:00+00:00",
+        "forecast_available_at": "2026-02-09T16:02:12+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "20936aa2f774328bef57eda5c664aa9ea2106bff47fdf4f84d8b56fdcbe8cd4f"
+      },
+      {
+        "issue_time": "2026-02-10T18:00:00+00:00",
+        "model_run_time": "2026-02-10T12:00:00+00:00",
+        "forecast_available_at": "2026-02-10T16:02:02+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "62afe328990fadb97992f53ba53e85ba029323f1cd24218e4baad364fad2a4d6"
+      },
+      {
+        "issue_time": "2026-02-11T18:00:00+00:00",
+        "model_run_time": "2026-02-11T12:00:00+00:00",
+        "forecast_available_at": "2026-02-11T16:01:35+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "3e07fdfbff3375d0f0581019984864951d617700a4bf72f1ed8d743aadf61f41"
+      },
+      {
+        "issue_time": "2026-02-12T18:00:00+00:00",
+        "model_run_time": "2026-02-12T12:00:00+00:00",
+        "forecast_available_at": "2026-02-12T16:02:08+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "5ba740aae68f98acae62a3ec8bf4c89b9d2a014229e928fa8681a71db306dcb2"
+      },
+      {
+        "issue_time": "2026-02-13T18:00:00+00:00",
+        "model_run_time": "2026-02-13T12:00:00+00:00",
+        "forecast_available_at": "2026-02-13T16:00:11+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "2160be6a57085c6b40d0b5b78b0cc646b975ac349b4136c52d70d42e80076c8b"
+      },
+      {
+        "issue_time": "2026-02-14T18:00:00+00:00",
+        "model_run_time": "2026-02-14T12:00:00+00:00",
+        "forecast_available_at": "2026-02-14T15:59:17+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "e4dcab0487596c8d63ec37c6e7561be0dc97ecb031558a890860fddc0ac5b986"
+      },
+      {
+        "issue_time": "2026-02-15T18:00:00+00:00",
+        "model_run_time": "2026-02-15T12:00:00+00:00",
+        "forecast_available_at": "2026-02-15T16:02:39+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "3ffe6349b1bf42519a36ad1dcc9b88bbac6985acf461efd08d406b2544fc5a41"
+      },
+      {
+        "issue_time": "2026-02-16T18:00:00+00:00",
+        "model_run_time": "2026-02-16T12:00:00+00:00",
+        "forecast_available_at": "2026-02-16T16:01:08+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "8689988efc07621cfeb8ef650aa14a93e7ec6bec05c847e42efd2e62f12dc167"
+      },
+      {
+        "issue_time": "2026-02-17T18:00:00+00:00",
+        "model_run_time": "2026-02-17T12:00:00+00:00",
+        "forecast_available_at": "2026-02-17T16:01:59+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "f4a35c885d791c2ebf711ac1bd7b1fdea0dacf5b9d05f0e6e2b88a32c8eb7109"
+      },
+      {
+        "issue_time": "2026-02-18T18:00:00+00:00",
+        "model_run_time": "2026-02-18T12:00:00+00:00",
+        "forecast_available_at": "2026-02-18T16:00:27+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "1037bda29aaf36ca2267111ed742071099d9804645188c95a333ab48cc3cd52e"
+      },
+      {
+        "issue_time": "2026-02-19T18:00:00+00:00",
+        "model_run_time": "2026-02-19T12:00:00+00:00",
+        "forecast_available_at": "2026-02-19T16:00:17+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "2b251e46fbfcaa5db3bae725ae7660fb36da9c41532d52b7daa9afd35133cf43"
+      },
+      {
+        "issue_time": "2026-02-20T18:00:00+00:00",
+        "model_run_time": "2026-02-20T12:00:00+00:00",
+        "forecast_available_at": "2026-02-20T16:02:08+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "d2c3fe74c2c73b339d69cc128b95657a86841aa6c9c9d0ae7742432f75676118"
+      },
+      {
+        "issue_time": "2026-02-21T18:00:00+00:00",
+        "model_run_time": "2026-02-21T12:00:00+00:00",
+        "forecast_available_at": "2026-02-21T15:59:21+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "4e5dae915a0fef926c39b534bda5bfacf31c9149a1d8d70c39f5b8e7ff6064c6"
+      },
+      {
+        "issue_time": "2026-02-22T18:00:00+00:00",
+        "model_run_time": "2026-02-22T12:00:00+00:00",
+        "forecast_available_at": "2026-02-22T16:01:10+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "d846d6f64f1b627188ffd8db1faf5a7ab8b0412dd999d4e25a91159af63af20d"
+      },
+      {
+        "issue_time": "2026-02-23T18:00:00+00:00",
+        "model_run_time": "2026-02-23T12:00:00+00:00",
+        "forecast_available_at": "2026-02-23T16:02:58+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "98dc837034abbb4ae58b2b66d40b50725d9f99ce042d87190ec490a5baef748f"
+      },
+      {
+        "issue_time": "2026-02-24T18:00:00+00:00",
+        "model_run_time": "2026-02-24T12:00:00+00:00",
+        "forecast_available_at": "2026-02-24T15:52:34+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "a69f1245c3eab4cdf41068f58214ab08a1be6fe91a53f73fc07cd2d3697edff5"
+      },
+      {
+        "issue_time": "2026-02-25T18:00:00+00:00",
+        "model_run_time": "2026-02-25T12:00:00+00:00",
+        "forecast_available_at": "2026-02-25T16:01:51+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "5e2b6f6384f4eb2fa4e520c7bc2d2c0af28687f9fe3ff9c9b6fe7ff0de3e4d0a"
+      },
+      {
+        "issue_time": "2026-02-26T18:00:00+00:00",
+        "model_run_time": "2026-02-26T12:00:00+00:00",
+        "forecast_available_at": "2026-02-26T15:59:55+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "90056295fa63419cbe39882600bd024250992dbd20a7f0145c44299473c020ea"
+      },
+      {
+        "issue_time": "2026-02-27T18:00:00+00:00",
+        "model_run_time": "2026-02-27T12:00:00+00:00",
+        "forecast_available_at": "2026-02-27T16:02:22+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "93914565481ec010fb77f5ebbba8794ffacac0546813250fcb33b787e4d33c10"
+      },
+      {
+        "issue_time": "2026-02-28T18:00:00+00:00",
+        "model_run_time": "2026-02-28T12:00:00+00:00",
+        "forecast_available_at": "2026-02-28T16:01:38+00:00",
+        "horizon_hours": 48,
+        "object_count": 96,
+        "listing_sha256": "547bd3c1f576e5685c6e935af7e38a4e84958893c5761c7c3a0a417057cb71f2"
+      }
+    ]
+  },
+  "full_horizon_download": {
+    "issue_time": "2026-01-31T18:00:00+00:00",
+    "model_run_time": "2026-01-31T12:00:00+00:00",
+    "forecast_available_at": "2026-01-31T15:59:20+00:00",
+    "horizon_hours": 48,
+    "record_count": 96,
+    "first_valid_time": "2026-01-31T19:00:00Z",
+    "last_valid_time": "2026-02-02T18:00:00Z",
+    "rows_canonical_sha256": "1b5f26dc79e3922e4f9bc80878039567d4d2b7dea87fee8b296c265c3b25e7f9",
+    "rows_hash_encoding": "UTF8 json.dumps(records,ensure_ascii=False,sort_keys=True,separators=(comma,colon))",
+    "per_turbine": {
+      "turbine_1": 48,
+      "turbine_2": 48
+    },
+    "raw_bundle_sha256": [
+      "10bc5f5001900e599dd854e6f5b793f468e65cf0368054ed222bb8484580fe3f",
+      "1ab8fe54b2700de191c4114c0ab8ab9c179f4a698d54b21ac5776c6997b351f2",
+      "1e4255325ba4037d2283c13b1f1e8d29eab375c97dee51d04f9a6fb3e95131e4",
+      "1ed996fbfb68bd7681198a88f310f23f02fb9841a72b8c0f1185fb8ecf392aff",
+      "21cca9afbf2b52426f01735a30a8b4225e37cf481bf4e7942462f3bbf85c0c7d",
+      "225c9ce3a668d84a0e530e8b4e0048444a3956c8ef7725f3e53d26a2ec0626bc",
+      "26845ad202bd13dff3fb8dfe0bef6cead9d30bafdcf99c90fd019fc6a32111d3",
+      "2808b0097a79eca50d4ab2603948a69c1d9d742e0d962305eaa4144f089eeaaf",
+      "2d3db52b4d1c56efb28952c9c0c3fb78b8e4257b35cc709c4af3a98b5e327c3d",
+      "352160aa7c299f9879622cf848df46c41a72b98f2730c4426452cf30cf680237",
+      "35483e9d3d987f3450af4a3f2952d205222dc0ed27988ed25031bd9e9ddbd423",
+      "38b024d90e41288df22f1f5aa46ad72006531f4c058113bde1e5761ccaaa37aa",
+      "3d47db4b8ae8bf8de5b28ec54096e9d9e8752d9cb9d043de3bd036e7a4492da6",
+      "3df212336b3e576dbdf2efe81e2498edc1033e9f37a9abb94aaa08271f3db270",
+      "3ed67882e0e878891d51747c0cb108badc570db62d53212d82616be6778d202e",
+      "4c950fa3637f2fa394a0a079ad1100223f62778bba3df905759d366ae4e8575e",
+      "4eaa1b8d085e1d413b3b9f6b0f848153168e96a52a7c6fe51f11c2929a4a18e0",
+      "622dab76535865f46164c35a9e22db795e2590b1b50b68d3e652b34a82304ab8",
+      "6959a64ddbbe322df2dc32b3bcd6336e61c22b5276a2e04e8dc81449d2a4a75e",
+      "6aaddba1401ef3df5ca83e5b35c9ee84b1d80bde0512fd85cd1636d863d559cd",
+      "6d781c4a16919abad0aeb63319e179be1d2df6600f7b1d53026c2ad2563b95b0",
+      "7302e002690a61d3e1779251194efbe1185d69ee56fa14ae349c015ef08ed57f",
+      "735a37d4f5f848b324d5a5bd495991946c24eec1d0a7b2a51870b315d973a498",
+      "74d2127d85cefbc277a3c5d5d47dcc1a5a98747fd1cf9ed8e018a057f911b310",
+      "7aaadee8c187cd8a4450b0649f8dba0893082049363b3602cf645b74af5788d9",
+      "7b6cc6853cc57f9552f9c372018d9e47dad6c1474826976fbfa28e1a336bd20c",
+      "7f2bf3e38f9428bb8f5587b8de89b6f64446caa824e20ef2b759b9f3ba88dfa4",
+      "8100d4250cb5a45244ea53a57b16e578efbc8264dcc14ddb2ae3697d6f845f43",
+      "856b4731e11fee7d5d048476238d042610a192f26f9bf0d2a4aabe0125174b6c",
+      "8ec199bad403b231ad08d0948177d3e5c35e58847e092a7a95a02411d7760c84",
+      "8fb7d6240f1929159ddd8cf92893d9e2ddc7204804754203c3583c9f4504fca1",
+      "927ac71f11d59f6e6a8347087afa30ce41d0bfeebaaeb385a7c0a083dcbc624d",
+      "9520d3327a6e00b4beeffd2071c7c56181f2b4d093b39284437cc6518d1a0dc0",
+      "979f13121c1fcc6459ca0def0c623ca86f17fd3de8a7690a2eb48ce660387a38",
+      "97d46163cac429db80d5e6cf5a1093927d9170bbb1e6d541a4dc378a7d24525c",
+      "ac580767753d73ae666aeb046f855f428969a0342b5edd8de4245496f00533d5",
+      "ad09025a6a52a65221c4f98f52e6518354879f210b9e91c28b65710ba2146161",
+      "b42ba324fdbeb2fac45bfb971f4fbe7d90aa8b37c0251610f62f99971d3f4fc4",
+      "c13557aa9cbd931ff7a0c921c601dc646178c7fc0eee7ce3e4e77f340e0b6eef",
+      "c75ec35bfa374b6989608eaaba25be4aea3e2fef4411ffad90d8e7033e4b704d",
+      "c90b13f4cb7064f53853669fb85680bd098ce5f6984eaf650fa1b6e1dd2931b3",
+      "e457c3d9dc705ab9d3965bdc41971af475732f20eb868737c8fc65ec78a8662e",
+      "e759143a2b29ed3bb430f6a6581cd9fe640c71cd7c77f4f6ca4af9bff7df6453",
+      "e80837ef1538d37da8b0ccc95e46b9c2f6a3f1d77f5001c0ce1c470a888b4801",
+      "e80e700589da01e24f6f1d202fbf5d05f0a0f20115f08aace9702a067c8dd6ea",
+      "ea8ff41cd14fc1d87a33617253bb2fba26a0fe511d2352add0653e737c2b3c4b",
+      "fec8aeade2ad2a5b50112bcf9d9b44de2404d587c91b3b4a69dc7da0015ad895",
+      "fed6ee16f2ec78517e4d7d50a57748bf9ab13c9a0747118ce0aa120ff3d018ff"
+    ],
+    "sample_records": [
+      {
+        "turbine_id": "turbine_1",
+        "latitude": 43.64515,
+        "longitude": 78.535604,
+        "provider": "NOAA GFS via AWS Open Data",
+        "weather_model": "gfs_0p25",
+        "model_run_time": "2026-01-31T12:00:00Z",
+        "forecast_available_at": "2026-01-31T15:59:20Z",
+        "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+        "retrieved_at": "2026-09-23T09:01:05.528009Z",
+        "valid_time": "2026-01-31T19:00:00Z",
+        "lead_hours": 7,
+        "wind_speed_ms": 1.723005415516887,
+        "wind_height_m": 100.0,
+        "temperature_c": -1.0846484374999932,
+        "source_request": "{\"extraction_manifest\":\"5d4ebfdc8bbeebb6085a65399839eb05cd1033535ab5dd9a4d414d56ea423a6f.json\",\"grid\":{\"distance_km\":12.005441734408462,\"latitude\":43.75,\"longitude\":78.5},\"ranges\":{\"t2m\":[416463733,417347577],\"u100\":[495397397,496370229],\"v100\":[496370230,497335647]},\"raw_bundle_order\":[\"t2m\",\"u100\",\"v100\"],\"spatial_method\":\"nearest_grid_point\",\"url\":\"https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260131/12/atmos/gfs.t12z.pgrb2.0p25.f007\"}",
+        "raw_sha256": "3df212336b3e576dbdf2efe81e2498edc1033e9f37a9abb94aaa08271f3db270",
+        "provenance_kind": "operational_archive",
+        "availability_evidence": "S3 LastModified with single-part ETags; archive-object availability bound, not original NOAA publication time"
+      },
+      {
+        "turbine_id": "turbine_1",
+        "latitude": 43.64515,
+        "longitude": 78.535604,
+        "provider": "NOAA GFS via AWS Open Data",
+        "weather_model": "gfs_0p25",
+        "model_run_time": "2026-01-31T12:00:00Z",
+        "forecast_available_at": "2026-01-31T15:59:20Z",
+        "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+        "retrieved_at": "2026-09-23T09:01:31.566172Z",
+        "valid_time": "2026-02-02T18:00:00Z",
+        "lead_hours": 54,
+        "wind_speed_ms": 7.968383078142263,
+        "wind_height_m": 100.0,
+        "temperature_c": 0.15404296875004775,
+        "source_request": "{\"extraction_manifest\":\"b9ac5624f623f57594090ccf827ba1c60394dc03bddb15cd7ff691b99d564f18.json\",\"grid\":{\"distance_km\":12.005441734408462,\"latitude\":43.75,\"longitude\":78.5},\"ranges\":{\"t2m\":[422135715,423025573],\"u100\":[504925792,505908080],\"v100\":[505908081,506879310]},\"raw_bundle_order\":[\"t2m\",\"u100\",\"v100\"],\"spatial_method\":\"nearest_grid_point\",\"url\":\"https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260131/12/atmos/gfs.t12z.pgrb2.0p25.f054\"}",
+        "raw_sha256": "c13557aa9cbd931ff7a0c921c601dc646178c7fc0eee7ce3e4e77f340e0b6eef",
+        "provenance_kind": "operational_archive",
+        "availability_evidence": "S3 LastModified with single-part ETags; archive-object availability bound, not original NOAA publication time"
+      },
+      {
+        "turbine_id": "turbine_2",
+        "latitude": 43.643198,
+        "longitude": 78.538828,
+        "provider": "NOAA GFS via AWS Open Data",
+        "weather_model": "gfs_0p25",
+        "model_run_time": "2026-01-31T12:00:00Z",
+        "forecast_available_at": "2026-01-31T15:59:20Z",
+        "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+        "retrieved_at": "2026-09-23T09:01:05.528009Z",
+        "valid_time": "2026-01-31T19:00:00Z",
+        "lead_hours": 7,
+        "wind_speed_ms": 1.723005415516887,
+        "wind_height_m": 100.0,
+        "temperature_c": -1.0846484374999932,
+        "source_request": "{\"extraction_manifest\":\"5d4ebfdc8bbeebb6085a65399839eb05cd1033535ab5dd9a4d414d56ea423a6f.json\",\"grid\":{\"distance_km\":12.279683298070932,\"latitude\":43.75,\"longitude\":78.5},\"ranges\":{\"t2m\":[416463733,417347577],\"u100\":[495397397,496370229],\"v100\":[496370230,497335647]},\"raw_bundle_order\":[\"t2m\",\"u100\",\"v100\"],\"spatial_method\":\"nearest_grid_point\",\"url\":\"https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260131/12/atmos/gfs.t12z.pgrb2.0p25.f007\"}",
+        "raw_sha256": "3df212336b3e576dbdf2efe81e2498edc1033e9f37a9abb94aaa08271f3db270",
+        "provenance_kind": "operational_archive",
+        "availability_evidence": "S3 LastModified with single-part ETags; archive-object availability bound, not original NOAA publication time"
+      },
+      {
+        "turbine_id": "turbine_2",
+        "latitude": 43.643198,
+        "longitude": 78.538828,
+        "provider": "NOAA GFS via AWS Open Data",
+        "weather_model": "gfs_0p25",
+        "model_run_time": "2026-01-31T12:00:00Z",
+        "forecast_available_at": "2026-01-31T15:59:20Z",
+        "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+        "retrieved_at": "2026-09-23T09:01:31.566172Z",
+        "valid_time": "2026-02-02T18:00:00Z",
+        "lead_hours": 54,
+        "wind_speed_ms": 7.968383078142263,
+        "wind_height_m": 100.0,
+        "temperature_c": 0.15404296875004775,
+        "source_request": "{\"extraction_manifest\":\"b9ac5624f623f57594090ccf827ba1c60394dc03bddb15cd7ff691b99d564f18.json\",\"grid\":{\"distance_km\":12.279683298070932,\"latitude\":43.75,\"longitude\":78.5},\"ranges\":{\"t2m\":[422135715,423025573],\"u100\":[504925792,505908080],\"v100\":[505908081,506879310]},\"raw_bundle_order\":[\"t2m\",\"u100\",\"v100\"],\"spatial_method\":\"nearest_grid_point\",\"url\":\"https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20260131/12/atmos/gfs.t12z.pgrb2.0p25.f054\"}",
+        "raw_sha256": "c13557aa9cbd931ff7a0c921c601dc646178c7fc0eee7ce3e4e77f340e0b6eef",
+        "provenance_kind": "operational_archive",
+        "availability_evidence": "S3 LastModified with single-part ETags; archive-object availability bound, not original NOAA publication time"
+      }
+    ]
+  },
+  "feature_time_basis": "instant_at_end"
+}
