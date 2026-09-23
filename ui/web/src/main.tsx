@@ -4,15 +4,22 @@ import "@fontsource/manrope/cyrillic-400.css";
 import "@fontsource/manrope/cyrillic-500.css";
 import "@fontsource/manrope/cyrillic-600.css";
 import "@fontsource/manrope/cyrillic-700.css";
+import "@fontsource/manrope/cyrillic-ext-400.css";
+import "@fontsource/manrope/cyrillic-ext-500.css";
+import "@fontsource/manrope/cyrillic-ext-600.css";
+import "@fontsource/manrope/cyrillic-ext-700.css";
 import "@fontsource/manrope/latin-400.css";
 import "@fontsource/manrope/latin-500.css";
 import "@fontsource/manrope/latin-600.css";
 import "@fontsource/manrope/latin-700.css";
 import App from "./App";
+import { I18nProvider } from "./i18n";
 import "./styles.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <I18nProvider>
+      <App />
+    </I18nProvider>
   </React.StrictMode>,
 );
