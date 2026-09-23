@@ -1,0 +1,16 @@
+JelAI wind-energy dashboard hero artwork
+
+Provenance: original bitmap generated using the built-in image_gen tool on 2026-09-23. User-supplied reference inspired the turquoise atmosphere; this is an original scene and includes no borrowed UI or logo.
+Source artifact: /Users/duisenovnurdaulet/.codex/generated_images/01a0cdd9-5d18-7a53-96a3-34e52f797c51/exec-f0ccb462-3ede-4b4d-9df1-fde4c7d69754.png
+Workspace artifact: ui/web/public/assets/turbine-hero.png
+
+Exact final prompt:
+Use case: stylized-concept.
+Asset type: original background hero bitmap for the JelAI wind-energy forecasting dashboard, intended to sit behind interface cards.
+Primary request: one exceptionally polished, realistic 3D architectural visualization of exactly two clean white utility-scale wind turbines, with an elegant premium industrial atmosphere.
+Scene/backdrop: open soft cyan and muted teal sky, a very subtle atmospheric cloud haze; an extremely low barely visible distant horizon, no buildings or people.
+Subject and composition: landscape 16:9 composition. Main foreground wind-turbine tower rises from the bottom with its hub at approximately 66% of image width and 41% of image height. Exactly three mechanically plausible long slender airfoil blades attached to that hub, clean nacelle and convincing engineering geometry; one blade reaching into the upper sky, others diagonally. A smaller distant turbine stands near 27% width and 64% height with three blades. Both white tapered cylindrical towers descend beyond the bottom edge. Preserve substantial uncluttered negative sky space across the upper left and left center for dashboard text, and lower center for cards; the dominant turbine must still feel monumental and beautifully composed.
+Style/medium: premium realistic 3D render close to refined architectural photography, crisp edges and subtle realistic material texture, physically plausible scale and perspective.
+Lighting/mood: soft warm daylight grazing the off-white blades, cool soft shadows, calm airy cinematic clarity, gentle contrast.
+Color palette: restrained dusty cyan, desaturated teal-blue, pearl white, light silver. Smooth atmosphere, no bright saturation.
+Constraints: image only, no interface elements, no cards, no gauges, no graph, no border or frame, no laptop, no text, no typography, no numbers, no logos, no watermark. Original artwork, do not imitate any company logo. Wide landscape high-resolution 16:9.
