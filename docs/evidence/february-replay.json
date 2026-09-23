@@ -1,0 +1,1255 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checked_at": "2026-09-23T11:10:14.478133+00:00",
+  "is_demo": false,
+  "scope": "Real archived NOAA weather + delivered model; full historical replay and temporal/coverage audit, not February accuracy evaluation",
+  "settings": {
+    "mode": "archive",
+    "weather_provider": "gfs_s3",
+    "model_adapter_module": "wind_agent.model.interface",
+    "model_artifact_path": "models\\wind-power-v1",
+    "cache_dir": "artifacts\\weather-cache",
+    "artifact_dir": "artifacts\\february-integration",
+    "turbines": [
+      {
+        "turbine_id": "turbine_1",
+        "latitude": 43.64515,
+        "longitude": 78.535604,
+        "coordinates_source": "https://maps.app.goo.gl/iN6svMt69D5qRpFU9 redirects to https://www.google.com/maps/search/43.645150,+78.535604",
+        "is_synthetic": false
+      },
+      {
+        "turbine_id": "turbine_2",
+        "latitude": 43.643198,
+        "longitude": 78.538828,
+        "coordinates_source": "https://maps.app.goo.gl/8UQMwsYavY6nLvFY8 redirects to https://www.google.com/maps/search/43.643198,+78.538828",
+        "is_synthetic": false
+      }
+    ],
+    "replay_timezone": "Asia/Almaty",
+    "replay_issue_hour": 23,
+    "timestamp_convention": "hour_end",
+    "replay_assumption": "Explicit provisional team assumptions: SCADA fixed UTC+5, interval-start ten-minute means, zero reporting delay. Issue 23:00 Asia/Almaty; targets hour_end, weather instant_at_end. Source semantics and normalization are unconfirmed; see model metadata and docs/model-card.md.",
+    "history_timezone": "Etc/GMT-5",
+    "train_cutoff": "2026-01-31T18:00:00Z",
+    "default_horizon_hours": 48,
+    "api_host": "127.0.0.1",
+    "api_port": 8000
+  },
+  "timestamp_convention": "hour_end",
+  "weather_feature_time_basis": "instant_at_end",
+  "origin_count": 29,
+  "horizon_hours": 48,
+  "full_forecast_rows": 2784,
+  "full_weather_rows": 2784,
+  "selected_rows": 1344,
+  "selected_rows_per_turbine": {
+    "turbine_1": 672,
+    "turbine_2": 672
+  },
+  "first_selected_valid_time_utc": "2026-01-31T20:00:00Z",
+  "last_selected_valid_time_utc": "2026-02-28T19:00:00Z",
+  "first_selected_valid_time_local": "2026-02-01T01:00:00+05:00",
+  "last_selected_valid_time_local": "2026-03-01T00:00:00+05:00",
+  "overlap_policy": "latest issue_time for each target hour",
+  "failed_runs": 0,
+  "missing_hours": 0,
+  "all_weather_eligible_at_issue": true,
+  "all_model_cutoffs_eligible_at_issue": true,
+  "grid_points": [
+    [
+      43.75,
+      78.5
+    ]
+  ],
+  "unique_weather_bundle_count": 1392,
+  "raw_bundle_content_sha256_verified": true,
+  "raw_bundle_bytes": 3868416520,
+  "model_file_sha256": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4",
+  "test_truth_available": false,
+  "february_accuracy_metrics": null,
+  "warnings": [
+    "Forecast target is normalized power; no conversion to MW/MWh is justified.",
+    "Source-clock and target normalization semantics remain unconfirmed.",
+    "Uncertainty intervals are not calibrated",
+    "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+    "Weather availability uses archive-object metadata, not original NOAA publication proof."
+  ],
+  "exports": {
+    "json": {
+      "path": "outputs\\forecast\\february-2026-48h.json",
+      "sha256": "97150f482b25eeb3c63cbba4f90c15ba76c0f57c25d27e8805f6abec89ef307c"
+    },
+    "csv": {
+      "path": "outputs\\forecast\\february-2026-48h.csv",
+      "sha256": "f4990a5db761e5488cf26ec3a5bc10cefcc17c494789aa5bbae0b52c202c0ce8"
+    }
+  },
+  "replay_report": {
+    "path": "artifacts\\february-integration\\archive\\replay\\2026-02-48h\\report.json",
+    "sha256": "abe7b2b339a0b8e8a29a2e4515e8465096ba153822ae634cb2d0c1119295b1de"
+  },
+  "runs": [
+    {
+      "run_id": "3a6186ffff1b1dc52a5cf2cd",
+      "revision": 1,
+      "issue_time": "2026-01-31T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-01-31T12:00:00+00:00",
+      "max_forecast_available_at": "2026-01-31T15:59:20+00:00",
+      "first_valid_time": "2026-01-31T19:00:00+00:00",
+      "last_valid_time": "2026-02-02T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "92eb064d5156d6b7301e019797bc824e64b8f74c0a9c723ceedefa8fc9fa322d",
+      "unchanged_inputs_event_present": true,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\3a6186ffff1b1dc52a5cf2cd\\revisions\\1\\weather.json",
+          "sha256": "3ccc42f8cdaa8efef66cbd110adcb8b6ff278890bb59140a2b1f17f334f46976"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\3a6186ffff1b1dc52a5cf2cd\\revisions\\1\\forecast.json",
+          "sha256": "bf98b5bf4e6bf1fd41115b2a042a9188198cddb99e10d2fa465cd3a6fdb6ceff"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\3a6186ffff1b1dc52a5cf2cd\\revisions\\1\\inputs.json",
+          "sha256": "62e1896e15a021bd2ad5165791c45ffb6227bdf79c7e5fe0c78b9b6dc9c6595a"
+        }
+      }
+    },
+    {
+      "run_id": "9a0819dda5b0f21797c1ea29",
+      "revision": 1,
+      "issue_time": "2026-02-01T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-01T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-01T16:01:19+00:00",
+      "first_valid_time": "2026-02-01T19:00:00+00:00",
+      "last_valid_time": "2026-02-03T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "6b02f802e6ce34bd36be9e5efa0717c4b3b6285f812847dc717e2c606c490c47",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\9a0819dda5b0f21797c1ea29\\revisions\\1\\weather.json",
+          "sha256": "304cd6b283ac0662ca0b1242632fd8da5cb325370839a5b7a488d595d109ad5b"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\9a0819dda5b0f21797c1ea29\\revisions\\1\\forecast.json",
+          "sha256": "f6d5a06cb49d2a8b3ffc51265d1146c7aa98e1fed78c86a06956df163a8e5592"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\9a0819dda5b0f21797c1ea29\\revisions\\1\\inputs.json",
+          "sha256": "12cd30152fc3c4bf860b4f2b81646909fa70cadeee44e923c1be236ec2073653"
+        }
+      }
+    },
+    {
+      "run_id": "5f00321a3fa2ae3c24678f57",
+      "revision": 1,
+      "issue_time": "2026-02-02T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-02T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-02T16:00:22+00:00",
+      "first_valid_time": "2026-02-02T19:00:00+00:00",
+      "last_valid_time": "2026-02-04T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "16af3635598f9669d06534e09aa73838845a26bd296e8ad701ba2233032862f2",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\5f00321a3fa2ae3c24678f57\\revisions\\1\\weather.json",
+          "sha256": "6a3db95fde2d05bb7cdd421f47ab7c5421cd33fcfb8e7a4ff926e80668b6e7ea"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\5f00321a3fa2ae3c24678f57\\revisions\\1\\forecast.json",
+          "sha256": "6fd46c820f02127101e5258eedddde0b20c398de994bf455464ea129705f7720"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\5f00321a3fa2ae3c24678f57\\revisions\\1\\inputs.json",
+          "sha256": "e75a9ea4adbef77d47159e7782226f95ea239b5e57cf5a1e5a0f1be5ae4d112e"
+        }
+      }
+    },
+    {
+      "run_id": "2894cd1ac880434acb439edd",
+      "revision": 1,
+      "issue_time": "2026-02-03T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-03T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-03T16:01:27+00:00",
+      "first_valid_time": "2026-02-03T19:00:00+00:00",
+      "last_valid_time": "2026-02-05T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "46169fc1d98af07e45c86465e8240803e45c4c38c47d0baced6002f1126e2582",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\2894cd1ac880434acb439edd\\revisions\\1\\weather.json",
+          "sha256": "1b7873c6b295c0fa305fd8131065de384ed7dd22b40ef1d3ef0412fa63a96d88"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\2894cd1ac880434acb439edd\\revisions\\1\\forecast.json",
+          "sha256": "16127e9088df33146280244af72bb021252f4bbcce137aa584494be733ef0446"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\2894cd1ac880434acb439edd\\revisions\\1\\inputs.json",
+          "sha256": "498647658dda578d187b834e10d93275364f12ec0bcba93acb1873d967484eb5"
+        }
+      }
+    },
+    {
+      "run_id": "ce2082f89b5e78df11593109",
+      "revision": 1,
+      "issue_time": "2026-02-04T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-04T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-04T16:00:58+00:00",
+      "first_valid_time": "2026-02-04T19:00:00+00:00",
+      "last_valid_time": "2026-02-06T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "acbf63c6ab4cd3a4c959feb26821f56739dfd9250448a4cecddc64136efd17c2",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\ce2082f89b5e78df11593109\\revisions\\1\\weather.json",
+          "sha256": "ca1d3aca1ad849c609b4dc1fb96375e986db58dde53dd203d0e8be01ab14ecba"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\ce2082f89b5e78df11593109\\revisions\\1\\forecast.json",
+          "sha256": "ce58eb06274a660242ef4e0df61f81fe5d75979a4ee8999ca55998dfa2b38e60"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\ce2082f89b5e78df11593109\\revisions\\1\\inputs.json",
+          "sha256": "8c3ddd47c45781c545aef9fcb637b81e715ab5730b9cb6f36b6a7afed1d9ea3e"
+        }
+      }
+    },
+    {
+      "run_id": "70d7a28a1c4cbc56e906574f",
+      "revision": 1,
+      "issue_time": "2026-02-05T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-05T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-05T16:00:53+00:00",
+      "first_valid_time": "2026-02-05T19:00:00+00:00",
+      "last_valid_time": "2026-02-07T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "a5f72c70842ada36d1549f50522dd478539a9d98b7dbcdb1dbab99b411db5bd0",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\70d7a28a1c4cbc56e906574f\\revisions\\1\\weather.json",
+          "sha256": "a34bdce682d1f362cf879be3142746a38787a63738109e62a5612f1adc60a2ca"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\70d7a28a1c4cbc56e906574f\\revisions\\1\\forecast.json",
+          "sha256": "533284b8d628d347f5d36de8893a5992e3f8dcfd09dbc97bafaffafd1dc0f8a5"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\70d7a28a1c4cbc56e906574f\\revisions\\1\\inputs.json",
+          "sha256": "0e27c6708438a8a27eba86bdf58d75a266952a34886f0636ac69f5cbd12c8e70"
+        }
+      }
+    },
+    {
+      "run_id": "5b8d69898b752025a614da78",
+      "revision": 1,
+      "issue_time": "2026-02-06T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-06T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-06T16:01:23+00:00",
+      "first_valid_time": "2026-02-06T19:00:00+00:00",
+      "last_valid_time": "2026-02-08T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "f73cfbec8992ce69da31206195aac05d78a9219123e478f58f206a8fcb047987",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\5b8d69898b752025a614da78\\revisions\\1\\weather.json",
+          "sha256": "775beb183d3bbe04ff0f69e0bad29053f596a08e59d1e196fec32c11fc020bc4"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\5b8d69898b752025a614da78\\revisions\\1\\forecast.json",
+          "sha256": "ecb76ffcc1ea6749140068728438ab5cea33b8d5cb990132885c3e583aee20b5"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\5b8d69898b752025a614da78\\revisions\\1\\inputs.json",
+          "sha256": "939b322499316e0b96c01be1f498f8ecad335123ae87f6a7b2b8678079852396"
+        }
+      }
+    },
+    {
+      "run_id": "1fdf817cc39a30d0bf61760b",
+      "revision": 1,
+      "issue_time": "2026-02-07T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-07T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-07T16:01:21+00:00",
+      "first_valid_time": "2026-02-07T19:00:00+00:00",
+      "last_valid_time": "2026-02-09T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "9cab98f33e7f89cad4576ec46b093c77027f87eadc35ec472d5275db2522e91a",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\1fdf817cc39a30d0bf61760b\\revisions\\1\\weather.json",
+          "sha256": "6bdbb28b7f9ab86632eb94bd22e1c0476ab9fac650f8723184ce2425899ea8b2"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\1fdf817cc39a30d0bf61760b\\revisions\\1\\forecast.json",
+          "sha256": "0abf8bc4d2b1c2844a46f438a473c8e1f8b19b8bf8706b20c32b6062275cfd49"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\1fdf817cc39a30d0bf61760b\\revisions\\1\\inputs.json",
+          "sha256": "a886d05fe214b82b7006e936d5a17e263597cf4660c7337501a21880f68a4ab0"
+        }
+      }
+    },
+    {
+      "run_id": "31e7606383b2889cba522258",
+      "revision": 1,
+      "issue_time": "2026-02-08T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-08T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-08T16:02:14+00:00",
+      "first_valid_time": "2026-02-08T19:00:00+00:00",
+      "last_valid_time": "2026-02-10T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "87e42325042e603bd8138206d5c0638710ea79c727c80b65ccd44e2d9fe65883",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\31e7606383b2889cba522258\\revisions\\1\\weather.json",
+          "sha256": "69a00e58e6ed658dbce167b0f5fa72db9ea6dc6bc580e08b2bbc58329dd4f8e4"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\31e7606383b2889cba522258\\revisions\\1\\forecast.json",
+          "sha256": "45707b3181661f8533e2d56ed832333182d742e52ee9a1f76e878f09d8a7f1e7"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\31e7606383b2889cba522258\\revisions\\1\\inputs.json",
+          "sha256": "23e6818e1038d4f3dd121d22faef4f5cf3b3b16be3d07467f6ca200f14cc585e"
+        }
+      }
+    },
+    {
+      "run_id": "6d92a72116ffc4f42e4a5399",
+      "revision": 1,
+      "issue_time": "2026-02-09T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-09T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-09T16:02:12+00:00",
+      "first_valid_time": "2026-02-09T19:00:00+00:00",
+      "last_valid_time": "2026-02-11T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "5988f78307ecaebe022e0211149bc1d81a520f89bf5d3e8f3563f713f2a13854",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6d92a72116ffc4f42e4a5399\\revisions\\1\\weather.json",
+          "sha256": "bb9a958326e4e70bd59f722d1db436dd26ae5dc9b3fbc7e43188429990632fc6"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6d92a72116ffc4f42e4a5399\\revisions\\1\\forecast.json",
+          "sha256": "a25e270aeb9645c28f0dd5e9faebf197bc07b5ee257d6da233a6fea1e632468e"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6d92a72116ffc4f42e4a5399\\revisions\\1\\inputs.json",
+          "sha256": "7e23634ba5326197829b777d64748e069a79c99d676c99824804a15d9488285a"
+        }
+      }
+    },
+    {
+      "run_id": "733ca91a78b5745eac6a15ab",
+      "revision": 1,
+      "issue_time": "2026-02-10T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-10T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-10T16:02:02+00:00",
+      "first_valid_time": "2026-02-10T19:00:00+00:00",
+      "last_valid_time": "2026-02-12T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "d4b0c03080a6f606626af40ec8328976c0d5b462c46d03db4c6e2cdf20d89b95",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\733ca91a78b5745eac6a15ab\\revisions\\1\\weather.json",
+          "sha256": "947ba3f408f1f1e4eeb95384c3f1a95df47f8e703f349f0c8d94f4f405e6ab43"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\733ca91a78b5745eac6a15ab\\revisions\\1\\forecast.json",
+          "sha256": "313a69ddf92d4dea90e397fd3965a73f3964466d47b16086cd44f0ffaebed0a3"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\733ca91a78b5745eac6a15ab\\revisions\\1\\inputs.json",
+          "sha256": "bbafb6b89eb894d13ed860b1c95187c6875a50b199a70bc46eaa19768be0ef7c"
+        }
+      }
+    },
+    {
+      "run_id": "1662d91fe9ee79a2bc2b40f4",
+      "revision": 1,
+      "issue_time": "2026-02-11T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-11T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-11T16:01:35+00:00",
+      "first_valid_time": "2026-02-11T19:00:00+00:00",
+      "last_valid_time": "2026-02-13T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "c68f9580b1cae5d5d4abe9cde95373558cbaa678f6cea263d64724be99365bd8",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\1662d91fe9ee79a2bc2b40f4\\revisions\\1\\weather.json",
+          "sha256": "82578c387f161e6051845ada0e099ee4bf773b67a8c797978e1eaff4d1605e10"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\1662d91fe9ee79a2bc2b40f4\\revisions\\1\\forecast.json",
+          "sha256": "08a892579b31335c9d6895a486395cfc45e2a4190cc490be3dc3c3b39d4e5a79"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\1662d91fe9ee79a2bc2b40f4\\revisions\\1\\inputs.json",
+          "sha256": "9787d5d0aab02090e20d80f792b1862c058f281032ea85d9ad154307626cc9e8"
+        }
+      }
+    },
+    {
+      "run_id": "ea3ff5a3a629997874be34a6",
+      "revision": 1,
+      "issue_time": "2026-02-12T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-12T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-12T16:02:08+00:00",
+      "first_valid_time": "2026-02-12T19:00:00+00:00",
+      "last_valid_time": "2026-02-14T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "947009d9d5dd7108cd3c961385a491a9bfc34e27b390449168a7bc65650d428d",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\ea3ff5a3a629997874be34a6\\revisions\\1\\weather.json",
+          "sha256": "eaa505421b52e4b19efeec084c4b920cf89c3acf0c80a77a64d681db32aff726"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\ea3ff5a3a629997874be34a6\\revisions\\1\\forecast.json",
+          "sha256": "38f89ee354150cebb0b67ecb44ca36687316f16e076115fb5ab7359d77d924e3"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\ea3ff5a3a629997874be34a6\\revisions\\1\\inputs.json",
+          "sha256": "4f75b974044df721ef2e063a797a0bd77df27abb4ad20bc76b5a167e1ca0529d"
+        }
+      }
+    },
+    {
+      "run_id": "3acb2551a9e52a1bbcacc92a",
+      "revision": 1,
+      "issue_time": "2026-02-13T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-13T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-13T16:00:11+00:00",
+      "first_valid_time": "2026-02-13T19:00:00+00:00",
+      "last_valid_time": "2026-02-15T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "202626e78be400e7337721a62b631e60e5d372d52beb3c2a06c9322c26f53694",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\3acb2551a9e52a1bbcacc92a\\revisions\\1\\weather.json",
+          "sha256": "ebc89bfd62482a6e1908587246ce82e9fc53f231c9b7f3f6edbb0e25df6fe88b"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\3acb2551a9e52a1bbcacc92a\\revisions\\1\\forecast.json",
+          "sha256": "84095510fe7142a5781b8cbc129d550fe56991969d590d55dc3aa209b448b3ef"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\3acb2551a9e52a1bbcacc92a\\revisions\\1\\inputs.json",
+          "sha256": "15daf9dbaec497d9945728871b39346ad903d5f223cdb3ee31e25cbaf07f6899"
+        }
+      }
+    },
+    {
+      "run_id": "4f7bd29573e75be78cbea8a8",
+      "revision": 1,
+      "issue_time": "2026-02-14T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-14T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-14T15:59:17+00:00",
+      "first_valid_time": "2026-02-14T19:00:00+00:00",
+      "last_valid_time": "2026-02-16T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "526ea9986faf69ab0e1875e322efeb2fae34c25870cd6be20b7ce1167f96ebdf",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\4f7bd29573e75be78cbea8a8\\revisions\\1\\weather.json",
+          "sha256": "de0d3b9d6b1af3224c8fdd94df21f71387c7fddf0eb3bd4f39652abcb320c465"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\4f7bd29573e75be78cbea8a8\\revisions\\1\\forecast.json",
+          "sha256": "0de3e6da4b92fe1fb686e00c50de3d64f2fb6dcc6c283b1c8f7e623c0255612e"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\4f7bd29573e75be78cbea8a8\\revisions\\1\\inputs.json",
+          "sha256": "277f546c26fd100e985fe69f605c8aef845e505fc40a16b257f49a302bd713d3"
+        }
+      }
+    },
+    {
+      "run_id": "6cb406839252099daf8bb1e5",
+      "revision": 1,
+      "issue_time": "2026-02-15T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-15T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-15T16:02:39+00:00",
+      "first_valid_time": "2026-02-15T19:00:00+00:00",
+      "last_valid_time": "2026-02-17T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "2c344376ca4c32ad477efb76efa571fde073d2954c7b19548346aa2e8005026f",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6cb406839252099daf8bb1e5\\revisions\\1\\weather.json",
+          "sha256": "17dd395c82d3d978579adb08077011e2b42106dff74d501ec4be3c19172af1db"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6cb406839252099daf8bb1e5\\revisions\\1\\forecast.json",
+          "sha256": "9f9c952f48c31f0c526fcb3672b38a65eb0997f76ab64aa2cc33c8ea08b392d4"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6cb406839252099daf8bb1e5\\revisions\\1\\inputs.json",
+          "sha256": "8c3e7dc53540d8870453f6bac187064fd52798dd14f561becdec68de0fb98d40"
+        }
+      }
+    },
+    {
+      "run_id": "dd9d74771d55e9dc07f7814e",
+      "revision": 1,
+      "issue_time": "2026-02-16T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-16T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-16T16:01:08+00:00",
+      "first_valid_time": "2026-02-16T19:00:00+00:00",
+      "last_valid_time": "2026-02-18T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "e1281fa561159dd1c5fce9f6327292f1b1b68d411f16dac0610d63155bc56e30",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\dd9d74771d55e9dc07f7814e\\revisions\\1\\weather.json",
+          "sha256": "d065106d13bc90d2e2608c2a3cfb38e914e2f7abd0d41bf07d7afcefd2d9acd8"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\dd9d74771d55e9dc07f7814e\\revisions\\1\\forecast.json",
+          "sha256": "da6d15ce73189a97de4d5b1eff81b680b1d1b812714487720d53f7916b7acdff"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\dd9d74771d55e9dc07f7814e\\revisions\\1\\inputs.json",
+          "sha256": "029d38aac98e6dd90611849f4665a73f1474162c95de451c50bf8dfcbffe1f42"
+        }
+      }
+    },
+    {
+      "run_id": "2f701c66bacd40e13ac03b76",
+      "revision": 1,
+      "issue_time": "2026-02-17T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-17T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-17T16:01:59+00:00",
+      "first_valid_time": "2026-02-17T19:00:00+00:00",
+      "last_valid_time": "2026-02-19T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "db38301d7a08bb2af6c5aafddda0f7949dfc8d0872c23c9a22983d77d79a0019",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\2f701c66bacd40e13ac03b76\\revisions\\1\\weather.json",
+          "sha256": "5983029cae75b5a79c0e7ebd2a61eca93d46aa8b2c3394ef6b178d7bc1e71b7d"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\2f701c66bacd40e13ac03b76\\revisions\\1\\forecast.json",
+          "sha256": "04a59ef9429dd8edf7ebcdcd271b1b166d9b0518abda9d5c05ce49a28592d436"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\2f701c66bacd40e13ac03b76\\revisions\\1\\inputs.json",
+          "sha256": "ac2996ed03ad3a3c781c39cfa9bf32cb3e7b4c99664062cb3ae3a1c6549dc752"
+        }
+      }
+    },
+    {
+      "run_id": "185b96cf51dccd818c0bbf77",
+      "revision": 1,
+      "issue_time": "2026-02-18T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-18T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-18T16:00:27+00:00",
+      "first_valid_time": "2026-02-18T19:00:00+00:00",
+      "last_valid_time": "2026-02-20T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "667956bc952d5f353a30c14ebfdc52247095d0ee8ea880a352c5357eb8117092",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\185b96cf51dccd818c0bbf77\\revisions\\1\\weather.json",
+          "sha256": "527118411fb56520b31413a9e64eb9e52780397077de02ff21b9e0498cd912c1"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\185b96cf51dccd818c0bbf77\\revisions\\1\\forecast.json",
+          "sha256": "e378225f44370d3be0ef61d4c9127a9f8477463f2aef6346b92bb9ef142c33ed"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\185b96cf51dccd818c0bbf77\\revisions\\1\\inputs.json",
+          "sha256": "90ef73f5d6ddd44a7c9f47ac2f5498ab780a51d54b0f91ccb5343a0b69f02a64"
+        }
+      }
+    },
+    {
+      "run_id": "92a0d250fde030eeb07e00ea",
+      "revision": 1,
+      "issue_time": "2026-02-19T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-19T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-19T16:00:17+00:00",
+      "first_valid_time": "2026-02-19T19:00:00+00:00",
+      "last_valid_time": "2026-02-21T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "1c9ea82327140c2e0639523fce170fb38d05c5f225c957389d9859db6f490689",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\92a0d250fde030eeb07e00ea\\revisions\\1\\weather.json",
+          "sha256": "095ee51087d6908e00f7e9d45dc60b2e3baa8184ae9476058546bd9ab4ed8115"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\92a0d250fde030eeb07e00ea\\revisions\\1\\forecast.json",
+          "sha256": "92100287f5a0b1ff12eb2fcb7983b7450465918c83a331f1e13d291fc610b904"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\92a0d250fde030eeb07e00ea\\revisions\\1\\inputs.json",
+          "sha256": "e5ce10f7676804e72d26fac8633e04c0b4bd858d9872bc31d85210468151daf7"
+        }
+      }
+    },
+    {
+      "run_id": "e52929907087cbd10f0065f0",
+      "revision": 1,
+      "issue_time": "2026-02-20T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-20T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-20T16:02:08+00:00",
+      "first_valid_time": "2026-02-20T19:00:00+00:00",
+      "last_valid_time": "2026-02-22T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "e30671eeb746f8f015fb4fcc63e0ee70dbdc527709e66b6f78ced64b24a7053e",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e52929907087cbd10f0065f0\\revisions\\1\\weather.json",
+          "sha256": "db8681548e7898a4a3301eae69b2d89abb32ff7116394d827e579995f8e8ba58"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e52929907087cbd10f0065f0\\revisions\\1\\forecast.json",
+          "sha256": "63751a1afa42fa0483b9f4e1e9ceaab86dd336b5da5bba97de04a45be9ffaea5"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e52929907087cbd10f0065f0\\revisions\\1\\inputs.json",
+          "sha256": "0e5235aa664f338ee835fae4f17a2e23982d0657e67edd4b49cc54505768906b"
+        }
+      }
+    },
+    {
+      "run_id": "0a766d20d82ccc39ab2c4a2f",
+      "revision": 1,
+      "issue_time": "2026-02-21T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-21T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-21T15:59:21+00:00",
+      "first_valid_time": "2026-02-21T19:00:00+00:00",
+      "last_valid_time": "2026-02-23T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "3c84be875664b8478d05f199d4443321809615eea6b159afef12be8373742ee5",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\0a766d20d82ccc39ab2c4a2f\\revisions\\1\\weather.json",
+          "sha256": "d0ee2214d532fea815885ba22bcc9656d2ab8493dbfd185320f3233ae0979857"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\0a766d20d82ccc39ab2c4a2f\\revisions\\1\\forecast.json",
+          "sha256": "b1c2c8cedd5dbd16dc449602dad3f7abf95912fb8d54341c12bd564bb5892fff"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\0a766d20d82ccc39ab2c4a2f\\revisions\\1\\inputs.json",
+          "sha256": "d8b851f4ae38fdf2e242a1971283660e9d358d1ccb339027f30eed133f842f03"
+        }
+      }
+    },
+    {
+      "run_id": "6b9d0672915fd0b6d0e6b4e9",
+      "revision": 1,
+      "issue_time": "2026-02-22T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-22T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-22T16:01:10+00:00",
+      "first_valid_time": "2026-02-22T19:00:00+00:00",
+      "last_valid_time": "2026-02-24T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "0c41279e36dbc6044803488004578d4778ae3889526980986a47ecae2446edb8",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6b9d0672915fd0b6d0e6b4e9\\revisions\\1\\weather.json",
+          "sha256": "aeb64068e450be56815b42e9fb598af5051d7fedb7f57f31ae09fff5c01fcbfa"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6b9d0672915fd0b6d0e6b4e9\\revisions\\1\\forecast.json",
+          "sha256": "b67d85e16de0c412bae3d3f596fd1ca5131e7b7523039f7d21c622ad7fa78310"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\6b9d0672915fd0b6d0e6b4e9\\revisions\\1\\inputs.json",
+          "sha256": "ff198469f559a81764187ef08e2aafbbfd61ff285896e61b9187b4f899dc9d92"
+        }
+      }
+    },
+    {
+      "run_id": "90279dcba785e533f588dc99",
+      "revision": 1,
+      "issue_time": "2026-02-23T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-23T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-23T16:02:58+00:00",
+      "first_valid_time": "2026-02-23T19:00:00+00:00",
+      "last_valid_time": "2026-02-25T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "135e1f4ea81c63c81b4e447a70e006568165e919f30cfc533641a6a18e4e3a9e",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\90279dcba785e533f588dc99\\revisions\\1\\weather.json",
+          "sha256": "bcdbf05acc0c5dbc17f56f82e7adf7f0dcbe7f9efa6a4b96224ca20fc0069ab2"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\90279dcba785e533f588dc99\\revisions\\1\\forecast.json",
+          "sha256": "d2e8aa84e9b89012736524406111a30eb6502cdbe1091771b6ea43169f6444ab"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\90279dcba785e533f588dc99\\revisions\\1\\inputs.json",
+          "sha256": "9a923fc0121bc4b398c506d57f4a637dee8fd429a2a97a0c7da0b23249dc1214"
+        }
+      }
+    },
+    {
+      "run_id": "d25c6532b8f3420aa234bd80",
+      "revision": 1,
+      "issue_time": "2026-02-24T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-24T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-24T15:52:34+00:00",
+      "first_valid_time": "2026-02-24T19:00:00+00:00",
+      "last_valid_time": "2026-02-26T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "4bddbe31d544a808be3f5bebe78cdf823dfc754aabe3e3f818ff2871e1049bdd",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\d25c6532b8f3420aa234bd80\\revisions\\1\\weather.json",
+          "sha256": "4ca7f583856d87399af0f0bf1d9326c0e02bbde596193d55925ebe6a3fc79681"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\d25c6532b8f3420aa234bd80\\revisions\\1\\forecast.json",
+          "sha256": "1d45c8aa04f3228880ab19ab53f07dcf5d5f95ff994a39b8105ff542a1bbab08"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\d25c6532b8f3420aa234bd80\\revisions\\1\\inputs.json",
+          "sha256": "f62fe837756959c22052b5b60672408a7bc1e38c3b2ac6f6ae9b6847a9a17868"
+        }
+      }
+    },
+    {
+      "run_id": "e00065e446754271332fbeb8",
+      "revision": 1,
+      "issue_time": "2026-02-25T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-25T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-25T16:01:51+00:00",
+      "first_valid_time": "2026-02-25T19:00:00+00:00",
+      "last_valid_time": "2026-02-27T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "f1998ff554d7dcb0668d7452a0b27d908038d901e8d79705c41eb57c5236dc9f",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e00065e446754271332fbeb8\\revisions\\1\\weather.json",
+          "sha256": "35209a4dfad52d5385f4062f16c547ca8e171f24fa0d1675780148c78ec0d3c6"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e00065e446754271332fbeb8\\revisions\\1\\forecast.json",
+          "sha256": "e61f30a69a785cba30ee969fdc32c83a8ea8160854f655a28bb05123461360be"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e00065e446754271332fbeb8\\revisions\\1\\inputs.json",
+          "sha256": "58dbf121ba431a0912b84e7984495f6be14b1fb52eb3b7d1145754cc74562a65"
+        }
+      }
+    },
+    {
+      "run_id": "e13728d3538b82a523989f63",
+      "revision": 1,
+      "issue_time": "2026-02-26T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-26T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-26T15:59:55+00:00",
+      "first_valid_time": "2026-02-26T19:00:00+00:00",
+      "last_valid_time": "2026-02-28T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "14819b46deac69be567ffb302d6c8cf317262cb0fd8029ccbcf52991bb6332d2",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e13728d3538b82a523989f63\\revisions\\1\\weather.json",
+          "sha256": "97d05f08bd8b1bd65846d0290b929278f90336f99fce81d3e39dc2dbb89443ca"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e13728d3538b82a523989f63\\revisions\\1\\forecast.json",
+          "sha256": "fd158761d4f8f5405b0728468fbe0b335b3fa3d5b5f793b15cc29cdf77ecd893"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e13728d3538b82a523989f63\\revisions\\1\\inputs.json",
+          "sha256": "06db7aab631c67b50061acd94ee90e92b9ec506c4119d5c0df7cc1dd904f352f"
+        }
+      }
+    },
+    {
+      "run_id": "e5217a5508f5b81c1d54f970",
+      "revision": 1,
+      "issue_time": "2026-02-27T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-27T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-27T16:02:22+00:00",
+      "first_valid_time": "2026-02-27T19:00:00+00:00",
+      "last_valid_time": "2026-03-01T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "cabcde171737fe5bd6dd3bfca9dcec855dae38082616afaa9256f7322a9e1c40",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e5217a5508f5b81c1d54f970\\revisions\\1\\weather.json",
+          "sha256": "464184405c2e0accd3fc214b06bb7faf7cc6c98119f775fc8f4c2ee195266762"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e5217a5508f5b81c1d54f970\\revisions\\1\\forecast.json",
+          "sha256": "455fbfc3f6e6ca44d7fd6aba5ac3dd6bf8b4ca4976b6965cc969dcd0cbcb2f92"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\e5217a5508f5b81c1d54f970\\revisions\\1\\inputs.json",
+          "sha256": "dab7c9fb7129e1e0b7f8529f4bfecc5ec0c171a687b8f4818a04d49c1d043339"
+        }
+      }
+    },
+    {
+      "run_id": "b75b00eb815ceb8886dbb2af",
+      "revision": 1,
+      "issue_time": "2026-02-28T18:00:00+00:00",
+      "status": "completed",
+      "weather_rows": 96,
+      "forecast_rows": 96,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "information_cutoffs": {
+        "selection_cutoff": "2026-01-14T19:00:00+00:00",
+        "calibration_cutoff": "2026-01-14T19:00:00+00:00"
+      },
+      "weather_run_time": "2026-02-28T12:00:00+00:00",
+      "max_forecast_available_at": "2026-02-28T16:01:38+00:00",
+      "first_valid_time": "2026-02-28T19:00:00+00:00",
+      "last_valid_time": "2026-03-02T18:00:00+00:00",
+      "grid_points": [
+        [
+          43.75,
+          78.5
+        ]
+      ],
+      "input_fingerprint": "b12c869cf5bce6be10a7f260f250114d1d8d1286c3cbbbd067a83d61526cf5e8",
+      "unchanged_inputs_event_present": false,
+      "files": {
+        "weather.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\b75b00eb815ceb8886dbb2af\\revisions\\1\\weather.json",
+          "sha256": "77c1f19cf582d745efe78280d9998b3fe94eff67a874f13ee6f12c4728981158"
+        },
+        "forecast.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\b75b00eb815ceb8886dbb2af\\revisions\\1\\forecast.json",
+          "sha256": "5b1acdf515eec30c8565c63a21bdc83d6adb5ba41ca9b84bf78f0f1971be050f"
+        },
+        "inputs.json": {
+          "path": "artifacts\\february-integration\\archive\\runs\\b75b00eb815ceb8886dbb2af\\revisions\\1\\inputs.json",
+          "sha256": "5ef44669145b89c76d68510682d107416df3792dd9d3667702db66508421bf1e"
+        }
+      }
+    }
+  ]
+}

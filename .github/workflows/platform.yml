@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
-      - run: python -m pip install -e '.[dev,model]' -r ui/requirements.txt
+      - run: python -m pip install -e '.[dev,weather,model]' -r ui/requirements.txt
       - run: python -m pytest -q
-      - run: python -m ruff check src/wind_agent tests/model tests/weather scripts/validate_model_package.py
+      - run: python -m ruff check src/wind_agent tests/model tests/weather tests/agent scripts/validate_model_package.py scripts/run_app.py scripts/verify_app_integration.py scripts/verify_february_replay.py
       - run: python -m wind_agent --config config/demo.json replay --horizon-hours 48
