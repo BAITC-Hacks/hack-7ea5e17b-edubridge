@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checked_at_utc": "2026-09-23T11:06:20.389781+00:00",
+  "base_commit": "8390daba547d10908245111bc957ed17865d64e3",
+  "snapshot": {
+    "method": "Separate local Git clone plus explicit integration-file overlay before tests",
+    "integration_overlay_files": [
+      ".github/workflows/platform.yml",
+      "config/archive-model.json",
+      "src/wind_agent/agent/service.py",
+      "tests/model/test_data_cli.py",
+      "config/replay-february.json",
+      "docs/evaluation-api.md",
+      "docs/replay-validation.md",
+      "scripts/run_app.py",
+      "scripts/verify_app_integration.py",
+      "scripts/verify_february_replay.py",
+      "src/wind_agent/agent/evaluation_report.py",
+      "tests/agent/test_evaluation_report.py"
+    ],
+    "artifacts_or_weather_cache_copied": false,
+    "virtual_environment_copied": false,
+    "private_files_copied": false,
+    "overlay_and_identity_sha256": {
+      ".github/workflows/platform.yml": "ed0b67e785119b2420a3abcbb31376cc4fb584abc8f4c349a232f51f84819a59",
+      "config/archive-model.json": "0db45de5283c4d133d48cbc5e1f0b703ea10301b99af1b8d8d8a392f4f6ed8cf",
+      "src/wind_agent/agent/service.py": "b740c42fd3b70b5350bb35048bde62dbccc727eeeced1b2019fbc9757f9368da",
+      "tests/model/test_data_cli.py": "736c8ef594f107124a55ae108cdf3dd7e37c1c1fe7f4372f40395e2c39ab8b23",
+      "config/replay-february.json": "0d440508a47fff6294dcbee2e9732b4ac980d950012aaad1f9c38334755c620e",
+      "docs/evaluation-api.md": "d923c98a7b498a3aca848d549b594b367ef80fcb9e3e13c4c48ddf844fe469dd",
+      "docs/replay-validation.md": "2ea823e20622db44d919760a2c71c7ce16d724665382e4b866a3ec44ece098b6",
+      "scripts/run_app.py": "b65d7c84b519462b6e027f43cf9e51948c41da89542334bc95a5517e176dd494",
+      "scripts/verify_app_integration.py": "6d210980e49067e30d36ed60a44b3b0530c7639d0868f836661180c291ff14bd",
+      "scripts/verify_february_replay.py": "29c334b96b8f501d3b991c8a6932ab6c4f1e5f63a1fcdffa516ac9e68950ffb7",
+      "src/wind_agent/agent/evaluation_report.py": "0faf9bd50fa1ff46c4e89f0e3944596bbd1529a84a5c35b0bca23c4d60facb81",
+      "tests/agent/test_evaluation_report.py": "79b696bab452a785c674bd207051927842e3e2609b1fd149fc54004a7c13f978",
+      "pyproject.toml": "858532ed7190510a0e4d64606c6c013e24b41bd46063b48474adcc1ea393929f",
+      "ui/requirements.txt": "5c8d3552ed59120871a022da53899470c89aa6d5c169ba3dcc62f50cbfc4c628",
+      "ui/app.py": "75da502aa8cd0a257b07169dd4ce5541f36408da64e34dac33d499893ef81149",
+      "ui/client.py": "a817698dabd30002e2e37cd39d8477aab53c67eaeb8482cad94ee189a2ab9a7f",
+      "ui/presentation.py": "bdda11289624769389acf6e675d36692d7f3395c8044fd8a8fff346b42e89989",
+      "models/wind-power-v1/model.joblib": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4",
+      "models/wind-power-v1/metadata.json": "ba2f0a63f697d8b28d73f5bafea76885c156e73d9c4140a32953ce1eaded80fb",
+      "models/wind-power-v1/validation.json": "cf8864a33a2e2ced4a9e3ec7a5df20250406c47b06d159e7af29a857a54cb56b"
+    }
+  },
+  "environment": {
+    "platform": "Windows x64",
+    "python_version": "3.11.9",
+    "created_with": "python -m venv .venv",
+    "include_system_site_packages": false,
+    "wind_agent_import_path_relative": "src/wind_agent/__init__.py",
+    "import_resolved_inside_verification_clone": true,
+    "packages": {
+      "wind-agent": "0.1.0",
+      "fastapi": "0.115.12",
+      "pydantic": "2.11.4",
+      "httpx": "0.28.1",
+      "pandas": "2.2.3",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.7.2",
+      "joblib": "1.5.2",
+      "uvicorn": "0.34.2",
+      "eccodes": "2.44.0",
+      "pytest": "8.3.5",
+      "ruff": "0.11.9",
+      "tzdata": "2025.2",
+      "streamlit": "1.64.0",
+      "plotly": "6.9.0",
+      "starlette": "0.46.2",
+      "anyio": "4.15.1"
+    },
+    "eccodes_api_version": "2.44.0"
+  },
+  "checks": {
+    "install": {
+      "command": "python -m pip install -e \".[dev,weather,model]\" -r ui/requirements.txt",
+      "exit_code": 0
+    },
+    "pip_check": {
+      "command": "python -m pip check",
+      "exit_code": 0,
+      "result": "No broken requirements found."
+    },
+    "targeted_tests": {
+      "command": "python -m pytest tests/api tests/agent/test_evaluation_report.py tests/ui -q",
+      "exit_code": 0,
+      "passed": 85,
+      "warnings": 1,
+      "duration_seconds": 27.65,
+      "warning": "Starlette anyio.abc.BlockingPortal alias deprecation"
+    },
+    "bundled_model_inference": {
+      "status": "passed",
+      "weather_source": "docs/evidence/weather-input-sample.json",
+      "weather_sample_sha256": "f287e70a1d332f70d2874ac711cd913c45f71e46b16598e2c10cf54e561d0261",
+      "forecast_rows": 48,
+      "target_unit": "normalized_power",
+      "data_quality": "warning",
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "prediction_min": 0.048110386791498747,
+      "prediction_max": 0.6224297549899858,
+      "weather_network_requests": 0
+    },
+    "combined_launcher": {
+      "status": "passed",
+      "api_health_http": 200,
+      "ui_health_http": 200,
+      "ui_html_http": 200,
+      "mode": "archive",
+      "model_ready": true,
+      "evaluation_status": "ready",
+      "test_truth_available": false,
+      "baseline_comparison": {
+        "metric": "equal_turbine_mean_mae",
+        "selected_mae": 0.2269187054537401,
+        "wind_curve_mae": 0.2094604765208696,
+        "wind_curve_better": true
+      },
+      "launcher_sha256": "b65d7c84b519462b6e027f43cf9e51948c41da89542334bc95a5517e176dd494",
+      "owned_process_tree_stopped": true
+    }
+  },
+  "scope": [
+    "Fresh dependency installation with no system-site-packages and no copied weather cache.",
+    "Actual bundled model produced 48 predictions from the committed real weather sample without downloading weather.",
+    "The combined launcher exposed API health, ready validation metrics, Streamlit health and HTML on separate unused localhost ports.",
+    "The earlier six-case HTTP plus real-API AppTest evidence is in app-integration.json.",
+    "This targeted clean-install verification does not rerun the full February replay or measure February accuracy.",
+    "Verification forcibly stopped only its own launcher process tree after checks; this is not evidence of a browser Ctrl+C action."
+  ]
+}
