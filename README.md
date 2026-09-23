@@ -1,20 +1,12 @@
 # Agentic AI для прогнозирования выработки ВЭС
 
-HackAlem AI, трек «Энергетика», задача Самрук-Казына. Платформа участника №1: почасовые прогнозы двух турбин на 24/48 часов и ежедневный исторический replay февраля 2026.
+HackAlem AI, трек «Энергетика», задача Самрук-Казына. Почасовые прогнозы двух турбин на 24/48 часов: архивная погода NOAA GFS → проверка доступности → обученная модель → анализ и ревизии → API и интерфейс.
 
 **Реализовано:** строгие контракты; загрузка оперативных архивных GFS; raw cache и provenance; агент загрузка → проверка → модель → анализ → ревизия; FastAPI; CLI; календарь replay и контроль покрытия; тесты и CI.
 
-**Модель участника №2 готова:** пакет `models/wind-power-v1`, 60 выпусков реальной архивной погоды, временное сравнение пяти кандидатов и проверка реального агента на 24/48 часов. UI участника №3 также есть в репозитории. Остаются полный февральский replay, подключение метрик к API/UI и командная сдача; `/evaluation` пока возвращает `unavailable`. Исходные временные условия SCADA остаются явными предположениями.
+**Интеграция:** пакет участника №2 `models/wind-power-v1` подключён к агенту и интерфейсу участника №3. `/evaluation` читает валидацию этого пакета с проверкой SHA256 весов и связи отчёта с metadata. Реальные HTTP-запросы проверены для всех шести сочетаний турбин и горизонтов, включая график и CSV. Исходные временные условия SCADA остаются явными предположениями.
 
 Выбранная по tuning модель HGB имеет holdout MAE **0.226919**, простая wind-curve baseline — **0.209460**: на независимом периоде простая модель лучше. Выбор не менялся после просмотра holdout. Это ошибки нормализованной мощности, не проценты точности и не оценка февраля. [Model card](docs/model-card.md), [запуск и воспроизведение](docs/MODEL_REPRODUCIBILITY.md), [передача №1/№3 на казахском](docs/MODEL_HANDOFF_KK.md).
-
-Быстрый запуск готовой модели после установки `.[dev,weather,model]`:
-
-```sh
-.venv/bin/python -m wind_agent --config config/archive-model.json run --issue-time 2026-01-31T18:00:00Z --horizon-hours 48
-```
-
-Синтетический режим отдельно проверяет платформу; его значения не являются прогнозом ВЭС или доказательством точности.
 
 ## Воспроизводимый запуск
 
@@ -23,23 +15,32 @@ Python **3.11**, Git, интернет для установки. Команды
 ```sh
 git clone https://github.com/BAITC-Hacks/hack-7ea5e17b-edubridge.git
 cd hack-7ea5e17b-edubridge
-git switch feat/forecast-model
 python -m venv .venv
 ```
 
 Windows PowerShell без изменения execution policy:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -e ".[dev,weather,model]"
-.\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m wind_agent --config config/demo.json run --issue-time 2026-01-31T18:00:00Z --horizon-hours 24
-.\.venv\Scripts\python.exe -m wind_agent --config config/demo.json replay --horizon-hours 48
-.\.venv\Scripts\python.exe -m wind_agent --config config/demo.json serve
+.\.venv\Scripts\python.exe -m pip install -e ".[dev,weather,model]" -r ui/requirements.txt
+.\.venv\Scripts\python.exe scripts/run_app.py
 ```
 
-Linux/macOS: вместо `.\.venv\Scripts\python.exe` используйте `.venv/bin/python`. Для платформы без GRIB достаточно `pip install -e ".[dev,model]"`; extra `weather` устанавливает ecCodes. Прямые зависимости зафиксированы в `pyproject.toml`.
+Linux/macOS: вместо `.\.venv\Scripts\python.exe` используйте `.venv/bin/python`. Extra `weather` устанавливает ecCodes, `model` — зависимости обученной модели. Прямые зависимости зафиксированы в `pyproject.toml` и `ui/requirements.txt`.
 
-API: <http://127.0.0.1:8000/docs>, режим и готовность: <http://127.0.0.1:8000/health>. Остановка — Ctrl+C. **Один процесс/worker на каталог артефактов**; для CLI replay одновременно с API задайте другой `artifact_dir`. При перезапуске незавершённые задания помечаются `failed`, их можно отправить снова.
+Откройте интерфейс <http://127.0.0.1:8501>, выберите **API**, нажмите «Проверить подключение». Для первого реального примера задайте **31.01.2026, 18:00 UTC**, обе турбины, **48 ч**, затем «Рассчитать прогноз». Дождитесь завершения; доступны график, источник и качество, оценка модели и «Скачать CSV». Интерфейс по умолчанию открывается в отдельном режиме «Демо»: для реального расчёта нужен переключатель **API**.
+
+Swagger: <http://127.0.0.1:8000/docs>, состояние: <http://127.0.0.1:8000/health>. Запускатель использует `config/archive-model.json`, запускает оба сервиса на localhost и останавливает их по Ctrl+C. Другие порты: `python scripts/run_app.py --api-port 8010 --ui-port 8510`. Первый реальный расчёт скачивает архивные погодные данные и может занять несколько минут; ключи и исходная SCADA для применения сохранённой модели не нужны.
+
+**Один процесс/worker на каталог артефактов.** API пишет в `artifacts/live`. Для параллельного replay используйте готовый `config/replay-february.json` с отдельным каталогом. Обычный CLI `run` с `config/archive-model.json` запускайте при остановленном API. При перезапуске незавершённые задания помечаются `failed`, их можно отправить снова.
+
+Расчёт и полный replay без интерфейса:
+
+```powershell
+.\.venv\Scripts\python.exe -m wind_agent --config config/archive-model.json run --issue-time 2026-01-31T18:00:00Z --horizon-hours 48
+.\.venv\Scripts\python.exe -m wind_agent --config config/replay-february.json replay --horizon-hours 48
+```
+
+Синтетическая проверка без погодной сети: `python scripts/run_app.py --config config/demo.json` или `python -m wind_agent --config config/demo.json replay --horizon-hours 48`. Это проверка платформы, а не прогноз ВЭС или доказательство точности.
 
 Demo возвращает постоянный тестовый результат `0.5`, единицу `fixture_dimensionless`, `data_quality=fixture` и предупреждение `SYNTHETIC FIXTURE`. Обучения и метрик качества здесь нет. Повтор с теми же входами сохраняет ID и ревизию.
 
@@ -70,7 +71,7 @@ Demo возвращает постоянный тестовый результа
 .\.venv\Scripts\python.exe -m wind_agent --config config/archive.json replay --horizon-hours 48
 ```
 
-С исходным `config/archive.json` команды мощности **завершаются ошибкой** о cutoff/отсутствующей модели. Это ожидаемый статус интеграции. Платформа не подставляет fixture/нули вместо отсутствующей модели или погоды. `target_unit` берётся из модели; нормализованную мощность нельзя подписывать MW/MWh и суммировать без известного масштаба. [Точный интерфейс модели](docs/model-integration.md).
+С незаполненным шаблоном `config/archive.json` команды мощности **завершаются ошибкой** о cutoff/отсутствующей модели. Готовый пакет запускается через `config/archive-model.json`. Платформа не подставляет fixture/нули вместо отсутствующей модели или погоды. `target_unit` берётся из модели; нормализованную мощность нельзя подписывать MW/MWh и суммировать без известного масштаба. [Точный интерфейс модели](docs/model-integration.md).
 
 ## Replay и ревизии
 
@@ -98,15 +99,19 @@ Demo возвращает постоянный тестовый результа
 
 [Контракт API](docs/api-contract.md): `GET /health`, `POST /runs` (202), `GET /runs/{id}`, `/forecast`, `/forecast.csv`, `GET /evaluation`. UI получает ID и опрашивает состояние. CSV содержит те же записи, что JSON. Калиброванные интервалы неопределённости отсутствуют и не имитируются.
 
+`/evaluation` отдельно показывает tuning, независимый holdout и окончательный production refit. Holdout относится к замороженной модели до финального дообучения; независимых метрик финального пакета и факта февраля нет. Порог готовности отчёта и поля описаны в [evaluation-api.md](docs/evaluation-api.md). На holdout wind-curve baseline лучше выбранного HGB; API сохраняет это предупреждение.
+
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m ruff check src/wind_agent/agent src/wind_agent/weather src/wind_agent/api src/wind_agent/contracts.py src/wind_agent/config.py src/wind_agent/cli.py
+.\.venv\Scripts\python.exe -m ruff check src/wind_agent tests/model tests/weather tests/agent scripts/run_app.py scripts/verify_app_integration.py scripts/verify_february_replay.py
 .\.venv\Scripts\python.exe -m pip check
 ```
 
 Тесты без сети: поздняя публикация, координаты, cutoff, полнота часов, retry/cache, multipart, ошибки провайдера/модели, идемпотентность, ревизии, границы февраля/марта, API/CLI. Реальные запросы отделены в probe.
 
-**Проверено 23 сентября:** отдельный чистый клон, Python 3.11.9/Windows, новая изолированная venv, установка `.[dev,weather]`, **79 прошедших тестов**, `pip check`, импорт ecCodes, demo24 и replay48 (29 выдач, 1344 строки без пропусков). [Машиночитаемый отчёт](docs/evidence/platform-validation.json). Ruff также прошёл в рабочем checkout. Workflow настроен на тесты, lint и синтетический replay, однако GitHub Actions **не смог запустить ни одного шага из-за billing-блокировки аккаунта**; успешный CI или Linux-проверку не заявляем.
+**Проверено 23 сентября на Windows/Python 3.11.9:** **340 тестов проходят**. Реальная интеграционная проверка `python scripts/verify_app_integration.py --app-test` запускает отдельный HTTP API, проверяет шесть вариантов запроса, повторяемость ревизий, полное совпадение JSON/CSV, источник погоды и Streamlit с настоящим API. [Отчёт интеграции](docs/evidence/app-integration.json). Полный месячный расчёт и аудит доступны через `python scripts/verify_february_replay.py --horizon 48`; требования и границы проверки — в [replay-validation.md](docs/replay-validation.md).
+
+Ранее отдельно проверялась чистая установка платформы: [исторический отчёт](docs/evidence/platform-validation.json). Workflow настроен на тесты, lint и синтетический replay, однако GitHub Actions **не смог запустить ни одного шага из-за billing-блокировки аккаунта**; успешный CI или Linux-проверку не заявляем.
 
 ## Команда и происхождение
 

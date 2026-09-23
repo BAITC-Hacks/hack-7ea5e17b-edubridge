@@ -304,9 +304,8 @@ class AgentService:
                 "turbine_ids": [t.turbine_id for t in self.settings.turbines]}
 
     def evaluation(self):
-        return {"status": "unavailable", "metrics": None, "baseline": None,
-                "test_truth_available": False, "is_demo": self.settings.mode == "demo",
-                "reason": "Validation metrics and test-truth availability must be supplied by participant #2"}
+        from .evaluation_report import evaluation_report
+        return evaluation_report(self.settings)
 
     def replay(self, horizon_hours=None):
         horizon = horizon_hours or self.settings.default_horizon_hours

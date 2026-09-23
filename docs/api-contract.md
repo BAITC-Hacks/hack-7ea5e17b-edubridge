@@ -6,14 +6,21 @@ API запускается из корня репозитория после у�
 python -m wind_agent --config config/demo.json serve
 ```
 
-Это **синтетический demo**, не реальный прогноз выработки. Для архивного режима
-использовать `--config config/archive.json`; готовность проверять через `/health`.
+Это **синтетический demo**, не реальный прогноз выработки. Для готовой модели
+использовать `--config config/archive-model.json`; готовность проверять через `/health`.
+Общий запуск API и UI: `python scripts/run_app.py`. Шаблон `config/archive.json`
+предназначен для отдельного погодного fetch или подключения другого пакета модели.
 Без конфигурации включается архивный режим. `WIND_AGENT_CONFIG` задаёт путь по
 умолчанию; явный `--config` имеет приоритет. Один процесс / worker: очередь MVP
 выполняется внутри процесса. Перезапуск процесса прерывает незавершённую задачу.
 
 OpenAPI: `http://127.0.0.1:8000/docs`. Фабрика для ASGI:
 `uvicorn wind_agent.api.app:default_app --factory --workers 1`.
+
+`/evaluation` в архивном режиме читает `validation.json` настроенного пакета и
+проверяет его связь с metadata и SHA256 весов. Статусы: `ready`, `unavailable`,
+`invalid`. Tuning, holdout и production refit разделены; февральский факт отсутствует.
+Формат и ограничения: [evaluation-api.md](evaluation-api.md).
 
 | Метод | Путь | Успешный ответ |
 | --- | --- | --- |

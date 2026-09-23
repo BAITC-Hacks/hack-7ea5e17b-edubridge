@@ -1,0 +1,343 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checked_at_utc": "2026-09-23T10:58:31.082325+00:00",
+  "command": "python scripts/verify_app_integration.py --app-test",
+  "base_commit": "8390daba547d10908245111bc957ed17865d64e3",
+  "uncommitted_integration_snapshot": true,
+  "source_sha256": {
+    "scripts/verify_app_integration.py": "6d210980e49067e30d36ed60a44b3b0530c7639d0868f836661180c291ff14bd",
+    "src/wind_agent/agent/service.py": "b740c42fd3b70b5350bb35048bde62dbccc727eeeced1b2019fbc9757f9368da",
+    "src/wind_agent/agent/evaluation_report.py": "0faf9bd50fa1ff46c4e89f0e3944596bbd1529a84a5c35b0bca23c4d60facb81",
+    "src/wind_agent/api/app.py": "3047c78297f3d974db22e61f63eb42dcb9d85b3b073a3196968302b1cf08d0ca",
+    "ui/app.py": "75da502aa8cd0a257b07169dd4ce5541f36408da64e34dac33d499893ef81149",
+    "ui/client.py": "a817698dabd30002e2e37cd39d8477aab53c67eaeb8482cad94ee189a2ab9a7f",
+    "ui/presentation.py": "bdda11289624769389acf6e675d36692d7f3395c8044fd8a8fff346b42e89989",
+    "models/wind-power-v1/metadata.json": "ba2f0a63f697d8b28d73f5bafea76885c156e73d9c4140a32953ce1eaded80fb",
+    "models/wind-power-v1/model.joblib": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4",
+    "models/wind-power-v1/validation.json": "cf8864a33a2e2ced4a9e3ec7a5df20250406c47b06d159e7af29a857a54cb56b"
+  },
+  "packages": {
+    "fastapi": "0.115.12",
+    "pydantic": "2.11.4",
+    "streamlit": "1.64.0",
+    "plotly": "6.9.0",
+    "scikit-learn": "1.7.2",
+    "numpy": "2.4.6",
+    "eccodes": "2.44.0"
+  },
+  "health": {
+    "status": "ok",
+    "mode": "archive",
+    "is_demo": false,
+    "weather_ready": true,
+    "model_ready": true,
+    "training_boundary_configured": true,
+    "timestamp_convention": "hour_end",
+    "turbine_ids": [
+      "turbine_1",
+      "turbine_2"
+    ]
+  },
+  "runs": [
+    {
+      "request": {
+        "issue_time": "2026-01-31T18:00:00Z",
+        "horizon_hours": 24,
+        "turbine_ids": [
+          "turbine_1"
+        ]
+      },
+      "run_id": "ac61cf8801ea066d8d341cdb",
+      "revision": 1,
+      "rows": 24,
+      "status": "completed",
+      "json_csv_all_fields_equal": true,
+      "repeat_idempotent": true,
+      "warnings": [
+        "Uncertainty intervals are not calibrated",
+        "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+        "Source-clock and target normalization semantics remain unconfirmed.",
+        "Weather availability uses archive-object metadata, not original NOAA publication proof.",
+        "Forecast target is normalized power; no conversion to MW/MWh is justified."
+      ],
+      "provenance": [
+        {
+          "turbine_id": "turbine_1",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:53:02+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "927ac71f11d59f6e6a8347087afa30ce41d0bfeebaaeb385a7c0a083dcbc624d",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        }
+      ],
+      "csv_sha256": "6fd490f57c1e3a056f04e977b43c0a2e7ce573e05ca528b971d8e3a4962599a5",
+      "first_valid_time": "2026-01-31T19:00:00Z",
+      "last_valid_time": "2026-02-01T18:00:00Z"
+    },
+    {
+      "request": {
+        "issue_time": "2026-01-31T18:00:00Z",
+        "horizon_hours": 24,
+        "turbine_ids": [
+          "turbine_2"
+        ]
+      },
+      "run_id": "12115c5a48c8bd97baec403c",
+      "revision": 1,
+      "rows": 24,
+      "status": "completed",
+      "json_csv_all_fields_equal": true,
+      "repeat_idempotent": true,
+      "warnings": [
+        "Uncertainty intervals are not calibrated",
+        "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+        "Source-clock and target normalization semantics remain unconfirmed.",
+        "Weather availability uses archive-object metadata, not original NOAA publication proof.",
+        "Forecast target is normalized power; no conversion to MW/MWh is justified."
+      ],
+      "provenance": [
+        {
+          "turbine_id": "turbine_2",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:53:02+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "927ac71f11d59f6e6a8347087afa30ce41d0bfeebaaeb385a7c0a083dcbc624d",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        }
+      ],
+      "csv_sha256": "2725a18530b6ddb1e519a0f0f4671b3a9b523c5e20896de6d0111ea0288fd5a5",
+      "first_valid_time": "2026-01-31T19:00:00Z",
+      "last_valid_time": "2026-02-01T18:00:00Z"
+    },
+    {
+      "request": {
+        "issue_time": "2026-01-31T18:00:00Z",
+        "horizon_hours": 24,
+        "turbine_ids": [
+          "turbine_1",
+          "turbine_2"
+        ]
+      },
+      "run_id": "efae5e9e4103cada78eaba01",
+      "revision": 1,
+      "rows": 48,
+      "status": "completed",
+      "json_csv_all_fields_equal": true,
+      "repeat_idempotent": true,
+      "warnings": [
+        "Uncertainty intervals are not calibrated",
+        "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+        "Source-clock and target normalization semantics remain unconfirmed.",
+        "Weather availability uses archive-object metadata, not original NOAA publication proof.",
+        "Forecast target is normalized power; no conversion to MW/MWh is justified."
+      ],
+      "provenance": [
+        {
+          "turbine_id": "turbine_1",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:53:02+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "927ac71f11d59f6e6a8347087afa30ce41d0bfeebaaeb385a7c0a083dcbc624d",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        },
+        {
+          "turbine_id": "turbine_2",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:53:02+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "927ac71f11d59f6e6a8347087afa30ce41d0bfeebaaeb385a7c0a083dcbc624d",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        }
+      ],
+      "csv_sha256": "5d4fb7912ee1db15b625745bb2b47efbe15a217122cb49cb696c631bf547b634",
+      "first_valid_time": "2026-01-31T19:00:00Z",
+      "last_valid_time": "2026-02-01T18:00:00Z"
+    },
+    {
+      "request": {
+        "issue_time": "2026-01-31T18:00:00Z",
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_1"
+        ]
+      },
+      "run_id": "98fe05342be71165e67298d9",
+      "revision": 1,
+      "rows": 48,
+      "status": "completed",
+      "json_csv_all_fields_equal": true,
+      "repeat_idempotent": true,
+      "warnings": [
+        "Uncertainty intervals are not calibrated",
+        "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+        "Source-clock and target normalization semantics remain unconfirmed.",
+        "Weather availability uses archive-object metadata, not original NOAA publication proof.",
+        "Forecast target is normalized power; no conversion to MW/MWh is justified."
+      ],
+      "provenance": [
+        {
+          "turbine_id": "turbine_1",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:59:20+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "c13557aa9cbd931ff7a0c921c601dc646178c7fc0eee7ce3e4e77f340e0b6eef",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        }
+      ],
+      "csv_sha256": "6bba36e30c67106d8551cd061cedc6c92052677d492eb00a080b48eed3d9132d",
+      "first_valid_time": "2026-01-31T19:00:00Z",
+      "last_valid_time": "2026-02-02T18:00:00Z"
+    },
+    {
+      "request": {
+        "issue_time": "2026-01-31T18:00:00Z",
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_2"
+        ]
+      },
+      "run_id": "00e7d842df1444d87ea4aeac",
+      "revision": 1,
+      "rows": 48,
+      "status": "completed",
+      "json_csv_all_fields_equal": true,
+      "repeat_idempotent": true,
+      "warnings": [
+        "Uncertainty intervals are not calibrated",
+        "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+        "Source-clock and target normalization semantics remain unconfirmed.",
+        "Weather availability uses archive-object metadata, not original NOAA publication proof.",
+        "Forecast target is normalized power; no conversion to MW/MWh is justified."
+      ],
+      "provenance": [
+        {
+          "turbine_id": "turbine_2",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:59:20+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "c13557aa9cbd931ff7a0c921c601dc646178c7fc0eee7ce3e4e77f340e0b6eef",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        }
+      ],
+      "csv_sha256": "c3caa862eb66c14d171a9b165121e1e711f71fcbd3670ecc53fbf595e6279192",
+      "first_valid_time": "2026-01-31T19:00:00Z",
+      "last_valid_time": "2026-02-02T18:00:00Z"
+    },
+    {
+      "request": {
+        "issue_time": "2026-01-31T18:00:00Z",
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_1",
+          "turbine_2"
+        ]
+      },
+      "run_id": "3a6186ffff1b1dc52a5cf2cd",
+      "revision": 1,
+      "rows": 96,
+      "status": "completed",
+      "json_csv_all_fields_equal": true,
+      "repeat_idempotent": true,
+      "warnings": [
+        "Uncertainty intervals are not calibrated",
+        "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+        "Source-clock and target normalization semantics remain unconfirmed.",
+        "Weather availability uses archive-object metadata, not original NOAA publication proof.",
+        "Forecast target is normalized power; no conversion to MW/MWh is justified."
+      ],
+      "provenance": [
+        {
+          "turbine_id": "turbine_1",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:59:20+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "c13557aa9cbd931ff7a0c921c601dc646178c7fc0eee7ce3e4e77f340e0b6eef",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        },
+        {
+          "turbine_id": "turbine_2",
+          "weather_model": "gfs_0p25",
+          "weather_run_time": "2026-01-31T12:00:00Z",
+          "model_version": "wind-power-v1",
+          "training_cutoff": "2026-01-31T18:00:00Z",
+          "forecast_available_at": "2026-01-31T15:59:20+00:00",
+          "availability_basis": "s3_last_modified_all_required_singlepart_grib_and_index_objects",
+          "provider": "NOAA GFS via AWS Open Data",
+          "raw_sha256": "c13557aa9cbd931ff7a0c921c601dc646178c7fc0eee7ce3e4e77f340e0b6eef",
+          "source_mode": null,
+          "time_basis": "instant_at_end"
+        }
+      ],
+      "csv_sha256": "5c829ffc9a1dee16688298241cff1564188412d7d1f08a8536a46369597ed1a5",
+      "first_valid_time": "2026-01-31T19:00:00Z",
+      "last_valid_time": "2026-02-02T18:00:00Z"
+    }
+  ],
+  "evaluation_status": "ready",
+  "test_truth_available": false,
+  "baseline_comparison": {
+    "metric": "equal_turbine_mean_mae",
+    "selected_mae": 0.2269187054537401,
+    "wind_curve_mae": 0.2094604765208696,
+    "wind_curve_better": true
+  },
+  "dashboard": {
+    "status": "passed",
+    "transport": "real local HTTP; no UI/network mocks",
+    "run_id": "3a6186ffff1b1dc52a5cf2cd",
+    "rows": 96,
+    "warnings_displayed": 5,
+    "provenance_rows_displayed": 2,
+    "forecast_chart_count": 1,
+    "csv_download_available": true,
+    "validation_report_displayed": true,
+    "february_truth_present": false
+  },
+  "exports": {
+    "directory": "artifacts/app-integration/exports",
+    "committed": false,
+    "reproduce_with_command_above": true
+  },
+  "scope": "Real trained model and archived weather through the UI HTTP client; does not establish February accuracy.",
+  "limitations": [
+    "AppTest renders the real Streamlit app against the real local API; it is not a browser screenshot or browser download test.",
+    "All six combinations use the January 31, 2026 18:00 UTC origin. This probe is not the full February replay.",
+    "The tested snapshot contains integration changes beyond base_commit; source_sha256 identifies the exact tested code and model package."
+  ]
+}
