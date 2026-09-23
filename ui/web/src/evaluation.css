@@ -1,0 +1,143 @@
+.evaluation-package {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: #627f83;
+  font-size: 12px;
+  margin: 18px 0;
+}
+.evaluation-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.evaluation-cards article {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border: 1px solid #dfeaed;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #f7fbfb, #fff);
+}
+.evaluation-cards article > strong {
+  color: #1c666f;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 700;
+  letter-spacing: -1.3px;
+  font-variant-numeric: tabular-nums;
+}
+.evaluation-cards article > span:not(.label) {
+  color: #426268;
+  font-size: 12px;
+}
+.evaluation-cards small {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.evaluation-comparison,
+.evaluation-production {
+  display: flex;
+  gap: 13px;
+  margin-top: 18px;
+  padding: 18px 20px;
+  background: #f2f8f8;
+  border: 1px solid #dce9e9;
+  border-radius: 16px;
+  color: #46646a;
+}
+.evaluation-comparison > svg,
+.evaluation-production > svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.evaluation-comparison.baseline-better {
+  background: #fffbf0;
+  border-color: #f0dfb4;
+  color: #8a6733;
+}
+.evaluation-comparison strong,
+.evaluation-production h3 {
+  font-size: 13px;
+}
+.evaluation-comparison p,
+.evaluation-production p {
+  font-size: 12px;
+  line-height: 1.75;
+  margin: 6px 0 0;
+}
+.evaluation-production h3 {
+  margin: 0;
+  color: #28545c;
+}
+.evaluation-periods,
+.evaluation-tables {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+.evaluation-periods article {
+  border-bottom: 1px solid #e2eced;
+  padding-bottom: 14px;
+}
+.evaluation-periods h3,
+.evaluation-score-table h3 {
+  font-size: 13px;
+  color: #33575d;
+  margin: 0 0 9px;
+}
+.evaluation-periods p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #55747a;
+  margin: 0 0 5px;
+}
+.evaluation-periods small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.evaluation-score-table table {
+  font-size: 12px;
+}
+.evaluation-score-table {
+  min-width: 0;
+}
+.evaluation-score-table th,
+.evaluation-score-table td {
+  white-space: nowrap;
+  padding: 11px 10px;
+}
+.evaluation-limitations {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #607c82;
+}
+.evaluation-limitations summary {
+  cursor: pointer;
+  color: #456970;
+  font-weight: 600;
+}
+.evaluation-limitations li {
+  line-height: 1.7;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 680px) {
+  .evaluation-cards {
+    grid-template-columns: 1fr;
+  }
+  .evaluation-cards article {
+    padding: 18px;
+  }
+  .evaluation-periods,
+  .evaluation-tables {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .evaluation-comparison,
+  .evaluation-production {
+    padding: 16px;
+  }
+}
