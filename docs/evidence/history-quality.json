@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.0",
+  "sources": {
+    "turbine_1": {
+      "url": "https://drive.google.com/file/d/1hubNF3tgc7DbgXxHLpIF6zIBHtvMyzLX/view",
+      "sha256": "c4c341582fb2dd348b7187f0128cff265fe055f469413871ebb5db50eef58b5b"
+    },
+    "turbine_2": {
+      "url": "https://drive.google.com/file/d/1_WTrYhZ3-71A9IpkBb9RHPN7ncVaupBk/view",
+      "sha256": "820578cd18bb557cd30c2e102f3ae5a386dfc6c489a5a15743339c2b017305e5"
+    }
+  },
+  "files": [
+    {
+      "schema_version": "1.0",
+      "turbine_id": "turbine_1",
+      "source_filename": "turbine_1.csv",
+      "source_sha256": "c4c341582fb2dd348b7187f0128cff265fe055f469413871ebb5db50eef58b5b",
+      "source_bytes": 6049266,
+      "rows": 142360,
+      "timestamp_min": "2023-03-11T00:00:00",
+      "timestamp_max": "2026-01-31T23:50:00",
+      "timestamp_timezone": "unknown",
+      "original_timestamp_convention": "unknown",
+      "source_interval_minutes": 10,
+      "coverage_basis": "inclusive observed min/max; naive source labels",
+      "expected_10min_slots": 152352,
+      "missing_10min_slots": 9992,
+      "coverage_fraction": 0.9344150388573829,
+      "missing_spans_count": 67,
+      "longest_missing_spans": [
+        {
+          "first_missing_timestamp": "2024-05-18T03:50:00",
+          "last_missing_timestamp": "2024-06-28T18:30:00",
+          "missing_slots": 5993
+        },
+        {
+          "first_missing_timestamp": "2024-06-28T23:10:00",
+          "last_missing_timestamp": "2024-07-17T17:10:00",
+          "missing_slots": 2701
+        },
+        {
+          "first_missing_timestamp": "2025-10-03T10:50:00",
+          "last_missing_timestamp": "2025-10-05T13:50:00",
+          "missing_slots": 307
+        },
+        {
+          "first_missing_timestamp": "2025-05-23T19:00:00",
+          "last_missing_timestamp": "2025-05-24T22:50:00",
+          "missing_slots": 168
+        },
+        {
+          "first_missing_timestamp": "2023-10-07T08:30:00",
+          "last_missing_timestamp": "2023-10-07T20:00:00",
+          "missing_slots": 70
+        },
+        {
+          "first_missing_timestamp": "2025-03-31T10:40:00",
+          "last_missing_timestamp": "2025-03-31T18:10:00",
+          "missing_slots": 46
+        },
+        {
+          "first_missing_timestamp": "2024-10-15T10:20:00",
+          "last_missing_timestamp": "2024-10-15T17:40:00",
+          "missing_slots": 45
+        },
+        {
+          "first_missing_timestamp": "2023-07-26T09:50:00",
+          "last_missing_timestamp": "2023-07-26T17:00:00",
+          "missing_slots": 44
+        },
+        {
+          "first_missing_timestamp": "2025-04-08T10:40:00",
+          "last_missing_timestamp": "2025-04-08T17:50:00",
+          "missing_slots": 44
+        },
+        {
+          "first_missing_timestamp": "2025-06-17T10:30:00",
+          "last_missing_timestamp": "2025-06-17T17:40:00",
+          "missing_slots": 44
+        }
+      ],
+      "input_was_sorted": true,
+      "duplicate_source_ids": 0,
+      "zero_power_rows": 534,
+      "power_outside_observed_reference_0_1": 0,
+      "numeric_summary": {
+        "observed_wind_speed_ms": {
+          "min": 0.0,
+          "max": 22.97
+        },
+        "normalized_power": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "observed_temperature_c": {
+          "min": -19.26,
+          "max": 43.48
+        }
+      },
+      "scope": "Source audit only; no training selection, hourly conversion or evaluation.",
+      "warnings": [
+        "Source timezone, interval labels and target reporting delay are unknown.",
+        "Normalization definition and rated capacities are unknown; target is not MW/MWh.",
+        "Observed wind/temperature are historical measurements, not archived forecasts.",
+        "Missing timestamps are reported, not inserted or filled with zero."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "turbine_id": "turbine_2",
+      "source_filename": "turbine_2.csv",
+      "source_sha256": "820578cd18bb557cd30c2e102f3ae5a386dfc6c489a5a15743339c2b017305e5",
+      "source_bytes": 6354725,
+      "rows": 149499,
+      "timestamp_min": "2023-03-11T00:00:00",
+      "timestamp_max": "2026-01-31T23:50:00",
+      "timestamp_timezone": "unknown",
+      "original_timestamp_convention": "unknown",
+      "source_interval_minutes": 10,
+      "coverage_basis": "inclusive observed min/max; naive source labels",
+      "expected_10min_slots": 152352,
+      "missing_10min_slots": 2853,
+      "coverage_fraction": 0.9812736294896031,
+      "missing_spans_count": 178,
+      "longest_missing_spans": [
+        {
+          "first_missing_timestamp": "2024-05-18T04:10:00",
+          "last_missing_timestamp": "2024-05-20T13:20:00",
+          "missing_slots": 344
+        },
+        {
+          "first_missing_timestamp": "2025-10-03T10:50:00",
+          "last_missing_timestamp": "2025-10-05T13:50:00",
+          "missing_slots": 307
+        },
+        {
+          "first_missing_timestamp": "2024-02-16T12:30:00",
+          "last_missing_timestamp": "2024-02-17T18:30:00",
+          "missing_slots": 181
+        },
+        {
+          "first_missing_timestamp": "2025-05-23T19:00:00",
+          "last_missing_timestamp": "2025-05-24T22:50:00",
+          "missing_slots": 168
+        },
+        {
+          "first_missing_timestamp": "2023-04-14T15:50:00",
+          "last_missing_timestamp": "2023-04-15T17:50:00",
+          "missing_slots": 157
+        },
+        {
+          "first_missing_timestamp": "2023-06-06T12:50:00",
+          "last_missing_timestamp": "2023-06-07T01:10:00",
+          "missing_slots": 75
+        },
+        {
+          "first_missing_timestamp": "2023-10-07T08:30:00",
+          "last_missing_timestamp": "2023-10-07T20:00:00",
+          "missing_slots": 70
+        },
+        {
+          "first_missing_timestamp": "2025-04-04T10:00:00",
+          "last_missing_timestamp": "2025-04-04T19:40:00",
+          "missing_slots": 59
+        },
+        {
+          "first_missing_timestamp": "2024-05-28T10:50:00",
+          "last_missing_timestamp": "2024-05-28T18:20:00",
+          "missing_slots": 46
+        },
+        {
+          "first_missing_timestamp": "2025-03-31T10:40:00",
+          "last_missing_timestamp": "2025-03-31T18:10:00",
+          "missing_slots": 46
+        }
+      ],
+      "input_was_sorted": true,
+      "duplicate_source_ids": 0,
+      "zero_power_rows": 2680,
+      "power_outside_observed_reference_0_1": 0,
+      "numeric_summary": {
+        "observed_wind_speed_ms": {
+          "min": 0.11,
+          "max": 21.43
+        },
+        "normalized_power": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "observed_temperature_c": {
+          "min": -19.08,
+          "max": 43.97
+        }
+      },
+      "scope": "Source audit only; no training selection, hourly conversion or evaluation.",
+      "warnings": [
+        "Source timezone, interval labels and target reporting delay are unknown.",
+        "Normalization definition and rated capacities are unknown; target is not MW/MWh.",
+        "Observed wind/temperature are historical measurements, not archived forecasts.",
+        "Missing timestamps are reported, not inserted or filled with zero."
+      ]
+    }
+  ],
+  "transforms": "Column names and row order only; naive times, no filling or fitting."
+}
