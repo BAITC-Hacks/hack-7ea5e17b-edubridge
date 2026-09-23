@@ -17,7 +17,7 @@ def setup_cli(tmp_path, monkeypatch):
     for number in (1, 2):
         path = tmp_path / f"turbine_{number}.csv"
         # Same ID at different times must remain two separate observations.
-        path.write_text(header + f"1,2026-01-01 0:{(number-1)*10:02d}:00,5,0,2")
+        path.write_text(header + f"1,2026-01-01 0:{(number-1)*10:02d}:00,5,0,2", encoding="utf-8")
         paths.append(path)
     monkeypatch.setattr(cli, "SOURCES", {
         f"turbine_{index}": {"sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
@@ -50,7 +50,7 @@ def test_cli_preserves_separate_observations_and_reproduces_report(tmp_path, mon
 
 def test_cli_validates_both_inputs_before_writing(tmp_path, monkeypatch):
     cli, paths, output = setup_cli(tmp_path, monkeypatch)
-    paths[1].write_text("modified input")
+    paths[1].write_text("modified input", encoding="utf-8")
 
     with pytest.raises(ValueError, match="HASH_MISMATCH"):
         cli.main()
@@ -72,9 +72,9 @@ def test_hourly_cli_requires_explicit_clock_assumptions(tmp_path, monkeypatch):
 def test_hourly_cli_writes_complete_targets_with_assumptions_and_source_hashes(tmp_path, monkeypatch):
     cli, paths, output = setup_cli(tmp_path, monkeypatch)
     for index, path in enumerate(paths, start=1):
-        header = path.read_text().splitlines()[0]
+        header = path.read_text(encoding="utf-8").splitlines()[0]
         rows = [f"{i+1},2026-01-01 0:{i*10:02d}:00,5,0.4,2" for i in range(6)]
-        path.write_text(header + "\n" + "\n".join(rows))
+        path.write_text(header + "\n" + "\n".join(rows), encoding="utf-8")
         cli.SOURCES[f"turbine_{index}"]["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
     monkeypatch.setattr(sys, "argv", [
         *sys.argv, "--hourly", "--history-timezone", "Etc/GMT-5",
@@ -85,7 +85,7 @@ def test_hourly_cli_writes_complete_targets_with_assumptions_and_source_hashes(t
     cli.main()
 
     targets = pd.read_csv(output / "hourly-training.csv")
-    report = json.loads((output / "hourly-report.json").read_text())
+    report = json.loads((output / "hourly-report.json").read_text(encoding="utf-8"))
     assert len(targets) == 2
     assert targets["sample_count"].tolist() == [6, 6]
     assert targets["normalized_power"].tolist() == pytest.approx([0.4, 0.4])
@@ -106,7 +106,7 @@ def test_cli_rejects_output_hard_links_before_overwrite(tmp_path, monkeypatch, a
     if alias_kind == "source":
         history.hardlink_to(paths[0])
     else:
-        history.write_text("previous history")
+        history.write_text("previous history", encoding="utf-8")
         (output / "quality-report.json").hardlink_to(history)
 
     before = history.read_bytes()
