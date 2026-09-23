@@ -1,0 +1,33 @@
+{
+  "mode": "demo",
+  "weather_provider": "fixture",
+  "model_adapter_module": null,
+  "model_artifact_path": null,
+  "cache_dir": "artifacts/demo/weather-cache",
+  "artifact_dir": "artifacts/monitor-demo",
+  "turbines": [
+    {
+      "turbine_id": "turbine_1",
+      "latitude": 43.64515,
+      "longitude": 78.535604,
+      "coordinates_source": "Demonstration configuration; weather and predictions are synthetic fixtures.",
+      "is_synthetic": true
+    },
+    {
+      "turbine_id": "turbine_2",
+      "latitude": 43.643198,
+      "longitude": 78.538828,
+      "coordinates_source": "Demonstration configuration; weather and predictions are synthetic fixtures.",
+      "is_synthetic": true
+    }
+  ],
+  "replay_timezone": "Asia/Almaty",
+  "replay_issue_hour": 23,
+  "timestamp_convention": "hour_end",
+  "replay_assumption": "Synthetic demo only. Team assumption: daily issue at 23:00 Asia/Almaty; valid_time is the end of each predicted hour and first lead is +1h. Weather values are instantaneous at interval end. Replay issues run January 31 through February 28 inclusive. No real model quality, SCADA timestamp semantics or historical forecast availability is demonstrated.",
+  "history_timezone": null,
+  "train_cutoff": "2026-01-30T00:00:00Z",
+  "default_horizon_hours": 48,
+  "api_host": "127.0.0.1",
+  "api_port": 8000
+}

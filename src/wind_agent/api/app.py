@@ -71,6 +71,14 @@ def create_app(
     def forecast(run_id: str) -> list[ForecastRecord]:
         return get_forecast(run_id)
 
+    @application.get("/runs/{run_id}/analysis")
+    def analysis(run_id: str) -> dict[str, Any]:
+        get_run(run_id)
+        try:
+            return agent.analysis(run_id)
+        except ValueError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+
     @application.get("/runs/{run_id}/forecast.csv")
     def forecast_csv(run_id: str) -> Response:
         rows = jsonable_encoder(get_forecast(run_id))

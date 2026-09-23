@@ -69,3 +69,38 @@ def test_cli_failed_archive_run_is_nonzero(tmp_path, capsys):
     record = json.loads(capsys.readouterr().out)
     assert record["status"] == "failed"
     assert "Model unavailable" in record["error"]
+
+
+@pytest.mark.parametrize("args", [
+    ["--start-issue", "2026-01-31T18:00:00Z"],
+    ["--interval-seconds", "nan"],
+    ["--interval-seconds", "0"],
+    ["--max-cycles", "0"],
+    ["--step-hours", "0"],
+    ["--start-issue", "2026-02-01T18:00:00Z", "--end-issue", "2026-01-31T18:00:00Z"],
+])
+def test_watch_rejects_invalid_schedule_before_starting(demo_config, capsys, args):
+    assert main(["--config", demo_config, "watch", *args]) == 2
+    assert json.loads(capsys.readouterr().err)["status"] == "failed"
+
+
+def test_historical_watch_runs_without_external_triggers(demo_config, capsys):
+    from wind_agent.agent import AgentService
+    from wind_agent.config import load_settings
+    from wind_agent.contracts import RunRequest
+
+    api_service = AgentService(load_settings(demo_config))
+    pending = api_service.submit(RunRequest.model_validate({
+        "issue_time": "2026-01-31T18:00:00Z", "horizon_hours": 24,
+        "turbine_ids": ["turbine_1", "turbine_2"],
+    }))
+    assert main([
+        "--config", demo_config, "watch", "--horizon-hours", "24",
+        "--start-issue", "2026-01-31T18:00:00Z", "--end-issue", "2026-02-01T18:00:00Z",
+        "--step-hours", "24",
+    ]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["status"] == "completed"
+    assert report["completed_runs"] == 2
+    assert report["failed_runs"] == 0
+    assert api_service.get(pending.run_id).status == "queued"

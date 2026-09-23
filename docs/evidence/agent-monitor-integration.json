@@ -1,0 +1,373 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checked_at": "2026-09-23T12:12:17.796431+00:00",
+  "is_demo": false,
+  "scope": "Real automatic historical origin advancement and unchanged-input retention; no HTTP-triggered calculations",
+  "transport": "AgentMonitor + AgentService; in-process TestClient GET checks after monitoring",
+  "model_and_weather_substituted": false,
+  "real_revision_2_demonstrated": false,
+  "measures_forecast_accuracy": false,
+  "test_truth_available": false,
+  "source_semantics_status": "assumed",
+  "configuration": "config\\monitor-model.json",
+  "artifact_directory": "artifacts\\monitor-verification-stable",
+  "cache_directory": "artifacts\\weather-cache",
+  "effective_config_sha256": "e92bca94ea1330f97d68028b691b7e1a0c3847ee115592dfc1d5db3691401288",
+  "source_sha256": {
+    "scripts\\verify_agent_monitor.py": "4b4d3d9a92533796ec7b04a90edc218cc35bb343fecee5db18e3d71ad569008c",
+    "src\\wind_agent\\agent\\monitor.py": "fb38237f1e8dfc66f6a3a335f6296bbd856045446b1cb0fe1235e1cde0de0109",
+    "src\\wind_agent\\agent\\analysis.py": "590c49f2b58a475ccec4aebf2fdfdb4c7eb1b6d2c70ac1d7261854ac26ab38f9",
+    "src\\wind_agent\\agent\\service.py": "f5fdcade5e1409dc2724be5b3e70190ee4cfeef5cc3b7deedb901452d6e20f53",
+    "src\\wind_agent\\api\\app.py": "071363f263b0c44347e88d808dd81869f6970228f43227ac00af619fc7f0881e",
+    "src\\wind_agent\\weather\\gfs.py": "86c49af43b60a5ae1d97688a49de22bab52fb16d134102c0e94f7403bc244c21",
+    "src\\wind_agent\\model\\interface.py": "1392f4aac11be993a903d278f41c6108a5211aeaed342067b4f82f809fcfca52",
+    "config\\monitor-model.json": "af968163c8fdd9db5ca60c8690884894b24fe710e6f0753fc2f2e88cb9126aba"
+  },
+  "model_package_sha256": {
+    "models\\wind-power-v1\\model.joblib": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4",
+    "models\\wind-power-v1\\metadata.json": "ba2f0a63f697d8b28d73f5bafea76885c156e73d9c4140a32953ce1eaded80fb",
+    "models\\wind-power-v1\\validation.json": "cf8864a33a2e2ced4a9e3ec7a5df20250406c47b06d159e7af29a857a54cb56b"
+  },
+  "ticks": [
+    {
+      "schema_version": "1.0",
+      "as_of": "2026-01-31T18:00:00+00:00",
+      "issue_time": "2026-01-31T18:00:00+00:00",
+      "request_identity": {
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_1",
+          "turbine_2"
+        ]
+      },
+      "is_demo": false,
+      "consecutive_failures": 0,
+      "next_retry_at": null,
+      "run_id": "3a6186ffff1b1dc52a5cf2cd",
+      "revision": 1,
+      "input_fingerprint": "92eb064d5156d6b7301e019797bc824e64b8f74c0a9c723ceedefa8fc9fa322d",
+      "error": null,
+      "executed": true,
+      "issue_advanced": false,
+      "analysis": {
+        "decision": "review_required",
+        "next_action": "review_inputs",
+        "reasons": [
+          "Model or input warnings require review; see model_warnings."
+        ]
+      },
+      "status": "completed",
+      "action": "created"
+    },
+    {
+      "schema_version": "1.0",
+      "as_of": "2026-01-31T18:05:00+00:00",
+      "issue_time": "2026-01-31T18:00:00+00:00",
+      "request_identity": {
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_1",
+          "turbine_2"
+        ]
+      },
+      "is_demo": false,
+      "consecutive_failures": 0,
+      "next_retry_at": null,
+      "run_id": "3a6186ffff1b1dc52a5cf2cd",
+      "revision": 1,
+      "input_fingerprint": "92eb064d5156d6b7301e019797bc824e64b8f74c0a9c723ceedefa8fc9fa322d",
+      "error": null,
+      "executed": true,
+      "issue_advanced": false,
+      "analysis": {
+        "decision": "review_required",
+        "next_action": "review_inputs",
+        "reasons": [
+          "Model or input warnings require review; see model_warnings."
+        ]
+      },
+      "status": "completed",
+      "action": "unchanged"
+    },
+    {
+      "schema_version": "1.0",
+      "as_of": "2026-02-01T18:00:00+00:00",
+      "issue_time": "2026-02-01T18:00:00+00:00",
+      "request_identity": {
+        "horizon_hours": 48,
+        "turbine_ids": [
+          "turbine_1",
+          "turbine_2"
+        ]
+      },
+      "is_demo": false,
+      "consecutive_failures": 0,
+      "next_retry_at": null,
+      "run_id": "9a0819dda5b0f21797c1ea29",
+      "revision": 1,
+      "input_fingerprint": "6b02f802e6ce34bd36be9e5efa0717c4b3b6285f812847dc717e2c606c490c47",
+      "error": null,
+      "executed": true,
+      "issue_advanced": true,
+      "analysis": {
+        "decision": "review_required",
+        "next_action": "review_inputs",
+        "reasons": [
+          "Model or input warnings require review; see model_warnings."
+        ]
+      },
+      "status": "completed",
+      "action": "new_issue"
+    }
+  ],
+  "tick_forecast_sha256": [
+    "bf98b5bf4e6bf1fd41115b2a042a9188198cddb99e10d2fa465cd3a6fdb6ceff",
+    "bf98b5bf4e6bf1fd41115b2a042a9188198cddb99e10d2fa465cd3a6fdb6ceff",
+    "f6d5a06cb49d2a8b3ffc51265d1146c7aa98e1fed78c86a06956df163a8e5592"
+  ],
+  "session_counts": {
+    "tick_count": 3,
+    "executed_runs": 3,
+    "completed_runs": 3,
+    "failed_runs": 0,
+    "deferred_ticks": 0
+  },
+  "runs": [
+    {
+      "run_id": "3a6186ffff1b1dc52a5cf2cd",
+      "issue_time": "2026-01-31T18:00:00+00:00",
+      "revision": 1,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "rows": 96,
+      "horizon_hours": 48,
+      "turbine_ids": [
+        "turbine_1",
+        "turbine_2"
+      ],
+      "forecast_sha256": "bf98b5bf4e6bf1fd41115b2a042a9188198cddb99e10d2fa465cd3a6fdb6ceff",
+      "analysis_sha256": "c54e0380ec8301d82f0e6d0f05a2b9e7bc044f1ad8963faa0421f7eebed39208",
+      "csv_sha256": "5c829ffc9a1dee16688298241cff1564188412d7d1f08a8536a46369597ed1a5",
+      "weather_model_runs": [
+        "2026-01-31T12:00:00+00:00"
+      ],
+      "weather_available_at_max": "2026-01-31T15:59:20+00:00",
+      "raw_bundle_count": 48,
+      "raw_bundle_hashes_verified": true,
+      "all_weather_available_by_origin": true,
+      "model_cutoffs_valid": true,
+      "analysis_api_matches_saved_revision": true,
+      "json_csv_all_fields_equal": true,
+      "decision": "review_required",
+      "next_action": "review_inputs",
+      "reasons": [
+        "Model or input warnings require review; see model_warnings."
+      ],
+      "per_turbine": {
+        "turbine_1": {
+          "target_unit": "normalized_power",
+          "forecast_hours": 48,
+          "first_valid_time": "2026-01-31T19:00:00+00:00",
+          "last_valid_time": "2026-02-02T18:00:00+00:00",
+          "prediction_min": 0.0568446396378987,
+          "prediction_max": 0.7999039781032418,
+          "prediction_mean": 0.4302800610040728,
+          "largest_hourly_ramp": {
+            "from_valid_time": "2026-02-01T07:00:00+00:00",
+            "to_valid_time": "2026-02-01T08:00:00+00:00",
+            "delta": 0.35919458534390025,
+            "absolute_delta": 0.35919458534390025
+          },
+          "flat_forecast": false,
+          "longest_constant_hours": 1,
+          "flat_forecast_minimum_hours": 24,
+          "weather_wind_speed_ms": {
+            "matched_hours": 48,
+            "min": 1.723005415516887,
+            "max": 14.20129636768247,
+            "mean": 9.607207490575577
+          },
+          "model_warnings": [
+            "Forecast target is normalized power; no conversion to MW/MWh is justified.",
+            "Source-clock and target normalization semantics remain unconfirmed.",
+            "Uncertainty intervals are not calibrated",
+            "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+            "Weather availability uses archive-object metadata, not original NOAA publication proof."
+          ]
+        },
+        "turbine_2": {
+          "target_unit": "normalized_power",
+          "forecast_hours": 48,
+          "first_valid_time": "2026-01-31T19:00:00+00:00",
+          "last_valid_time": "2026-02-02T18:00:00+00:00",
+          "prediction_min": 0.048110386791498747,
+          "prediction_max": 0.8484259559504069,
+          "prediction_mean": 0.427645960306511,
+          "largest_hourly_ramp": {
+            "from_valid_time": "2026-02-02T01:00:00+00:00",
+            "to_valid_time": "2026-02-02T02:00:00+00:00",
+            "delta": 0.2771156783374286,
+            "absolute_delta": 0.2771156783374286
+          },
+          "flat_forecast": false,
+          "longest_constant_hours": 1,
+          "flat_forecast_minimum_hours": 24,
+          "weather_wind_speed_ms": {
+            "matched_hours": 48,
+            "min": 1.723005415516887,
+            "max": 14.20129636768247,
+            "mean": 9.607207490575577
+          },
+          "model_warnings": [
+            "Forecast target is normalized power; no conversion to MW/MWh is justified.",
+            "Source-clock and target normalization semantics remain unconfirmed.",
+            "Uncertainty intervals are not calibrated",
+            "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+            "Weather availability uses archive-object metadata, not original NOAA publication proof."
+          ]
+        }
+      }
+    },
+    {
+      "run_id": "9a0819dda5b0f21797c1ea29",
+      "issue_time": "2026-02-01T18:00:00+00:00",
+      "revision": 1,
+      "model_version": "wind-power-v1",
+      "training_cutoff": "2026-01-31T18:00:00+00:00",
+      "rows": 96,
+      "horizon_hours": 48,
+      "turbine_ids": [
+        "turbine_1",
+        "turbine_2"
+      ],
+      "forecast_sha256": "f6d5a06cb49d2a8b3ffc51265d1146c7aa98e1fed78c86a06956df163a8e5592",
+      "analysis_sha256": "00f36dc4fd1e6ec36c8fb3eaaf18da3da1e205de265d1a1328fa765d50708188",
+      "csv_sha256": "73d1182963d8274a4cb3ff6ce30d49f5c67b3ae062bf4a299a6824d9dbebd5a0",
+      "weather_model_runs": [
+        "2026-02-01T12:00:00+00:00"
+      ],
+      "weather_available_at_max": "2026-02-01T16:01:19+00:00",
+      "raw_bundle_count": 48,
+      "raw_bundle_hashes_verified": true,
+      "all_weather_available_by_origin": true,
+      "model_cutoffs_valid": true,
+      "analysis_api_matches_saved_revision": true,
+      "json_csv_all_fields_equal": true,
+      "decision": "review_required",
+      "next_action": "review_inputs",
+      "reasons": [
+        "Model or input warnings require review; see model_warnings."
+      ],
+      "per_turbine": {
+        "turbine_1": {
+          "target_unit": "normalized_power",
+          "forecast_hours": 48,
+          "first_valid_time": "2026-02-01T19:00:00+00:00",
+          "last_valid_time": "2026-02-03T18:00:00+00:00",
+          "prediction_min": 0.0717273239501657,
+          "prediction_max": 0.9419184936712105,
+          "prediction_mean": 0.387180638368686,
+          "largest_hourly_ramp": {
+            "from_valid_time": "2026-02-02T21:00:00+00:00",
+            "to_valid_time": "2026-02-02T22:00:00+00:00",
+            "delta": 0.4001781961954429,
+            "absolute_delta": 0.4001781961954429
+          },
+          "flat_forecast": false,
+          "longest_constant_hours": 2,
+          "flat_forecast_minimum_hours": 24,
+          "weather_wind_speed_ms": {
+            "matched_hours": 48,
+            "min": 1.0940241439413343,
+            "max": 14.773073833180439,
+            "mean": 8.506904540082575
+          },
+          "model_warnings": [
+            "Forecast target is normalized power; no conversion to MW/MWh is justified.",
+            "Source-clock and target normalization semantics remain unconfirmed.",
+            "Uncertainty intervals are not calibrated",
+            "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+            "Weather availability uses archive-object metadata, not original NOAA publication proof."
+          ]
+        },
+        "turbine_2": {
+          "target_unit": "normalized_power",
+          "forecast_hours": 48,
+          "first_valid_time": "2026-02-01T19:00:00+00:00",
+          "last_valid_time": "2026-02-03T18:00:00+00:00",
+          "prediction_min": 0.08726553168481982,
+          "prediction_max": 0.9265613147554129,
+          "prediction_mean": 0.3871920395533699,
+          "largest_hourly_ramp": {
+            "from_valid_time": "2026-02-02T21:00:00+00:00",
+            "to_valid_time": "2026-02-02T22:00:00+00:00",
+            "delta": 0.40897198373543486,
+            "absolute_delta": 0.40897198373543486
+          },
+          "flat_forecast": false,
+          "longest_constant_hours": 2,
+          "flat_forecast_minimum_hours": 24,
+          "weather_wind_speed_ms": {
+            "matched_hours": 48,
+            "min": 1.0940241439413343,
+            "max": 14.773073833180439,
+            "mean": 8.506904540082575
+          },
+          "model_warnings": [
+            "Forecast target is normalized power; no conversion to MW/MWh is justified.",
+            "Source-clock and target normalization semantics remain unconfirmed.",
+            "Uncertainty intervals are not calibrated",
+            "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+            "Weather availability uses archive-object metadata, not original NOAA publication proof."
+          ]
+        }
+      }
+    }
+  ],
+  "overlapping_origin_prediction_changes": {
+    "status": "compared",
+    "meaning": "Changes between predictions for common turbine/hour keys, not forecast errors.",
+    "common_hours": 48,
+    "changed_count": 46,
+    "per_turbine": {
+      "turbine_1": {
+        "status": "compared",
+        "target_unit": "normalized_power",
+        "common_hours": 24,
+        "changed_count": 23,
+        "mean_absolute_delta": 0.14439238710062052,
+        "max_absolute_delta": 0.5345452359838972,
+        "mean_signed_delta": -0.08197096047225984,
+        "previous_revisions": [
+          1
+        ],
+        "current_revisions": [
+          1
+        ]
+      },
+      "turbine_2": {
+        "status": "compared",
+        "target_unit": "normalized_power",
+        "common_hours": 24,
+        "changed_count": 23,
+        "mean_absolute_delta": 0.12312103062253657,
+        "max_absolute_delta": 0.522089786916401,
+        "mean_signed_delta": -0.09986161891237266,
+        "previous_revisions": [
+          1
+        ],
+        "current_revisions": [
+          1
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Historical ticks are accelerated; this check does not measure wall-clock scheduling reliability.",
+    "The unchanged check repeats the original issue cutoff, not the later retrieval time.",
+    "A newer issue selects newer eligible archived weather; this is not a revision-2 claim.",
+    "Prediction changes and diagnostics do not measure errors against observed generation.",
+    "SCADA timezone, interval convention and reporting delay remain explicit source assumptions."
+  ]
+}

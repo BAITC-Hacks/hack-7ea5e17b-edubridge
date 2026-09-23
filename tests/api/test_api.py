@@ -65,13 +65,13 @@ def test_http_run_exposes_complete_forecast_and_equivalent_csv(service, request_
                     assert csv_row[key] == str(value)
 
 
-@pytest.mark.parametrize("suffix", ["", "/forecast", "/forecast.csv"])
+@pytest.mark.parametrize("suffix", ["", "/forecast", "/forecast.csv", "/analysis"])
 def test_unknown_run_is_404(service, suffix):
     with TestClient(create_app(service=service)) as client:
         assert client.get(f"/runs/missing{suffix}").status_code == 404
 
 
-@pytest.mark.parametrize("suffix", ["/forecast", "/forecast.csv"])
+@pytest.mark.parametrize("suffix", ["/forecast", "/forecast.csv", "/analysis"])
 def test_forecast_before_completion_is_409(service, request_body, suffix):
     record = service.submit(RunRequest.model_validate(request_body))
     with TestClient(create_app(service=service)) as client:

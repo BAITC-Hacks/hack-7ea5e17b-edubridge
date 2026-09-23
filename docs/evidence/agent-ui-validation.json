@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checked_at_utc": "2026-09-23T12:23:28.509508+00:00",
+  "base_commit": "4b864118d6c86c0fbc19c1bf3fe03ce04a92cda6",
+  "uncommitted_source_snapshot": true,
+  "source_phase": "After merging origin/main localization 0178c70, localized agent analysis and final timestamp validation fix",
+  "prior_evidence": "docs/evidence/agent-ui-validation-2026-09-23-pre-localization.json",
+  "scope": "Actual Chrome browser via CUA -> JelAI React dev server -> archive FastAPI -> bundled real model; no browser mocks.",
+  "source_sha256": {
+    "src/wind_agent/agent/analysis.py": "590c49f2b58a475ccec4aebf2fdfdb4c7eb1b6d2c70ac1d7261854ac26ab38f9",
+    "src/wind_agent/agent/service.py": "f5fdcade5e1409dc2724be5b3e70190ee4cfeef5cc3b7deedb901452d6e20f53",
+    "src/wind_agent/api/app.py": "071363f263b0c44347e88d808dd81869f6970228f43227ac00af619fc7f0881e",
+    "ui/web/src/AgentAnalysisPanel.tsx": "903e471ee8950312a81a7d0a85439ffab00f4fcf5e8e94660ae2ffda0785bf93",
+    "ui/web/src/AgentAnalysisPanel.test.tsx": "da3a29acbe1b32d8eba203f09dcc9344b7c9f100533ab1c466fe5e15071f5ce4",
+    "ui/web/src/App.tsx": "84e8ddbc761723738d9c87557fe24ce8625a8cb9d4bbc6328be43e2a0527ffab",
+    "ui/web/src/data/validation.ts": "0259028cd8900845c8ad33efd8d8f5e4b2b1c9b55a5e1bb87de65d9532836938",
+    "ui/web/src/data/csv-validation.test.ts": "3e2eb5aa7e95176548f8daa3f64f1150dcc5472701b325e5b6f2175decba7bd0",
+    "ui/web/package-lock.json": "4fe8671717989a6d4ccf2a9faaf18fb9e697e514778b3ed806d2a3b1f94c38fa",
+    "ui/web/src/i18n.tsx": "7d08eeb22924de27ab88eb0c17590f62ea421b87aeb21d663aa106277db354c1",
+    "ui/web/src/locales/analysis.ts": "701607a74c092e55f024466471c4edca0c62772d211a867a05c77bc596650778",
+    "models/wind-power-v1/model.joblib": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4"
+  },
+  "runtime": {
+    "python": "3.11.9",
+    "node": "24.14.0",
+    "npm": "11.9.0",
+    "fastapi": "0.115.12",
+    "scikit-learn": "1.7.2",
+    "eccodes": "2.44.0"
+  },
+  "launch": {
+    "config_base": "config/archive-model.json",
+    "overrides": {
+      "artifact_dir": "artifacts/ui-agent-review/runs",
+      "api_port": 8019
+    },
+    "weather_cache": "artifacts/weather-cache",
+    "backend": "python -m wind_agent --config artifacts/ui-agent-review/config.json serve --host 127.0.0.1 --port 8019",
+    "frontend": "WIND_API_TARGET=http://127.0.0.1:8019 node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5179 --strictPort (cwd ui/web; executable and script were absolute paths)",
+    "ui_url": "http://127.0.0.1:5179",
+    "api_url": "http://127.0.0.1:8019"
+  },
+  "browser_observations": {
+    "api_mode_selected": true,
+    "request_submitted_through_ui": {
+      "issue_time": "2026-01-31T18:00:00Z",
+      "horizon_hours": 48,
+      "turbine_ids": [
+        "turbine_1",
+        "turbine_2"
+      ]
+    },
+    "run_id": "3a6186ffff1b1dc52a5cf2cd",
+    "revision": 1,
+    "forecast_count": 96,
+    "analysis_heading": "Анализ агента",
+    "analysis_decision": "Нужна проверка входов",
+    "analysis_units": "normalized_power",
+    "analysis_disclaimer": "не оценка точности",
+    "languages_checked": [
+      "ru",
+      "kk",
+      "en"
+    ],
+    "localized_headings": [
+      "Анализ агента",
+      "Агент талдауы",
+      "Agent analysis"
+    ],
+    "localized_actions": [
+      "Нужна проверка входов",
+      "Кіріс деректерін тексеру қажет",
+      "Review inputs"
+    ],
+    "changing_language_preserves_run_revision_and_96_records": true,
+    "normalized_power_identifier_and_diagnostic_limitations_preserved_in_all_languages": true,
+    "latest_checked_locale": "en",
+    "analysis_turbine_1_display": {
+      "min_max": "0,0568 / 0,7999",
+      "mean": "0,4303",
+      "largest_hourly_ramp": "0,3592"
+    },
+    "analysis_turbine_2_display": {
+      "min_max": "0,0481 / 0,8484",
+      "mean": "0,4276",
+      "largest_hourly_ramp": "0,2771"
+    },
+    "weather_range_display_ms": "1,723 / 14,2013",
+    "previous_comparison_correctly_unavailable_for_initial_revision": true,
+    "screenshot_visually_inspected": true,
+    "download_button_enabled_after_full_field_csv_validation": true,
+    "download_clicked_and_file_verified": true,
+    "download_filename": "jelai_3a6186ffff1b1dc52a5cf2cd_r1 (2).csv",
+    "download_size_bytes": 62208,
+    "downloaded_at_utc": "2026-09-23T12:23:05.905902+00:00",
+    "download_byte_equal_api_csv": true
+  },
+  "http_verification": {
+    "checked_at_utc": "2026-09-23T12:23:22.515978+00:00",
+    "health": {
+      "status": "ok",
+      "mode": "archive",
+      "is_demo": false,
+      "weather_ready": true,
+      "model_ready": true,
+      "training_boundary_configured": true,
+      "timestamp_convention": "hour_end",
+      "turbine_ids": [
+        "turbine_1",
+        "turbine_2"
+      ]
+    },
+    "run_id": "3a6186ffff1b1dc52a5cf2cd",
+    "request": {
+      "issue_time": "2026-01-31T18:00:00Z",
+      "horizon_hours": 48,
+      "turbine_ids": [
+        "turbine_1",
+        "turbine_2"
+      ]
+    },
+    "status": "completed",
+    "revision": 1,
+    "row_count": 96,
+    "target_units": [
+      "normalized_power"
+    ],
+    "data_quality": [
+      "warning"
+    ],
+    "warnings": [
+      "Forecast target is normalized power; no conversion to MW/MWh is justified.",
+      "Source-clock and target normalization semantics remain unconfirmed.",
+      "Uncertainty intervals are not calibrated",
+      "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved.",
+      "Weather availability uses archive-object metadata, not original NOAA publication proof."
+    ],
+    "analysis_route_matches_run_event": true,
+    "analysis_read_preserves_forecast_bytes": true,
+    "predictions_equal_pre_analysis_integration_artifact": true,
+    "baseline_artifact": "artifacts/app-integration/agent/archive/runs/3a6186ffff1b1dc52a5cf2cd/revisions/1/forecast.json",
+    "baseline_artifact_sha256": "bf98b5bf4e6bf1fd41115b2a042a9188198cddb99e10d2fa465cd3a6fdb6ceff",
+    "csv_all_fields_equal_json": true,
+    "forecast_csv_sha256": "5c829ffc9a1dee16688298241cff1564188412d7d1f08a8536a46369597ed1a5",
+    "forecast_http_json_sha256": "845e78968490b868e2b06c342505e88c64c8f8a707b66542821f57fdae3c041b",
+    "evaluation_status": "ready"
+  },
+  "tests": {
+    "command": "npm test",
+    "passed": 78,
+    "files": 7,
+    "production_build": "npm run build: passed"
+  },
+  "cleanup": {
+    "browser_tab_closed": true,
+    "owned_process_trees_stopped": true,
+    "ports_8019_5179_closed": true,
+    "existing_user_ports_8000_8501_untouched": true
+  },
+  "limitations": [
+    "One archive request and current revision were checked through the browser; stale-revision/fixture/missing-report cases are covered by render tests.",
+    "No February truth or accuracy claim; model/input warnings remain present.",
+    "Existing archive cache was reused; this was not a clean install or a full February replay."
+  ]
+}
