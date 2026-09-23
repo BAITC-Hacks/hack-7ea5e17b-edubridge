@@ -8,24 +8,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatTime } from "./data";
+import { useI18n } from "./i18n";
 import type { ForecastRecord } from "./data";
-const turbineName = (id: string) =>
-  ({ turbine_1: "Турбина 01", turbine_2: "Турбина 02" })[id] || id;
-const number = (value: number) =>
-  new Intl.NumberFormat("ru-RU", {
-    maximumFractionDigits: 3,
-    minimumFractionDigits: 3,
-  }).format(value);
-const compactDate = (value: string, zone: string) =>
-  new Intl.DateTimeFormat("ru-RU", {
-    day: "2-digit",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: zone,
-  }).format(new Date(value));
-
 export default function ForecastChart({
   rows,
   zone,
@@ -33,6 +17,16 @@ export default function ForecastChart({
   rows: ForecastRecord[];
   zone: string;
 }) {
+  const { t, intlLocale, number, time, turbineName } = useI18n();
+  const compactDate = (value: string) =>
+    new Intl.DateTimeFormat(intlLocale, {
+      day: "2-digit",
+      // Numeric Kazakh months also work in browsers with partial CLDR locale data.
+      month: intlLocale === "kk-KZ" ? "2-digit" : "short",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: zone,
+    }).format(new Date(value));
   const ids = [...new Set(rows.map((row) => row.turbine_id))];
   const data = useMemo(() => {
     const points = new Map<string, Record<string, string | number>>();
@@ -49,7 +43,7 @@ export default function ForecastChart({
     <div
       className="chart"
       role="img"
-      aria-label="Почасовой прогноз выбранных турбин. Точные значения приведены в таблице ниже."
+      aria-label={t("Почасовой прогноз выбранных турбин. Точные значения приведены в таблице ниже.")}
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
@@ -68,7 +62,7 @@ export default function ForecastChart({
             axisLine={false}
             tickLine={false}
             tick={{ fill: "#586f78", fontSize: 11 }}
-            tickFormatter={(value) => compactDate(String(value), zone)}
+            tickFormatter={(value) => compactDate(String(value))}
             dy={8}
           />
           <YAxis
@@ -76,12 +70,12 @@ export default function ForecastChart({
             tickLine={false}
             tick={{ fill: "#586f78", fontSize: 11 }}
             width={54}
-            tickFormatter={(value) => String(Number(value.toFixed(2)))}
+            tickFormatter={(value) => new Intl.NumberFormat(intlLocale, { maximumFractionDigits: 2 }).format(Number(value))}
           />
           <Tooltip
-            labelFormatter={(label) => formatTime(String(label), zone)}
+            labelFormatter={(label) => time(String(label), zone)}
             formatter={(value, name) => [
-              number(Number(value)),
+              number(Number(value), 3),
               turbineName(String(name)),
             ]}
             contentStyle={{

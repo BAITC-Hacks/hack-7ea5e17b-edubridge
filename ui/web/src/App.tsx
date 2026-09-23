@@ -26,7 +26,8 @@ import {
   Wind,
   X,
 } from "lucide-react";
-import { formatTime, isSynthetic, weatherProvenance } from "./data";
+import { isSynthetic, weatherProvenance } from "./data";
+import { useI18n } from "./i18n";
 import type { Run, RunRequest } from "./data";
 import { ACTIVE, useForecast } from "./useForecast";
 import EvaluationPanel from "./EvaluationPanel";
@@ -43,15 +44,6 @@ const STATUS: Record<string, string> = {
   failed: "Ошибка расчёта",
 };
 const STAGES = ["fetching_weather", "validating", "forecasting", "analysing"];
-const turbineName = (id: string) =>
-  ({ turbine_1: "Турбина 01", turbine_2: "Турбина 02" })[id] || id;
-const number = (value: number | undefined, digits = 3) =>
-  value === undefined
-    ? "—"
-    : new Intl.NumberFormat("ru-RU", {
-        maximumFractionDigits: digits,
-        minimumFractionDigits: digits,
-      }).format(value);
 const asText = (value: unknown) =>
   value === null || value === undefined || value === ""
     ? "Не предоставлено"
@@ -64,8 +56,9 @@ const warningList = (value: unknown): string[] =>
 type Tab = "forecast" | "sources" | "evaluation";
 
 function Logo() {
+  const { t } = useI18n();
   return (
-    <a className="brand" href="#overview" aria-label="JelAI — обзор">
+    <a className="brand" href="#overview" aria-label={t("JelAI — обзор")}>
       <img src="/assets/jelai-mark.svg" alt="" />
       <span>
         Jel<span className="brand-ai">AI</span>
@@ -76,6 +69,7 @@ function Logo() {
 }
 
 function AgentSteps({ run, busy }: { run?: Run; busy: boolean }) {
+  const { t } = useI18n();
   const events = run?.events || [];
   const current = run?.status;
   return (
@@ -100,9 +94,9 @@ function AgentSteps({ run, busy }: { run?: Run; busy: boolean }) {
                 String(index + 1).padStart(2, "0")
               )}
             </span>
-            <span>{STATUS[stage]}</span>
+            <span>{t(STATUS[stage])}</span>
             <span className="step-end">
-              {done ? "Готово" : active ? "Сейчас" : "—"}
+              {done ? t("Готово") : active ? t("Сейчас") : "—"}
             </span>
           </div>
         );
@@ -112,6 +106,7 @@ function AgentSteps({ run, busy }: { run?: Run; busy: boolean }) {
 }
 
 function Provenance({ result }: { result: Result }) {
+  const { t, time, turbineName, message } = useI18n();
   const metadata = weatherProvenance(result.run, result.rows);
   const warnings = [
     ...new Set([
@@ -123,8 +118,10 @@ function Provenance({ result }: { result: Result }) {
     <div className="provenance-content">
       <div className="section-heading">
         <div>
-          <h2>Откуда берётся прогноз</h2>
-          <p>Версия модели, погодный выпуск и границы доступных данных.</p>
+          <h2>{t("Откуда берётся прогноз")}</h2>
+          <p>
+            {t("Версия модели, погодный выпуск и границы доступных данных.")}
+          </p>
         </div>
         <Database size={23} />
       </div>
@@ -145,12 +142,20 @@ function Provenance({ result }: { result: Result }) {
               "Обучение до": row.training_cutoff,
             }).map(([key, value]) => (
               <div className="metadata-row" key={key}>
-                <span>{key}</span>
-                <strong>{asText(value)}</strong>
+                <span>{t(key)}</span>
+                <strong>
+                  {["Выпуск погоды", "Доступен с", "Обучение до"].includes(
+                    key,
+                  ) &&
+                  typeof value === "string" &&
+                  value
+                    ? time(value, "UTC")
+                    : message(asText(value))}
+                </strong>
               </div>
             ))}
             <details>
-              <summary>Контрольная сумма и метаданные</summary>
+              <summary>{t("Контрольная сумма и метаданные")}</summary>
               <pre>{JSON.stringify(row, null, 2)}</pre>
             </details>
           </article>
@@ -161,18 +166,21 @@ function Provenance({ result }: { result: Result }) {
           <TriangleAlert size={16} />
           <div>
             {warnings.map((warning) => (
-              <p key={warning}>{warning}</p>
+              <p key={warning}>{message(warning)}</p>
             ))}
           </div>
         </div>
       )}
       <p className="muted fine-print">
-        Историческая доступность проверяется по исходным артефактам сервиса.
-        Наличие метаданных на экране само по себе её не подтверждает.
+        {t(
+          "Историческая доступность проверяется по исходным артефактам сервиса. Наличие метаданных на экране само по себе её не подтверждает.",
+        )}
       </p>
       <details className="journal">
         <summary>
-          <Activity size={15} /> Полный журнал агента <ChevronDown size={15} />
+          <Activity size={15} />
+          {t("Полный журнал агента")}
+          <ChevronDown size={15} />
         </summary>
         <pre>{JSON.stringify(result.run.events || result.run, null, 2)}</pre>
       </details>
@@ -181,6 +189,8 @@ function Provenance({ result }: { result: Result }) {
 }
 
 export default function App() {
+  const { locale, setLocale, t, number, time, turbineName, message } =
+    useI18n();
   const [mode, setMode] = useState<Mode>("demo");
   const [apiUrl, setApiUrl] = useState("/api");
   const [apiDraft, setApiDraft] = useState("/api");
@@ -201,7 +211,9 @@ export default function App() {
   const synthetic =
     mode === "demo" || (!!result && isSynthetic(rows, result.run));
   const fixtureUnit = rows[0]?.target_unit === "fixture_dimensionless";
-  const quantity = fixtureUnit ? "Демо-значение" : "Нормализованная мощность";
+  const quantity = fixtureUnit
+    ? t("Демо-значение")
+    : t("Нормализованная мощность");
   const active = busy || (!!result && !error && ACTIVE.has(result.run.status));
   const turbineIds = result?.request.turbine_ids || ["turbine_1", "turbine_2"];
   const mean = (id: string) => {
@@ -218,12 +230,12 @@ export default function App() {
   const available =
     result?.run.status === "completed" && rows.length > 0 && !error;
   const status = error
-    ? "Нужна проверка"
+    ? t("Нужна проверка")
     : result
       ? STATUS[result.run.status] || result.run.status
       : mode === "api"
-        ? "Ожидание выпуска"
-        : "Подготовка демо";
+        ? t("Ожидание выпуска")
+        : t("Подготовка демо");
   const runWarnings =
     result?.run.status === "failed" ? asText(result.run.error) : null;
   const apiSynthetic = health?.is_demo === true || health?.mode === "demo";
@@ -272,10 +284,14 @@ export default function App() {
   return (
     <div className="app-shell">
       <a className="skip-link" href="#analysis">
-        К данным прогноза
+        {t("К данным прогноза")}
       </a>
-      <aside className="sidebar" aria-label="Навигация">
-        <a className="rail-logo" href="#overview" aria-label="JelAI — начало">
+      <aside className="sidebar" aria-label={t("Навигация")}>
+        <a
+          className="rail-logo"
+          href="#overview"
+          aria-label={t("JelAI — начало")}
+        >
           <img src="/assets/jelai-mark.svg" alt="JelAI" />
         </a>
         <div className="rail-nav">
@@ -287,16 +303,16 @@ export default function App() {
               setTab("forecast");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            title="Обзор"
-            aria-label="Обзор"
+            title={t("Обзор")}
+            aria-label={t("Обзор")}
           >
             <LayoutGrid />
           </button>
           <button
             className="rail-button"
             onClick={() => navigate("forecast")}
-            title="Почасовой прогноз"
-            aria-label="Почасовой прогноз"
+            title={t("Почасовой прогноз")}
+            aria-label={t("Почасовой прогноз")}
           >
             <BarChart3 />
           </button>
@@ -305,8 +321,8 @@ export default function App() {
               tab === "sources" ? "rail-button selected" : "rail-button"
             }
             onClick={() => navigate("sources")}
-            title="Источник и качество"
-            aria-label="Источник и качество"
+            title={t("Источник и качество")}
+            aria-label={t("Источник и качество")}
           >
             <Database />
           </button>
@@ -315,8 +331,8 @@ export default function App() {
               tab === "evaluation" ? "rail-button selected" : "rail-button"
             }
             onClick={() => navigate("evaluation")}
-            title="Оценка модели"
-            aria-label="Оценка модели"
+            title={t("Оценка модели")}
+            aria-label={t("Оценка модели")}
           >
             <ShieldCheck />
           </button>
@@ -325,12 +341,12 @@ export default function App() {
           <button
             className="rail-button"
             onClick={() => setSettings(true)}
-            title="Подключение и бренд"
-            aria-label="Подключение и бренд"
+            title={t("Подключение и бренд")}
+            aria-label={t("Подключение и бренд")}
           >
             <Settings2 />
           </button>
-          <span className="team-avatar" title="HackAlem AI · Энергетика">
+          <span className="team-avatar" title={t("HackAlem AI · Энергетика")}>
             HA
           </span>
         </div>
@@ -339,22 +355,40 @@ export default function App() {
         <header className="topbar">
           <Logo />
           <div className="topbar-center">
-            <span className="breadcrumb">Рабочее пространство</span>
+            <span className="breadcrumb">{t("Рабочее пространство")}</span>
             <span className="breadcrumb-divider">/</span>
-            <span>Ветропарк</span>
+            <span>{t("Ветропарк")}</span>
           </div>
           <div className="topbar-actions">
+            <select
+              className="language-select"
+              aria-label={t("Язык интерфейса")}
+              value={locale}
+              onChange={(event) =>
+                setLocale(event.target.value as "ru" | "kk" | "en")
+              }
+            >
+              <option value="ru" lang="ru">
+                Русский
+              </option>
+              <option value="kk" lang="kk">
+                Қазақша
+              </option>
+              <option value="en" lang="en">
+                English
+              </option>
+            </select>
             <div
               className="mode-switch"
               role="group"
-              aria-label="Источник данных"
+              aria-label={t("Источник данных")}
             >
               <button
                 aria-pressed={mode === "demo"}
                 className={mode === "demo" ? "chosen" : ""}
                 onClick={() => setMode("demo")}
               >
-                Демо
+                {t("Демо")}
               </button>
               <button
                 aria-pressed={mode === "api"}
@@ -366,8 +400,8 @@ export default function App() {
             </div>
             <button
               className="icon-button settings-button"
-              title="Настройки подключения"
-              aria-label="Настройки подключения"
+              title={t("Настройки подключения")}
+              aria-label={t("Настройки подключения")}
               onClick={() => setSettings(true)}
             >
               <Settings2 size={18} />
@@ -378,9 +412,10 @@ export default function App() {
         <div className="workspace">
           <div className="page-heading">
             <div>
-              <div className="eyebrow">ЭНЕРГЕТИКА · HACKALEM AI</div>
+              <div className="eyebrow">{t("ЭНЕРГЕТИКА · HACKALEM AI")}</div>
               <h1>
-                Обзор ветропарка<span className="heading-dot">.</span>
+                {t("Обзор ветропарка")}
+                <span className="heading-dot">.</span>
               </h1>
             </div>
             <span
@@ -388,29 +423,29 @@ export default function App() {
             >
               <span className="status-dot" />
               {mode === "demo"
-                ? "Демонстрационный режим"
+                ? t("Демонстрационный режим")
                 : synthetic || apiSynthetic
-                  ? "API · синтетическое демо"
+                  ? t("API · синтетическое демо")
                   : health
-                    ? "API подключён"
-                    : "Режим API"}
+                    ? t("API подключён")
+                    : t("Режим API")}
             </span>
           </div>
 
-          <section className="hero" aria-label="Обзор выпуска">
+          <section className="hero" aria-label={t("Обзор выпуска")}>
             <div className="hero-shade" />
             <div className="hero-content">
               <span className="hero-kicker">
-                <Wind size={16} /> JELAI / ПРОГНОЗ ВЕТРОЭНЕРГИИ
+                <Wind size={16} />
+                {t("JELAI / ПРОГНОЗ ВЕТРОЭНЕРГИИ")}
               </span>
               <h2>
-                Энергия ветра.
+                {t("Энергия ветра.")}
                 <br />
-                Ясность на 48 часов.
+                {t("Ясность на 48 часов.")}
               </h2>
               <p className="hero-description">
-                От погодного выпуска
-                <br />к почасовому прогнозу.
+                {t("От погодного выпуска к почасовому прогнозу.")}
               </p>
               <div className="hero-metrics">
                 {turbineIds.map((id, index) => (
@@ -423,8 +458,8 @@ export default function App() {
                     <strong>{number(mean(id))}</strong>
                     <small>
                       {fixtureUnit
-                        ? "Условное значение · среднее"
-                        : "Норм. мощность · среднее"}
+                        ? t("Условное значение · среднее")
+                        : t("Норм. мощность · среднее")}
                     </small>
                   </div>
                 ))}
@@ -433,27 +468,36 @@ export default function App() {
                 <Info size={13} />
                 <span>
                   {synthetic
-                    ? "Синтетические данные · не реальный прогноз"
-                    : "Исторический расчёт · не live-телеметрия"}
+                    ? t("Синтетические данные · не реальный прогноз")
+                    : t("Исторический расчёт · не live-телеметрия")}
                 </span>
               </div>
             </div>
             <div className="agent-card">
               <div className="card-kicker">
                 <span>
-                  <Sparkles size={15} /> AI-агент
+                  <Sparkles size={15} />
+                  {t("AI-агент")}
                 </span>
                 <span className={`agent-state ${active ? "running" : ""}`}>
                   <span />
-                  {active ? "В работе" : available ? "Готово" : "Ожидание"}
+                  {active
+                    ? t("В работе")
+                    : available
+                      ? t("Готово")
+                      : t("Ожидание")}
                 </span>
               </div>
-              <h3>{status}</h3>
+              <h3>{t(status)}</h3>
               <AgentSteps run={result?.run} busy={active} />
               <div className="agent-bottom">
-                <span>Горизонт выпуска</span>
+                <span>{t("Горизонт выпуска")}</span>
                 <strong>
-                  {result ? `${result.request.horizon_hours} ч` : "—"}
+                  {result
+                    ? t("{hours} ч", {
+                        hours: number(result.request.horizon_hours, 0),
+                      })
+                    : "—"}
                 </strong>
               </div>
               <button
@@ -462,25 +506,26 @@ export default function App() {
                 onClick={() => void state.refresh()}
               >
                 <RefreshCw size={13} className={busy ? "spin" : ""} />
-                Обновить статус
+                {t("Обновить статус")}
                 <ArrowRight size={13} />
               </button>
             </div>
-            <span className="scene-caption">Иллюстрация ветропарка</span>
+            <span className="scene-caption">{t("Иллюстрация ветропарка")}</span>
           </section>
 
           <form
             className="controls-card"
             onSubmit={submit}
-            aria-label="Параметры выпуска"
+            aria-label={t("Параметры выпуска")}
           >
             <label className="date-field">
               <span>
-                <CalendarDays size={13} /> Дата выпуска
+                <CalendarDays size={13} />
+                {t("Дата выпуска")}
               </span>
               <input
                 type="date"
-                aria-label="Дата выпуска"
+                aria-label={t("Дата выпуска")}
                 min="2026-01-31"
                 max="2026-02-28"
                 required
@@ -489,10 +534,10 @@ export default function App() {
               />
             </label>
             <label className="hour-field">
-              <span>Время, UTC</span>
+              <span>{t("Время, UTC")}</span>
               <select
                 value={hour}
-                aria-label="Время выпуска UTC"
+                aria-label={t("Время выпуска UTC")}
                 onChange={(event) => setHour(event.target.value)}
               >
                 {Array.from({ length: 24 }, (_, h) =>
@@ -505,23 +550,23 @@ export default function App() {
               </select>
             </label>
             <label className="turbine-field">
-              <span>Турбины</span>
+              <span>{t("Турбины")}</span>
               <select
-                aria-label="Турбины"
+                aria-label={t("Турбины")}
                 value={selection}
                 onChange={(event) => setSelection(event.target.value)}
               >
-                <option value="both">Обе турбины</option>
-                <option value="turbine_1">Турбина 01</option>
-                <option value="turbine_2">Турбина 02</option>
+                <option value="both">{t("Обе турбины")}</option>
+                <option value="turbine_1">{t("Турбина 01")}</option>
+                <option value="turbine_2">{t("Турбина 02")}</option>
               </select>
             </label>
             <div className="horizon-field">
-              <span>Горизонт</span>
+              <span>{t("Горизонт")}</span>
               <div
                 className="segmented"
                 role="group"
-                aria-label="Горизонт прогноза"
+                aria-label={t("Горизонт прогноза")}
               >
                 {([24, 48] as const).map((value) => (
                   <button
@@ -531,7 +576,7 @@ export default function App() {
                     className={horizon === value ? "chosen" : ""}
                     onClick={() => setHorizon(value)}
                   >
-                    {value} ч
+                    {t("{hours} ч", { hours: number(value, 0) })}
                   </button>
                 ))}
               </div>
@@ -542,7 +587,7 @@ export default function App() {
               ) : (
                 <Sparkles size={16} />
               )}
-              {active ? "Расчёт…" : "Рассчитать прогноз"}
+              {active ? t("Расчёт…") : t("Рассчитать прогноз")}
               {!active && <ArrowRight size={16} />}
             </button>
           </form>
@@ -552,14 +597,15 @@ export default function App() {
               <div>
                 <strong>
                   {formError
-                    ? "Проверьте параметры"
-                    : "Результат не подтверждён"}
+                    ? t("Проверьте параметры")
+                    : t("Результат не подтверждён")}
                 </strong>
-                <p>{formError || error || runWarnings}</p>
+                <p>{message(formError || error || runWarnings || "")}</p>
                 {error && (
                   <small>
-                    Автоматический опрос приостановлен. Проверьте подключение и
-                    обновите статус.
+                    {t(
+                      "Автоматический опрос приостановлен. Проверьте подключение и обновите статус.",
+                    )}
                   </small>
                 )}
               </div>
@@ -569,7 +615,7 @@ export default function App() {
                   onClick={() => void state.refresh()}
                   disabled={busy}
                 >
-                  Повторить запрос
+                  {t("Повторить запрос")}
                 </button>
               )}
             </div>
@@ -577,12 +623,16 @@ export default function App() {
 
           <section id="analysis" className="analysis-section" ref={analysis}>
             <div className="analysis-toolbar">
-              <div className="tabs" role="tablist" aria-label="Данные прогноза">
+              <div
+                className="tabs"
+                role="tablist"
+                aria-label={t("Данные прогноза")}
+              >
                 {(
                   [
-                    ["forecast", "Прогноз"],
-                    ["sources", "Источник и качество"],
-                    ["evaluation", "Оценка модели"],
+                    ["forecast", t("Прогноз")],
+                    ["sources", t("Источник и качество")],
+                    ["evaluation", t("Оценка модели")],
                   ] as const
                 ).map(([key, label]) => (
                   <button
@@ -624,12 +674,12 @@ export default function App() {
               <label className="timezone">
                 <Clock3 size={13} />
                 <select
-                  aria-label="Часовой пояс отображения"
+                  aria-label={t("Часовой пояс отображения")}
                   value={zone}
                   onChange={(event) => setZone(event.target.value)}
                 >
                   <option value="UTC">UTC</option>
-                  <option value="Asia/Almaty">Алматы · UTC+5</option>
+                  <option value="Asia/Almaty">{t("Алматы · UTC+5")}</option>
                 </select>
               </label>
             </div>
@@ -638,12 +688,23 @@ export default function App() {
                 <div className="run-caption">
                   <span>
                     <span className="tiny-dot" />
-                    Выпуск {formatTime(result.request.issue_time, zone)} ·{" "}
-                    {result.request.horizon_hours} ч ·{" "}
-                    {result.request.turbine_ids.map(turbineName).join(", ")}
+                    {t("Выпуск {date}", {
+                      date: time(result.request.issue_time, zone),
+                    })}{" "}
+                    ·{" "}
+                    {t("{hours} ч", {
+                      hours: number(result.request.horizon_hours, 0),
+                    })}{" "}
+                    · {result.request.turbine_ids.map(turbineName).join(", ")}
                   </span>
                   <span className="run-id" title={result.run.run_id}>
-                    ID {result.run.run_id} · рев. {result.run.revision ?? "—"}
+                    {t("ID {id} · рев. {revision}", {
+                      id: result.run.run_id,
+                      revision:
+                        result.run.revision === undefined
+                          ? "—"
+                          : number(result.run.revision, 0),
+                    })}
                   </span>
                 </div>
                 <div
@@ -658,8 +719,10 @@ export default function App() {
                         <article className="chart-card panel">
                           <div className="section-heading">
                             <div>
-                              <h2>Почасовой прогноз</h2>
-                              <p>{quantity} · среднее за час</p>
+                              <h2>{t("Почасовой прогноз")}</h2>
+                              <p>
+                                {t("{quantity} · среднее за час", { quantity })}
+                              </p>
                             </div>
                             <div className="chart-legend">
                               {turbineIds.map((id, i) => (
@@ -674,7 +737,7 @@ export default function App() {
                             fallback={
                               <div className="chart chart-loading">
                                 <LoaderCircle size={22} className="spin" />
-                                <span>Подготовка графика</span>
+                                <span>{t("Подготовка графика")}</span>
                               </div>
                             }
                           >
@@ -682,14 +745,16 @@ export default function App() {
                           </Suspense>
                           <div className="chart-note">
                             <Info size={12} />
-                            Время обозначает конец часа. Фактические наблюдения
-                            не представлены.
+                            {t(
+                              "Время обозначает конец часа. Фактические наблюдения не представлены.",
+                            )}
                           </div>
                         </article>
                         <article className="coverage-card panel">
                           <div className="card-kicker">
                             <span>
-                              <FileCheck2 size={16} /> Полнота прогноза
+                              <FileCheck2 size={16} />
+                              {t("Полнота прогноза")}
                             </span>
                             <CheckCheck size={17} />
                           </div>
@@ -709,25 +774,28 @@ export default function App() {
                             </svg>
                             <div>
                               <strong>
-                                {coverage}
+                                {number(coverage, 0)}
                                 <span>%</span>
                               </strong>
-                              <small>часовой сетки</small>
+                              <small>{t("часовой сетки")}</small>
                             </div>
                           </div>
                           <div className="coverage-bottom">
                             <span>
-                              Получено значений
+                              {t("Получено значений")}
                               <strong>
-                                {rows.length} <small>/ {expected}</small>
+                                {number(rows.length, 0)}{" "}
+                                <small>/ {number(expected, 0)}</small>
                               </strong>
                             </span>
                             <span>
-                              Пропущено часов
-                              <strong>{expected - rows.length}</strong>
+                              {t("Пропущено часов")}
+                              <strong>
+                                {number(expected - rows.length, 0)}
+                              </strong>
                             </span>
                           </div>
-                          <p>Полнота данных, не точность модели.</p>
+                          <p>{t("Полнота данных, не точность модели.")}</p>
                         </article>
                       </div>
                       <div className="bottom-grid">
@@ -736,22 +804,21 @@ export default function App() {
                             <CloudSun size={22} />
                           </span>
                           <div>
-                            <span className="label">ПОГОДНЫЙ ИСТОЧНИК</span>
-                            <h3>{asText(rows[0]?.weather_model)}</h3>
+                            <span className="label">
+                              {t("ПОГОДНЫЙ ИСТОЧНИК")}
+                            </span>
+                            <h3>{message(asText(rows[0]?.weather_model))}</h3>
                             <p>
-                              Выпуск:{" "}
+                              {t("Выпуск:")}{" "}
                               {rows[0]?.weather_run_time
-                                ? formatTime(
-                                    String(rows[0].weather_run_time),
-                                    zone,
-                                  )
-                                : "не указан"}
+                                ? time(String(rows[0].weather_run_time), zone)
+                                : t("не указан")}
                             </p>
                           </div>
                           <button
                             className="circle-button"
-                            title="Подробнее об источнике"
-                            aria-label="Подробнее об источнике"
+                            title={t("Подробнее об источнике")}
+                            aria-label={t("Подробнее об источнике")}
                             onClick={() => setTab("sources")}
                           >
                             <ArrowUpRight size={17} />
@@ -762,22 +829,22 @@ export default function App() {
                             <ShieldCheck size={21} />
                           </span>
                           <div>
-                            <span className="label">ПРОВЕРЯЕМОСТЬ</span>
+                            <span className="label">{t("ПРОВЕРЯЕМОСТЬ")}</span>
                             <h3>
                               {synthetic
-                                ? "Синтетический пример"
-                                : "Метаданные выпуска"}
+                                ? t("Синтетический пример")
+                                : t("Метаданные выпуска")}
                             </h3>
                             <p>
                               {synthetic
-                                ? "Точность модели не измеряется"
-                                : "Источник, версия модели и cutoff"}
+                                ? t("Точность модели не измеряется")
+                                : t("Источник, версия модели и cutoff")}
                             </p>
                           </div>
                           <button
                             className="circle-button"
-                            title="Открыть оценку модели"
-                            aria-label="Открыть оценку модели"
+                            title={t("Открыть оценку модели")}
+                            aria-label={t("Открыть оценку модели")}
                             onClick={() => setTab("evaluation")}
                           >
                             <ArrowUpRight size={17} />
@@ -789,13 +856,15 @@ export default function App() {
                         <div className="section-heading">
                           <div>
                             <h2>
-                              Почасовые значения{" "}
-                              <span className="count-badge">{rows.length}</span>
+                              {t("Почасовые значения")}{" "}
+                              <span className="count-badge">
+                                {number(rows.length, 0)}
+                              </span>
                             </h2>
                             <p>
                               {synthetic
-                                ? "Синтетический пример"
-                                : "Результат API"}{" "}
+                                ? t("Синтетический пример")
+                                : t("Результат API")}{" "}
                               · {quantity.toLowerCase()} · {zone}
                             </p>
                           </div>
@@ -804,36 +873,43 @@ export default function App() {
                             onClick={downloadCsv}
                             disabled={!result.csv}
                           >
-                            <ArrowDownToLine size={15} /> Скачать CSV
+                            <ArrowDownToLine size={15} />
+                            {t("Скачать CSV")}
                           </button>
                         </div>
                         {result.csvError && (
                           <p role="alert" className="error-inline">
-                            CSV недоступен: {result.csvError}
+                            {t("CSV недоступен: {error}", {
+                              error: message(result.csvError),
+                            })}
                           </p>
                         )}
                         <div className="table-scroll">
                           <table>
                             <thead>
                               <tr>
-                                <th>Конец часового интервала</th>
-                                <th>Турбина</th>
-                                <th>Горизонт</th>
+                                <th>{t("Конец часового интервала")}</th>
+                                <th>{t("Турбина")}</th>
+                                <th>{t("Горизонт")}</th>
                                 <th>{quantity}</th>
-                                <th>Источник</th>
+                                <th>{t("Источник")}</th>
                               </tr>
                             </thead>
                             <tbody>
                               {rows.map((row) => (
                                 <tr key={`${row.turbine_id}-${row.valid_time}`}>
-                                  <td>{formatTime(row.valid_time, zone)}</td>
+                                  <td>{time(row.valid_time, zone)}</td>
                                   <td>
                                     <span
                                       className={`legend-dot turbine-${turbineIds.indexOf(row.turbine_id)}`}
                                     />
                                     {turbineName(row.turbine_id)}
                                   </td>
-                                  <td>+{row.lead_hours} ч</td>
+                                  <td>
+                                    {t("+{hours} ч", {
+                                      hours: number(row.lead_hours, 0),
+                                    })}
+                                  </td>
                                   <td className="numeric">
                                     {number(row.prediction, 4)}
                                   </td>
@@ -841,7 +917,7 @@ export default function App() {
                                     <span
                                       className={`table-tag ${synthetic ? "synthetic" : ""}`}
                                     >
-                                      {synthetic ? "Синтетический" : "API"}
+                                      {synthetic ? t("Синтетический") : "API"}
                                     </span>
                                   </td>
                                 </tr>
@@ -851,10 +927,12 @@ export default function App() {
                         </div>
                         <div className="table-footer">
                           <span>
-                            Значения турбин не суммируются и не переводятся в
-                            МВт без подтверждённого масштаба.
+                            {t(
+                              "Значения турбин не суммируются и не переводятся в МВт без подтверждённого масштаба.",
+                            )}
                           </span>
-                          <Check size={13} /> CSV сверяется с результатом
+                          <Check size={13} />
+                          {t("CSV сверяется с результатом")}
                         </div>
                       </article>
                     </>
@@ -882,15 +960,19 @@ export default function App() {
                 </span>
                 <h2>
                   {active
-                    ? status
+                    ? t(status)
                     : error || runWarnings
-                      ? "Прогноз пока недоступен"
-                      : "Начните с исторического выпуска"}
+                      ? t("Прогноз пока недоступен")
+                      : t("Начните с исторического выпуска")}
                 </h2>
                 <p>
                   {active
-                    ? "Агент проверяет входные данные и готовит результат. Состояние обновляется автоматически."
-                    : "Выберите дату, турбины и горизонт, затем нажмите «Рассчитать прогноз»."}
+                    ? t(
+                        "Агент проверяет входные данные и готовит результат. Состояние обновляется автоматически.",
+                      )
+                    : t(
+                        "Выберите дату, турбины и горизонт, затем нажмите «Рассчитать прогноз».",
+                      )}
                 </p>
                 {mode === "api" && (
                   <button
@@ -898,12 +980,12 @@ export default function App() {
                     onClick={() => setSettings(true)}
                   >
                     <Settings2 size={15} />
-                    Проверить подключение
+                    {t("Проверить подключение")}
                   </button>
                 )}
                 {result?.run.events && (
                   <details className="journal">
-                    <summary>Журнал агента</summary>
+                    <summary>{t("Журнал агента")}</summary>
                     <pre>{JSON.stringify(result.run.events, null, 2)}</pre>
                   </details>
                 )}
@@ -911,18 +993,22 @@ export default function App() {
             )}
             {state.history.length > 1 && (
               <label className="history-select">
-                История запусков
+                {t("История запусков")}
                 <select
-                  aria-label="История запусков"
+                  aria-label={t("История запусков")}
                   value={result?.run.run_id || ""}
                   onChange={(event) => state.selectRun(event.target.value)}
                 >
-                  {!available && <option value="">Текущий расчёт</option>}
+                  {!available && (
+                    <option value="">{t("Текущий расчёт")}</option>
+                  )}
                   {state.history.map((item) => (
                     <option key={item.run.run_id} value={item.run.run_id}>
-                      {formatTime(item.request.issue_time, zone)} ·{" "}
-                      {item.request.horizon_hours} ч ·{" "}
-                      {item.request.turbine_ids.map(turbineName).join(", ")} ·{" "}
+                      {time(item.request.issue_time, zone)} ·{" "}
+                      {t("{hours} ч", {
+                        hours: number(item.request.horizon_hours, 0),
+                      })}{" "}
+                      · {item.request.turbine_ids.map(turbineName).join(", ")} ·{" "}
                       {item.run.run_id}
                     </option>
                   ))}
@@ -933,9 +1019,10 @@ export default function App() {
           <footer>
             <span>
               <img src="/assets/jelai-mark.svg" alt="" />
-              JelAI <i /> Энергия данных. Сила ветра.
+              JelAI <i />
+              {t("Энергия данных. Сила ветра.")}
             </span>
-            <span>HackAlem AI 2026 · Трек «Энергетика»</span>
+            <span>{t("HackAlem AI 2026 · Трек «Энергетика»")}</span>
           </footer>
         </div>
       </main>
@@ -947,31 +1034,33 @@ export default function App() {
         aria-labelledby="connection-title"
       >
         <div className="dialog-heading">
-          <h2 id="connection-title">Подключение и бренд</h2>
+          <h2 id="connection-title">{t("Подключение и бренд")}</h2>
           <button
             className="icon-button"
-            aria-label="Закрыть настройки"
+            aria-label={t("Закрыть настройки")}
             onClick={() => setSettings(false)}
           >
             <X size={20} />
           </button>
         </div>
         <p>
-          Режим API использует погодный сервис команды. Демо работает
-          самостоятельно.
+          {t(
+            "Режим API использует погодный сервис команды. Демо работает самостоятельно.",
+          )}
         </p>
         <label>
-          Адрес API
+          {t("Адрес API")}
           <input
             value={apiDraft}
-            aria-label="Адрес API"
+            aria-label={t("Адрес API")}
             onChange={(event) => setApiDraft(event.target.value)}
             placeholder="/api"
           />
         </label>
         <p className="fine-print muted">
-          Локальный путь /api подключён к серверу команды. Другой адрес должен
-          разрешать запросы из браузера.
+          {t(
+            "Локальный путь /api подключён к серверу команды. Другой адрес должен разрешать запросы из браузера.",
+          )}
         </p>
         <div className="dialog-actions">
           <button
@@ -981,7 +1070,7 @@ export default function App() {
               setMode("api");
             }}
           >
-            Применить адрес
+            {t("Применить адрес")}
             <Check size={15} />
           </button>
           <button
@@ -994,36 +1083,40 @@ export default function App() {
             ) : (
               <Radio size={15} />
             )}
-            Проверить
+            {t("Проверить")}
           </button>
         </div>
         {state.healthError && (
           <p className="error-inline" role="alert">
-            {state.healthError}
+            {message(state.healthError)}
           </p>
         )}
         {health && (
           <div className="health-result">
             <strong>
               {apiSynthetic
-                ? "API отвечает · синтетическое демо"
-                : "API отвечает"}
+                ? t("API отвечает · синтетическое демо")
+                : t("API отвечает")}
             </strong>
             <details>
-              <summary>Готовность сервиса</summary>
+              <summary>{t("Готовность сервиса")}</summary>
               <pre>{JSON.stringify(health, null, 2)}</pre>
             </details>
           </div>
         )}
         <div className="brand-download">
           <img src="/assets/jelai-logo.svg" alt="JelAI" />
-          <p>«Жел» + AI. Три потока вокруг центра — ветер, данные и прогноз.</p>
+          <p>
+            {t(
+              "«Жел» + AI. Три потока вокруг центра — ветер, данные и прогноз.",
+            )}
+          </p>
           <a href="/assets/jelai-logo.svg" download="jelai-logo.svg">
             <ArrowDownToLine size={15} />
-            Скачать логотип SVG
+            {t("Скачать логотип SVG")}
           </a>
           <a href="/assets/jelai-mark.svg" download="jelai-mark.svg">
-            Скачать знак
+            {t("Скачать знак")}
           </a>
         </div>
       </dialog>

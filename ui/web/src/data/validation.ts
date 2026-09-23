@@ -394,10 +394,11 @@ export function weatherProvenance(
 export function formatTime(
   iso: string | null | undefined,
   zone = "UTC",
+  locale = "ru-RU",
 ): string {
   if (!iso) return "Не предоставлено";
   try {
-    return new Intl.DateTimeFormat("ru-RU", {
+    return new Intl.DateTimeFormat(locale, {
       timeZone: zone,
       day: "2-digit",
       month: "2-digit",

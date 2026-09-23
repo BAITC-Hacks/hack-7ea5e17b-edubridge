@@ -235,6 +235,17 @@ main {
   gap: 18px;
   align-items: center;
 }
+.language-select {
+  min-height: 35px;
+  max-width: 120px;
+  padding: 6px 9px;
+  border: 1px solid #dce8e8;
+  border-radius: 8px;
+  background: #fff;
+  color: #2e7380;
+  font-size: 12px;
+  cursor: pointer;
+}
 .mode-switch {
   display: flex;
   align-items: center;
@@ -2543,4 +2554,41 @@ footer {
   gap: 10px;
   color: var(--muted);
   font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    height: auto;
+    min-height: 73px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 18px;
+  }
+  .topbar .brand { flex-shrink: 0; }
+  .topbar-actions {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .language-select { font-size: 11px; }
+  /* Translated headings can wrap to different heights: keep both cards in flow. */
+  .hero {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 23px 20px 30px;
+  }
+  .hero-content {
+    position: relative;
+    inset: auto;
+    height: auto;
+    width: 100%;
+  }
+  .hero-metrics { margin-top: 24px; }
+  .agent-card {
+    position: relative;
+    inset: auto;
+    width: auto;
+  }
 }
