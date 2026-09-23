@@ -1,0 +1,33 @@
+{
+  "mode": "archive",
+  "weather_provider": "gfs_s3",
+  "model_adapter_module": null,
+  "model_artifact_path": null,
+  "cache_dir": "artifacts/weather-cache",
+  "artifact_dir": "artifacts/runs",
+  "turbines": [
+    {
+      "turbine_id": "turbine_1",
+      "latitude": 43.64515,
+      "longitude": 78.535604,
+      "coordinates_source": "https://maps.app.goo.gl/iN6svMt69D5qRpFU9 redirects to https://www.google.com/maps/search/43.645150,+78.535604",
+      "is_synthetic": false
+    },
+    {
+      "turbine_id": "turbine_2",
+      "latitude": 43.643198,
+      "longitude": 78.538828,
+      "coordinates_source": "https://maps.app.goo.gl/8UQMwsYavY6nLvFY8 redirects to https://www.google.com/maps/search/43.643198,+78.538828",
+      "is_synthetic": false
+    }
+  ],
+  "replay_timezone": "Asia/Almaty",
+  "replay_issue_hour": 23,
+  "timestamp_convention": "hour_end",
+  "replay_assumption": "Team assumption: daily issue at 23:00 Asia/Almaty; valid_time denotes the end of each predicted hour, first lead is +1h. Weather features are instantaneous at interval end. Replay issues run January 31 through February 28 inclusive. Source dataset timezone and original timestamp convention must be established by the model owner. Model package, adapter, history_timezone and train_cutoff are required before real forecasts.",
+  "history_timezone": null,
+  "train_cutoff": null,
+  "default_horizon_hours": 48,
+  "api_host": "127.0.0.1",
+  "api_port": 8000
+}
