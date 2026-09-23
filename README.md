@@ -4,7 +4,17 @@ HackAlem AI, трек «Энергетика», задача Самрук-Каз
 
 **Реализовано:** строгие контракты; загрузка оперативных архивных GFS; raw cache и provenance; агент загрузка → проверка → модель → анализ → ревизия; FastAPI; CLI; календарь replay и контроль покрытия; тесты и CI.
 
-**Продукт пока не собран полностью:** модель, история ВЭС, её временная семантика и метрики — зона участника №2; UI — участника №3. Реальный прогноз мощности требует их интеграции. Синтетический режим проверяет платформу, **не является прогнозом ВЭС или доказательством точности**. `/evaluation` возвращает `unavailable` до интеграции метрик.
+**Модель участника №2 готова:** пакет `models/wind-power-v1`, 60 выпусков реальной архивной погоды, временное сравнение пяти кандидатов и проверка реального агента на 24/48 часов. UI участника №3 также есть в репозитории. Остаются полный февральский replay, подключение метрик к API/UI и командная сдача; `/evaluation` пока возвращает `unavailable`. Исходные временные условия SCADA остаются явными предположениями.
+
+Выбранная по tuning модель HGB имеет holdout MAE **0.226919**, простая wind-curve baseline — **0.209460**: на независимом периоде простая модель лучше. Выбор не менялся после просмотра holdout. Это ошибки нормализованной мощности, не проценты точности и не оценка февраля. [Model card](docs/model-card.md), [запуск и воспроизведение](docs/MODEL_REPRODUCIBILITY.md), [передача №1/№3 на казахском](docs/MODEL_HANDOFF_KK.md).
+
+Быстрый запуск готовой модели после установки `.[dev,weather,model]`:
+
+```sh
+.venv/bin/python -m wind_agent --config config/archive-model.json run --issue-time 2026-01-31T18:00:00Z --horizon-hours 48
+```
+
+Синтетический режим отдельно проверяет платформу; его значения не являются прогнозом ВЭС или доказательством точности.
 
 ## Воспроизводимый запуск
 
@@ -13,21 +23,21 @@ Python **3.11**, Git, интернет для установки. Команды
 ```sh
 git clone https://github.com/BAITC-Hacks/hack-7ea5e17b-edubridge.git
 cd hack-7ea5e17b-edubridge
-git switch feat/agent-platform
+git switch feat/forecast-model
 python -m venv .venv
 ```
 
 Windows PowerShell без изменения execution policy:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -e ".[dev,weather]"
+.\.venv\Scripts\python.exe -m pip install -e ".[dev,weather,model]"
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe -m wind_agent --config config/demo.json run --issue-time 2026-01-31T18:00:00Z --horizon-hours 24
 .\.venv\Scripts\python.exe -m wind_agent --config config/demo.json replay --horizon-hours 48
 .\.venv\Scripts\python.exe -m wind_agent --config config/demo.json serve
 ```
 
-Linux/macOS: вместо `.\.venv\Scripts\python.exe` используйте `.venv/bin/python`. Для платформы без GRIB достаточно `pip install -e ".[dev]"`; extra `weather` устанавливает ecCodes. Прямые зависимости зафиксированы в `pyproject.toml`.
+Linux/macOS: вместо `.\.venv\Scripts\python.exe` используйте `.venv/bin/python`. Для платформы без GRIB достаточно `pip install -e ".[dev,model]"`; extra `weather` устанавливает ecCodes. Прямые зависимости зафиксированы в `pyproject.toml`.
 
 API: <http://127.0.0.1:8000/docs>, режим и готовность: <http://127.0.0.1:8000/health>. Остановка — Ctrl+C. **Один процесс/worker на каталог артефактов**; для CLI replay одновременно с API задайте другой `artifact_dir`. При перезапуске незавершённые задания помечаются `failed`, их можно отправить снова.
 
@@ -47,6 +57,8 @@ Demo возвращает постоянный тестовый результа
 Для **всех** нужных GRIB и `.idx` проверяется `max(S3 LastModified) <= issue_time`; допускаются только single-part ETag установленного формата. У multipart `LastModified` может означать начало загрузки: такие объекты исключаются. Политика устанавливает время доступности конкретных архивных объектов, **не точное время исходной публикации NOAA**. Сегодняшний `retrieved_at` не участвует в историческом допуске. [Аудит и первичные источники](docs/weather-source.md), [свидетельства запросов](docs/evidence/).
 
 ## Подключение модели участника №2
+
+Готовый пакет уже подключён в `config/archive-model.json`: модуль `wind_agent.model.interface`, пакет `models/wind-power-v1`, cutoff `2026-01-31T18:00Z`, явная предполагаемая timezone `Etc/GMT-5`. Следующие пункты описывают контракт для замены пакета; шаблон `config/archive.json` сохраняет незаполненные поля.
 
 1. Подготовить модуль `predict(model_artifact, weather_frame, issue_time, horizon_hours) -> pandas.DataFrame`; первый аргумент — **путь каталога пакета** с `model.joblib` и `metadata.json` по схеме `ModelArtifact`. Обязательные колонки результата: `turbine_id`, `valid_time`, `prediction`; дополнительные поля контракта №2 проверяются, его предупреждения сохраняются.
 2. В `config/archive.json` заполнить `model_adapter_module`, `model_artifact_path` (каталог пакета), **подтверждённые `history_timezone` и `train_cutoff`**, определив timezone и смысл timestamp истории. Граница не может быть позже конца января в зоне истории; фактический `ModelArtifact.training_cutoff` также должен быть не позже каждого `issue_time`.

@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "status": "passed",
+  "checked_at_utc": "2026-09-23T10:19:55Z",
+  "scope": "Clean local clone and newly created virtual environment; full automated test suite, lint, dependency consistency and ecCodes import. Not forecast accuracy or a real trained-package smoke test.",
+  "checkout": {
+    "path": "/tmp/hackalem-model-verify-1DKNcV/repo",
+    "source_repository": "/Users/IT department/hackAlem/hack-7ea5e17b-edubridge-latest",
+    "branch": "feat/forecast-model",
+    "commit": "b90b8c1db29a5369290e69944948429386d2b168",
+    "clone_kind": "git clone --local --single-branch; no working-tree files copied",
+    "git_status_after_checks": "clean",
+    "retained_for_final_artifact_verification": true
+  },
+  "environment": {
+    "python": "3.11.16 (main, Sep 1 2026, 14:08:22) [Clang 22.1.3]",
+    "python_implementation": "CPython",
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "virtual_environment": "/tmp/hackalem-model-verify-1DKNcV/repo/.venv",
+    "fresh_virtual_environment": true,
+    "uv": "0.12.18 (01cb90c1a 2026-09-22 aarch64-apple-darwin)",
+    "installed_package_count": 60,
+    "versions": {
+      "wind-agent": "0.1.0",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "scikit-learn": "1.7.2",
+      "joblib": "1.5.2",
+      "pandas": "2.2.3",
+      "fastapi": "0.115.12",
+      "pydantic": "2.11.4",
+      "httpx": "0.28.1",
+      "uvicorn": "0.34.2",
+      "tzdata": "2025.2",
+      "pytest": "8.3.5",
+      "ruff": "0.11.9",
+      "eccodes": "2.44.0",
+      "eccodeslib": "2.49.0.30",
+      "streamlit": "1.64.0",
+      "plotly": "6.9.0"
+    },
+    "eccodes_api_version": "2.49.0"
+  },
+  "commands": [
+    {
+      "command": "git clone --local --branch feat/forecast-model --single-branch '/Users/IT department/hackAlem/hack-7ea5e17b-edubridge-latest' /tmp/hackalem-model-verify-1DKNcV/repo",
+      "exit_code": 0
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": "/tmp/hackalem-python-bootstrap/bin/uv venv --python '/Users/IT department/hackAlem/hack-7ea5e17b-edubridge-latest/.venv/bin/python' .venv",
+      "exit_code": 0
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": "/tmp/hackalem-python-bootstrap/bin/uv pip install --python .venv/bin/python -e '.[dev,weather,model]' -r ui/requirements.txt",
+      "exit_code": 0,
+      "result": "Installed 60 packages; editable project resolved to the clean checkout"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": ".venv/bin/python -m pytest -q",
+      "exit_code": 0,
+      "passed": 321,
+      "failed": 0,
+      "warnings": 1,
+      "duration_seconds": 56.58,
+      "result": "321 passed, 1 warning in 56.58s"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": ".venv/bin/python -m ruff check src/wind_agent tests/model tests/weather scripts/validate_model_package.py",
+      "exit_code": 0,
+      "result": "All checks passed!"
+    },
+    {
+      "cwd": "/tmp/hackalem-model-verify-1DKNcV/repo",
+      "command": "/tmp/hackalem-python-bootstrap/bin/uv pip check --python .venv/bin/python",
+      "exit_code": 0,
+      "result": "Checked 60 packages; all installed packages are compatible"
+    }
+  ],
+  "warnings": [
+    "Existing Starlette test client uses deprecated anyio.abc.BlockingPortal alias; all tests passed."
+  ],
+  "trained_package_real_input_smoke": {
+    "status": "pending",
+    "reason": "Awaiting final trained artifact commit; retained checkout will fetch it and test saved weights against real archived weather."
+  },
+  "limitations": [
+    "This is macOS arm64 verification, not a Windows or Linux result.",
+    "Automated model integration tests include explicitly synthetic fixtures; they do not establish wind-farm forecast accuracy.",
+    "Full real-data replay and final trained-model smoke verification are separate evidence."
+  ]
+}

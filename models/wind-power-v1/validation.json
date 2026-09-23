@@ -1,0 +1,913 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-23T10:33:39.988866+00:00",
+  "design": {
+    "schema_version": "1.0",
+    "model_version": "wind-power-v1",
+    "selection_metric": "equal_turbine_mean_mae",
+    "tie_break": "candidate_order",
+    "holdout_policy": "Refit the tuning winner on train+tune; evaluate once on holdout. Never choose or change parameters from holdout.",
+    "production_policy": "Refit the already selected algorithm on all complete targets paired to the 59 preproduction origins and available by 2026-01-31T18:00:00Z.",
+    "candidates": [
+      {
+        "name": "constant_mean",
+        "algorithm": "constant_mean",
+        "hyperparameters": {}
+      },
+      {
+        "name": "wind_curve",
+        "algorithm": "wind_curve",
+        "hyperparameters": {
+          "bin_width": 1.0
+        }
+      },
+      {
+        "name": "hgb_small",
+        "algorithm": "hist_gradient_boosting",
+        "hyperparameters": {
+          "max_iter": 120,
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 20,
+          "learning_rate": 0.05,
+          "l2_regularization": 1.0
+        }
+      },
+      {
+        "name": "hgb_medium",
+        "algorithm": "hist_gradient_boosting",
+        "hyperparameters": {
+          "max_iter": 120,
+          "max_leaf_nodes": 15,
+          "min_samples_leaf": 20,
+          "learning_rate": 0.08,
+          "l2_regularization": 1.0
+        }
+      },
+      {
+        "name": "hgb_wide",
+        "algorithm": "hist_gradient_boosting",
+        "hyperparameters": {
+          "max_iter": 120,
+          "max_leaf_nodes": 31,
+          "min_samples_leaf": 20,
+          "learning_rate": 0.05,
+          "l2_regularization": 1.0
+        }
+      }
+    ]
+  },
+  "experiment_config_sha256": "0d194e162d4fb54bc33859d7d5ed98c6ef7febef92d6b259a27bcf4ff244ac1b",
+  "hourly_history_sha256": "00a01a8cfb6680f05f16e718fb70bbfbaea709aeb98f86809deb96c0ace529a6",
+  "hourly_report_sha256": "9a4684228771e9e3e1084cd42f4e125fb68eafc28288758a79fd2848e1d4c16c",
+  "weather_manifest_sha256": "58c33a53ef713886c67b008d7135c401b750646426329c0ebd480c4f222ac200",
+  "source_sha256": {
+    "turbine_1": "c4c341582fb2dd348b7187f0128cff265fe055f469413871ebb5db50eef58b5b",
+    "turbine_2": "820578cd18bb557cd30c2e102f3ae5a386dfc6c489a5a15743339c2b017305e5"
+  },
+  "history_semantics": {
+    "history_timezone": "Etc/GMT-5",
+    "source_timestamp_convention": "interval_start",
+    "target_reporting_delay_seconds": 0,
+    "source_semantics_status": "assumed",
+    "timestamp_convention": "hour_end",
+    "source_interval_minutes": 10,
+    "source_value_convention": "ten-minute mean assumed for each interval",
+    "target_unit": "normalized_power",
+    "target_definition": "hourly mean normalized active power; normalization unresolved",
+    "assumptions": [
+      "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; reporting delay is zero and normalization remains unresolved."
+    ]
+  },
+  "splits": {
+    "split_config": {
+      "history_timezone": "Etc/GMT-5",
+      "timezone_status": "explicit_provisional_assumption",
+      "horizon_hours": 48,
+      "target_time_convention": "hour_end",
+      "target_start_exclusive": true,
+      "target_end_inclusive": true,
+      "origin_schedule": "daily at 18:00 UTC",
+      "train_cutoff": "2025-12-30T19:00:00+00:00",
+      "selection_cutoff": "2026-01-14T19:00:00+00:00",
+      "first_forecast_cutoff": "2026-01-31T18:00:00+00:00",
+      "windows": {
+        "train": {
+          "target_start": "2025-11-30T19:00:00+00:00",
+          "target_end": "2025-12-30T19:00:00+00:00",
+          "issue_start": "2025-11-30T18:00:00+00:00",
+          "issue_end": "2025-12-29T18:00:00+00:00",
+          "availability_cutoff": "2025-12-30T19:00:00+00:00"
+        },
+        "tune": {
+          "target_start": "2025-12-31T19:00:00+00:00",
+          "target_end": "2026-01-14T19:00:00+00:00",
+          "issue_start": "2025-12-31T18:00:00+00:00",
+          "issue_end": "2026-01-13T18:00:00+00:00",
+          "availability_cutoff": "2026-01-14T19:00:00+00:00"
+        },
+        "holdout": {
+          "target_start": "2026-01-15T19:00:00+00:00",
+          "target_end": "2026-01-31T18:00:00+00:00",
+          "issue_start": "2026-01-15T18:00:00+00:00",
+          "issue_end": "2026-01-29T18:00:00+00:00",
+          "availability_cutoff": "2026-01-31T18:00:00+00:00"
+        }
+      },
+      "selection_uses_holdout": false
+    },
+    "n_input_forecasts": 5664,
+    "n_assigned_forecasts": 5538,
+    "n_excluded_forecasts": 126,
+    "exclusions": {
+      "outside_declared_windows": 98,
+      "missing_truth": 28
+    },
+    "splits": {
+      "train": {
+        "n_forecasts": 2804,
+        "n_unique_targets": 1426
+      },
+      "tune": {
+        "n_forecasts": 1296,
+        "n_unique_targets": 672
+      },
+      "holdout": {
+        "n_forecasts": 1438,
+        "n_unique_targets": 766
+      }
+    },
+    "target_overlap_between_splits": false
+  },
+  "weather": {
+    "provider": "NOAA operational GFS via AWS Open Data",
+    "weather_model": "gfs_0p25",
+    "wind_height_m": 100,
+    "temperature_height_m": 2,
+    "feature_time_basis": "instant_at_end",
+    "availability_basis": "max S3 LastModified of all required single-part GRIB and index objects; not original NOAA publication time",
+    "completed_origins": 60
+  },
+  "selected_candidate": {
+    "name": "hgb_medium",
+    "algorithm": "hist_gradient_boosting",
+    "hyperparameters": {
+      "max_iter": 120,
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 20,
+      "learning_rate": 0.08,
+      "l2_regularization": 1.0
+    }
+  },
+  "tune": {
+    "constant_mean": {
+      "status": "ok",
+      "eligible_for_selection": true,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1296,
+      "n_unique_targets": 672,
+      "overall": {
+        "mae": 0.3273747758802373,
+        "rmse": 0.35782399411309507,
+        "n_forecasts": 1296,
+        "n_unique_targets": 672
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.3297677659114291,
+          "rmse": 0.36040993421057205,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        },
+        "turbine_2": {
+          "mae": 0.32498178584904547,
+          "rmse": 0.35521922927739674,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.32887964264418007,
+          "rmse": 0.35919767456894636,
+          "n_forecasts": 670,
+          "n_unique_targets": 670
+        },
+        "25-48": {
+          "mae": 0.3257641357335253,
+          "rmse": 0.3563478943248038,
+          "n_forecasts": 626,
+          "n_unique_targets": 626
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.33130289603120755,
+            "rmse": 0.3617928208154691,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.32812473527204955,
+            "rmse": 0.3589239449694377,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.32645638925715265,
+            "rmse": 0.35658364185400215,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.32340353619500106,
+            "rmse": 0.3537530852261492,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1296,
+        "n_scored_forecasts": 1296,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 672,
+        "n_unique_scored_targets": 672
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "tune"
+      ],
+      "equal_turbine_mean_mae": 0.3273747758802373
+    },
+    "wind_curve": {
+      "status": "ok",
+      "eligible_for_selection": true,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1296,
+      "n_unique_targets": 672,
+      "overall": {
+        "mae": 0.24869498593799408,
+        "rmse": 0.2959987411972448,
+        "n_forecasts": 1296,
+        "n_unique_targets": 672
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.24867277959270362,
+          "rmse": 0.2965876468111557,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        },
+        "turbine_2": {
+          "mae": 0.2487171922832846,
+          "rmse": 0.29540866158548595,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.24393343932502456,
+          "rmse": 0.2884749354554401,
+          "n_forecasts": 670,
+          "n_unique_targets": 670
+        },
+        "25-48": {
+          "mae": 0.2537912099486803,
+          "rmse": 0.30384503993022316,
+          "n_forecasts": 626,
+          "n_unique_targets": 626
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.24387588418029094,
+            "rmse": 0.2889986276410414,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.25380683698298556,
+            "rmse": 0.30450060315331084,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.24399099446975817,
+            "rmse": 0.28795029083790724,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.2537755829143751,
+            "rmse": 0.30318805923002273,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1296,
+        "n_scored_forecasts": 1296,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 672,
+        "n_unique_scored_targets": 672
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "tune"
+      ],
+      "equal_turbine_mean_mae": 0.2486949859379941
+    },
+    "hgb_small": {
+      "status": "ok",
+      "eligible_for_selection": true,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1296,
+      "n_unique_targets": 672,
+      "overall": {
+        "mae": 0.23959719144493197,
+        "rmse": 0.2868691237825948,
+        "n_forecasts": 1296,
+        "n_unique_targets": 672
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.2386930792372492,
+          "rmse": 0.2869862055642664,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        },
+        "turbine_2": {
+          "mae": 0.24050130365261482,
+          "rmse": 0.28675199419605096,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.23499086546735581,
+          "rmse": 0.2796175012218319,
+          "n_forecasts": 670,
+          "n_unique_targets": 670
+        },
+        "25-48": {
+          "mae": 0.2445272847436158,
+          "rmse": 0.29443263893841076,
+          "n_forecasts": 626,
+          "n_unique_targets": 626
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.2333524281366413,
+            "rmse": 0.27837027746612664,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.24440911156537581,
+            "rmse": 0.295929938626871,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.23662930279807023,
+            "rmse": 0.2808591864306986,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.24464545792185577,
+            "rmse": 0.2929276859034828,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1296,
+        "n_scored_forecasts": 1296,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 672,
+        "n_unique_scored_targets": 672
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "tune"
+      ],
+      "equal_turbine_mean_mae": 0.23959719144493202
+    },
+    "hgb_medium": {
+      "status": "ok",
+      "eligible_for_selection": true,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1296,
+      "n_unique_targets": 672,
+      "overall": {
+        "mae": 0.23246362875091767,
+        "rmse": 0.2869186710492474,
+        "n_forecasts": 1296,
+        "n_unique_targets": 672
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.23222718852880478,
+          "rmse": 0.2858447146652827,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        },
+        "turbine_2": {
+          "mae": 0.23270006897303058,
+          "rmse": 0.2879886225031391,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.22553527791016528,
+          "rmse": 0.27816985263432104,
+          "n_forecasts": 670,
+          "n_unique_targets": 670
+        },
+        "25-48": {
+          "mae": 0.23987895632808076,
+          "rmse": 0.2959960679076146,
+          "n_forecasts": 626,
+          "n_unique_targets": 626
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.22349454805342264,
+            "rmse": 0.27403345584789485,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.241573624820348,
+            "rmse": 0.29796789921356304,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.2275760077669079,
+            "rmse": 0.28224563575945627,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.23818428783581358,
+            "rmse": 0.2940110125008829,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1296,
+        "n_scored_forecasts": 1296,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 672,
+        "n_unique_scored_targets": 672
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "tune"
+      ],
+      "equal_turbine_mean_mae": 0.2324636287509177
+    },
+    "hgb_wide": {
+      "status": "ok",
+      "eligible_for_selection": true,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1296,
+      "n_unique_targets": 672,
+      "overall": {
+        "mae": 0.23633387264756822,
+        "rmse": 0.2936060347010331,
+        "n_forecasts": 1296,
+        "n_unique_targets": 672
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.23684389115654547,
+          "rmse": 0.29428654216787603,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        },
+        "turbine_2": {
+          "mae": 0.23582385413859092,
+          "rmse": 0.29292394631474467,
+          "n_forecasts": 648,
+          "n_unique_targets": 336
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.22781829070705734,
+          "rmse": 0.2830242491824896,
+          "n_forecasts": 670,
+          "n_unique_targets": 670
+        },
+        "25-48": {
+          "mae": 0.2454479938938018,
+          "rmse": 0.3045244827011416,
+          "n_forecasts": 626,
+          "n_unique_targets": 626
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.2274893218918399,
+            "rmse": 0.28238811419251564,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.246855970082029,
+            "rmse": 0.30650998394355383,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.2281472595222748,
+            "rmse": 0.2836589575765565,
+            "n_forecasts": 335,
+            "n_unique_targets": 335
+          },
+          "25-48": {
+            "mae": 0.24404001770557465,
+            "rmse": 0.30252595074095395,
+            "n_forecasts": 313,
+            "n_unique_targets": 313
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1296,
+        "n_scored_forecasts": 1296,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 672,
+        "n_unique_scored_targets": 672
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "tune"
+      ],
+      "equal_turbine_mean_mae": 0.2363338726475682
+    }
+  },
+  "selection_cutoff": "2026-01-14T19:00:00+00:00",
+  "uses_holdout": false,
+  "holdout": {
+    "constant_mean": {
+      "status": "ok",
+      "eligible_for_selection": false,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1438,
+      "n_unique_targets": 766,
+      "overall": {
+        "mae": 0.3156631774403059,
+        "rmse": 0.35647151395590243,
+        "n_forecasts": 1438,
+        "n_unique_targets": 766
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.31458751954995867,
+          "rmse": 0.3557763568428932,
+          "n_forecasts": 719,
+          "n_unique_targets": 383
+        },
+        "turbine_2": {
+          "mae": 0.3167388353306533,
+          "rmse": 0.3571653180750122,
+          "n_forecasts": 719,
+          "n_unique_targets": 383
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.3146014144775084,
+          "rmse": 0.35517474142326,
+          "n_forecasts": 718,
+          "n_unique_targets": 718
+        },
+        "25-48": {
+          "mae": 0.3167219910615402,
+          "rmse": 0.35776000352930526,
+          "n_forecasts": 720,
+          "n_unique_targets": 720
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.31388368712268194,
+            "rmse": 0.3550054623186901,
+            "n_forecasts": 359,
+            "n_unique_targets": 359
+          },
+          "25-48": {
+            "mae": 0.31528939688715957,
+            "rmse": 0.3565434501589082,
+            "n_forecasts": 360,
+            "n_unique_targets": 360
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.31531914183233484,
+            "rmse": 0.3553439398864885,
+            "n_forecasts": 359,
+            "n_unique_targets": 359
+          },
+          "25-48": {
+            "mae": 0.3181545852359209,
+            "rmse": 0.3589724340382688,
+            "n_forecasts": 360,
+            "n_unique_targets": 360
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1438,
+        "n_scored_forecasts": 1438,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 766,
+        "n_unique_scored_targets": 766
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "holdout"
+      ],
+      "equal_turbine_mean_mae": 0.315663177440306
+    },
+    "wind_curve": {
+      "status": "ok",
+      "eligible_for_selection": false,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1438,
+      "n_unique_targets": 766,
+      "overall": {
+        "mae": 0.20946047652086966,
+        "rmse": 0.2622590645637462,
+        "n_forecasts": 1438,
+        "n_unique_targets": 766
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.20493498502738097,
+          "rmse": 0.25623607997801695,
+          "n_forecasts": 719,
+          "n_unique_targets": 383
+        },
+        "turbine_2": {
+          "mae": 0.21398596801435824,
+          "rmse": 0.2681467978723626,
+          "n_forecasts": 719,
+          "n_unique_targets": 383
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.19333375757416335,
+          "rmse": 0.23807366070081362,
+          "n_forecasts": 718,
+          "n_unique_targets": 718
+        },
+        "25-48": {
+          "mae": 0.22554239902605727,
+          "rmse": 0.28433598572898994,
+          "n_forecasts": 720,
+          "n_unique_targets": 720
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.18882671846402316,
+            "rmse": 0.23153591123231737,
+            "n_forecasts": 359,
+            "n_unique_targets": 359
+          },
+          "25-48": {
+            "mae": 0.22099850640584065,
+            "rmse": 0.27869609320530264,
+            "n_forecasts": 360,
+            "n_unique_targets": 360
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.19784079668430357,
+            "rmse": 0.24443661274202097,
+            "n_forecasts": 359,
+            "n_unique_targets": 359
+          },
+          "25-48": {
+            "mae": 0.23008629164627392,
+            "rmse": 0.28986616427767825,
+            "n_forecasts": 360,
+            "n_unique_targets": 360
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1438,
+        "n_scored_forecasts": 1438,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 766,
+        "n_unique_scored_targets": 766
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "holdout"
+      ],
+      "equal_turbine_mean_mae": 0.2094604765208696
+    },
+    "hgb_medium": {
+      "status": "ok",
+      "eligible_for_selection": false,
+      "target_unit": "normalized_power",
+      "forecast_weighting": "one weight per origin/turbine/valid-time forecast",
+      "target_time_convention": "hour_end",
+      "n_forecasts": 1438,
+      "n_unique_targets": 766,
+      "overall": {
+        "mae": 0.2269187054537401,
+        "rmse": 0.3052290841045063,
+        "n_forecasts": 1438,
+        "n_unique_targets": 766
+      },
+      "by_turbine": {
+        "turbine_1": {
+          "mae": 0.22212587313096158,
+          "rmse": 0.2967411683946689,
+          "n_forecasts": 719,
+          "n_unique_targets": 383
+        },
+        "turbine_2": {
+          "mae": 0.23171153777651865,
+          "rmse": 0.3134872669604274,
+          "n_forecasts": 719,
+          "n_unique_targets": 383
+        }
+      },
+      "by_lead_group": {
+        "1-24": {
+          "mae": 0.20378090708027496,
+          "rmse": 0.2764730029154867,
+          "n_forecasts": 718,
+          "n_unique_targets": 718
+        },
+        "25-48": {
+          "mae": 0.24999223216505675,
+          "rmse": 0.33142993380836405,
+          "n_forecasts": 720,
+          "n_unique_targets": 720
+        }
+      },
+      "by_turbine_and_lead_group": {
+        "turbine_1": {
+          "1-24": {
+            "mae": 0.2000145488223756,
+            "rmse": 0.26827802524486544,
+            "n_forecasts": 359,
+            "n_unique_targets": 359
+          },
+          "25-48": {
+            "mae": 0.24417577709424593,
+            "rmse": 0.32263426720012645,
+            "n_forecasts": 360,
+            "n_unique_targets": 360
+          }
+        },
+        "turbine_2": {
+          "1-24": {
+            "mae": 0.2075472653381743,
+            "rmse": 0.28443196700253076,
+            "n_forecasts": 359,
+            "n_unique_targets": 359
+          },
+          "25-48": {
+            "mae": 0.2558086872358676,
+            "rmse": 0.33999813481351715,
+            "n_forecasts": 360,
+            "n_unique_targets": 360
+          }
+        }
+      },
+      "coverage": {
+        "n_input_forecasts": 1438,
+        "n_scored_forecasts": 1438,
+        "n_excluded_forecasts": 0,
+        "n_unique_input_targets": 766,
+        "n_unique_scored_targets": 766
+      },
+      "exclusions": {
+        "missing_truth": 0,
+        "nonfinite_truth": 0,
+        "invalid_predictions": 0,
+        "reason_counts_may_overlap": true
+      },
+      "selection_note": "Compare candidates only on identical tuning keys; holdout is not a selection set.",
+      "supplied_splits": [
+        "holdout"
+      ],
+      "equal_turbine_mean_mae": 0.2269187054537401
+    }
+  },
+  "holdout_model_training_cutoff": "2026-01-14T19:00:00+00:00",
+  "holdout_refit_rows": {
+    "turbine_1": 2056,
+    "turbine_2": 2044
+  },
+  "holdout_used_for_selection": false,
+  "production_training_cutoff": "2026-01-31T18:00:00+00:00",
+  "production_refit_includes_holdout": true,
+  "holdout_metrics_apply_to": "train+tune refit frozen before holdout; not the final production refit",
+  "february_ground_truth_available": false,
+  "uncertainty_intervals": "not calibrated",
+  "limitations": [
+    "Evaluation covers one recent winter window; overlapping forecast origins are not independent samples.",
+    "Both turbines use the same coarse GFS grid cell; models are fitted separately.",
+    "SCADA timezone, interval convention, reporting delay and normalization remain provisional.",
+    "S3 metadata proves archived-object availability under the declared policy, not original NOAA publication.",
+    "No February truth is supplied; January MAE is not February accuracy."
+  ]
+}
