@@ -30,6 +30,7 @@ import { formatTime, isSynthetic, weatherProvenance } from "./data";
 import type { Run, RunRequest } from "./data";
 import { ACTIVE, useForecast } from "./useForecast";
 import EvaluationPanel from "./EvaluationPanel";
+import AgentAnalysisPanel from "./AgentAnalysisPanel";
 import type { Mode, Result } from "./useForecast";
 
 const STATUS: Record<string, string> = {
@@ -783,6 +784,7 @@ export default function App() {
                           </button>
                         </article>
                       </div>
+                      <AgentAnalysisPanel run={result.run} zone={zone} />
                       <article className="table-card panel">
                         <div className="section-heading">
                           <div>

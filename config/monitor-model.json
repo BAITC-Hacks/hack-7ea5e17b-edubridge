@@ -1,0 +1,33 @@
+{
+  "mode": "archive",
+  "weather_provider": "gfs_s3",
+  "model_adapter_module": "wind_agent.model.interface",
+  "model_artifact_path": "models/wind-power-v1",
+  "cache_dir": "artifacts/weather-cache",
+  "artifact_dir": "artifacts/agent-monitor",
+  "turbines": [
+    {
+      "turbine_id": "turbine_1",
+      "latitude": 43.64515,
+      "longitude": 78.535604,
+      "coordinates_source": "https://maps.app.goo.gl/iN6svMt69D5qRpFU9 redirects to https://www.google.com/maps/search/43.645150,+78.535604",
+      "is_synthetic": false
+    },
+    {
+      "turbine_id": "turbine_2",
+      "latitude": 43.643198,
+      "longitude": 78.538828,
+      "coordinates_source": "https://maps.app.goo.gl/8UQMwsYavY6nLvFY8 redirects to https://www.google.com/maps/search/43.643198,+78.538828",
+      "is_synthetic": false
+    }
+  ],
+  "replay_timezone": "Asia/Almaty",
+  "replay_issue_hour": 23,
+  "timestamp_convention": "hour_end",
+  "replay_assumption": "Explicit provisional team assumptions: SCADA fixed UTC+5, interval-start ten-minute means, zero reporting delay. Issue 23:00 Asia/Almaty; targets hour_end, weather instant_at_end. Source semantics and normalization are unconfirmed; see model metadata and docs/model-card.md.",
+  "history_timezone": "Etc/GMT-5",
+  "train_cutoff": "2026-01-31T18:00:00Z",
+  "default_horizon_hours": 48,
+  "api_host": "127.0.0.1",
+  "api_port": 8000
+}

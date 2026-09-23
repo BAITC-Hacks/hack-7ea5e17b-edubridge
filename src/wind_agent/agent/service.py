@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 
 from wind_agent.contracts import AgentEvent, ForecastRecord, RunRecord, RunRequest, WeatherRecord
+from .analysis import analyse_forecast
 from .fixtures import FixtureModel, FixtureWeather
 from .model_bridge import ModelBridge
 from .storage import read_json, write_json
@@ -201,8 +202,9 @@ class AgentService:
                 fingerprint = digest({"weather": stable_weather, "model": artifact_json,
                                       "model_file_sha256": artifact_hash, "semantics": semantics})
                 if record.input_fingerprint == fingerprint and record.revision:
+                    analysis = self._revision_analysis(record)
                     self._event(record, "completed", "Inputs unchanged; retained existing revision",
-                                revision=record.revision)
+                                revision=record.revision, analysis=analysis)
                     return record
                 revision = record.revision + 1
                 reason = "initial forecast" if record.revision == 0 else "eligible inputs changed"
@@ -262,7 +264,18 @@ class AgentService:
                     if any(not lower <= f.prediction <= upper for f in forecasts):
                         raise ValueError("Prediction violates confirmed target_bounds in model metadata")
                 forecasts.sort(key=lambda r: (r.turbine_id, r.valid_time))
+                previous = None
+                if record.revision:
+                    previous = [ForecastRecord.model_validate(row) for row in read_json(
+                        self._path(run_id) / "revisions" / str(record.revision) / "forecast.json"
+                    )]
+                analysis = analyse_forecast(forecasts, weather, previous)
+                analysis.update(run_id=run_id, revision=revision,
+                                issue_time=request.issue_time.isoformat())
+                self._event(record, "analysing", "Forecast diagnostics and next action recorded",
+                            analysis=analysis)
                 directory = self._path(run_id) / "revisions" / str(revision)
+                write_json(directory / "analysis.json", analysis)
                 write_json(directory / "weather.json", weather_json)
                 write_json(directory / "forecast.json", [f.model_dump(mode="json") for f in forecasts])
                 write_json(directory / "inputs.json", {
@@ -289,6 +302,30 @@ class AgentService:
             raise ValueError("Forecast is available only for completed runs")
         path = self._path(run_id) / "revisions" / str(record.revision) / "forecast.json"
         return [ForecastRecord.model_validate(row) for row in read_json(path)]
+
+    def analysis(self, run_id):
+        record = self.get(run_id)
+        if record.status != "completed":
+            raise ValueError("Analysis is available only for completed runs")
+        return self._revision_analysis(record)
+
+    def _revision_analysis(self, record):
+        directory = self._path(record.run_id) / "revisions" / str(record.revision)
+        path = directory / "analysis.json"
+        if path.exists():
+            return read_json(path)
+        # Older immutable revisions remain readable without rerunning the model
+        # or fetching weather. GET does not modify the saved forecast or inputs.
+        forecasts = [ForecastRecord.model_validate(row) for row in read_json(directory / "forecast.json")]
+        weather = [WeatherRecord.model_validate(row) for row in read_json(directory / "weather.json")]
+        previous = None
+        if record.revision > 1:
+            previous = [ForecastRecord.model_validate(row) for row in read_json(
+                directory.parent / str(record.revision - 1) / "forecast.json")]
+        report = analyse_forecast(forecasts, weather, previous)
+        report.update(run_id=record.run_id, revision=record.revision,
+                      issue_time=record.request.issue_time.isoformat())
+        return report
 
     def health(self):
         demo = self.settings.mode == "demo"

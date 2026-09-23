@@ -190,6 +190,68 @@ function parseCsv(content: string): Record<string, string>[] {
   });
 }
 
+function sameJsonValue(actual: unknown, expected: unknown): boolean {
+  if (actual === expected) return true;
+  if (Array.isArray(expected))
+    return (
+      Array.isArray(actual) &&
+      actual.length === expected.length &&
+      expected.every((value, index) => sameJsonValue(actual[index], value))
+    );
+  if (
+    expected !== null &&
+    typeof expected === "object" &&
+    actual !== null &&
+    typeof actual === "object" &&
+    !Array.isArray(actual)
+  ) {
+    const expectedObject = expected as Record<string, unknown>;
+    const actualObject = actual as Record<string, unknown>;
+    const keys = Object.keys(expectedObject);
+    return (
+      Object.keys(actualObject).length === keys.length &&
+      keys.every(
+        (key) =>
+          Object.hasOwn(actualObject, key) &&
+          sameJsonValue(actualObject[key], expectedObject[key]),
+      )
+    );
+  }
+  return false;
+}
+
+const csvTimeFields = new Set([
+  "issue_time",
+  "valid_time",
+  "weather_run_time",
+  "training_cutoff",
+  "forecast_available_at",
+]);
+
+function csvValueMatches(
+  field: string,
+  actual: string,
+  expected: unknown,
+): boolean {
+  // CSV has no native null: the API writes an empty cell for JSON null.
+  // Empty arrays and objects still require their JSON representation.
+  if (expected === null) return actual === "" || actual.trim() === "null";
+  if (expected === undefined) return actual === "";
+  if (typeof expected === "string")
+    return csvTimeFields.has(field)
+      ? time(actual) === time(expected)
+      : actual === expected;
+  if (typeof expected === "number")
+    return (
+      /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?$/.test(actual.trim()) &&
+      Number.isFinite(expected) &&
+      Number(actual) === expected
+    );
+  if (typeof expected === "boolean")
+    return actual.trim().toLowerCase() === String(expected);
+  return sameJsonValue(JSON.parse(actual), expected);
+}
+
 export function validateCsv(
   content: string,
   rows: ForecastRecord[],
@@ -204,8 +266,14 @@ export function validateCsv(
       ]),
     );
     if (expected.size !== rows.length) throw new Error("Duplicate source data");
+    const fields = new Set(rows.flatMap((row) => Object.keys(row)));
     const seen = new Set<string>();
     for (const row of parseCsv(content)) {
+      if (
+        Object.keys(row).length !== fields.size ||
+        Object.keys(row).some((field) => !fields.has(field))
+      )
+        throw new Error("Different export fields");
       const key = JSON.stringify([row.turbine_id, time(row.valid_time)]);
       const source = expected.get(key);
       if (
@@ -215,35 +283,16 @@ export function validateCsv(
         row.run_id !== source.run_id
       )
         throw new Error("Wrong or duplicate run");
-      const prediction = row.prediction?.trim() ? Number(row.prediction) : NaN;
-      const lead = row.lead_hours?.trim() ? Number(row.lead_hours) : NaN;
-      const tolerance = Math.max(1e-9, Math.abs(source.prediction) * 1e-8);
-      if (
-        !Number.isFinite(prediction) ||
-        Math.abs(prediction - source.prediction) > tolerance ||
-        lead !== source.lead_hours ||
-        row.target_unit !== source.target_unit ||
-        time(row.issue_time) !== time(source.issue_time)
-      )
-        throw new Error("Different values or metadata");
       const revision = run.revision ?? source.revision;
-      if (revision !== undefined && row.revision !== String(revision))
+      if (
+        revision !== undefined &&
+        (!Object.hasOwn(row, "revision") ||
+          !csvValueMatches("revision", row.revision, revision))
+      )
         throw new Error("Different revision");
-      if (source.source_mode === "synthetic" && row.source_mode !== "synthetic")
-        throw new Error("Missing synthetic disclosure");
-      if (source.data_quality === "fixture" && row.data_quality !== "fixture")
-        throw new Error("Missing fixture disclosure");
-      for (const field of ["weather_model", "model_version"]) {
-        if (typeof source[field] === "string" && row[field] !== source[field])
-          throw new Error("Different model metadata");
-      }
-      for (const field of ["weather_run_time", "training_cutoff"]) {
-        if (
-          typeof source[field] === "string" &&
-          time(row[field]) !== time(source[field])
-        )
-          throw new Error("Different temporal metadata");
-      }
+      for (const field of fields)
+        if (!csvValueMatches(field, row[field], source[field]))
+          throw new Error("Different values or metadata");
       seen.add(key);
     }
     if (seen.size !== expected.size) throw new Error("Incomplete export");

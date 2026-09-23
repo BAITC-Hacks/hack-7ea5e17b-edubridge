@@ -17,3 +17,18 @@ jobs:
       - run: python -m pytest -q
       - run: python -m ruff check src/wind_agent tests/model tests/weather tests/agent scripts/validate_model_package.py scripts/run_app.py scripts/verify_app_integration.py scripts/verify_february_replay.py
       - run: python -m wind_agent --config config/demo.json replay --horizon-hours 48
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.14.0'
+          cache: npm
+          cache-dependency-path: ui/web/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

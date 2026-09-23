@@ -117,6 +117,10 @@ Use `python -m pytest` so repository-root UI imports resolve. Unit tests are
 network-free and identify synthetic fixtures explicitly. The real model's
 separate integration evidence is in `docs/evidence/model-integration.json`.
 
-The remaining whole-system work is the full February archive replay, UI/metrics
-integration and final team submission. No February ground truth is supplied;
-never label normalized power as MW/MWh or January MAE as February accuracy.
+The full February archive replay and UI/metrics integration are complete; see
+`docs/evidence/february-replay.json`, `docs/evaluation-api.md` and `ui/web/README.md`.
+The 29 origins produced 2,784 full forecast records and 1,344 selected February
+records. Final submission is a separate action on the hackathon platform.
+No February ground truth is supplied; never label normalized power as MW/MWh
+or January MAE as February accuracy. Autonomous updates and advisory diagnostics
+are described in `docs/agent-monitor.md` and `docs/forecast-analysis.md`.
