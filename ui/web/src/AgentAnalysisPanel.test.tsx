@@ -40,6 +40,43 @@ beforeEach(() => localStorage.clear());
 afterEach(() => { cleanup(); localStorage.clear(); });
 
 describe("agent diagnostic display", () => {
+  it.each([
+    { locale: "ru", action: "Наблюдать обновления", limitations: "Постоянные ограничения методики (1)", meaning: "не подтверждает точность прогноза" },
+    { locale: "kk", action: "Жаңартуларды бақылау", limitations: "Әдістеменің тұрақты шектеулері (1)", meaning: "болжам дәлдігін растамайды" },
+    { locale: "en", action: "Monitor updates", limitations: "Standing methodological limitations (1)", meaning: "does not certify forecast accuracy" },
+  ])("keeps methodological caveats available during monitoring in $locale", ({ locale, action, limitations, meaning }) => {
+    localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+    const source = {
+      ...report(), decision: "monitor_updates", next_action: "monitor_updates", is_demo: false, reasons: [],
+      model_warnings: ["Uncertainty intervals are not calibrated"],
+      methodology_warnings: ["Uncertainty intervals are not calibrated"], review_warnings: [],
+      per_turbine: { turbine_1: { ...report().per_turbine.turbine_1, target_unit: "normalized_power" } },
+    };
+    render(<I18nProvider><AgentAnalysisPanel run={{ ...baseRun, events: [event(source)] }} /></I18nProvider>);
+    expect(screen.getByText(action)).toBeTruthy();
+    expect(screen.getByText(limitations)).toBeTruthy();
+    expect(screen.getByText((content) => content.includes(meaning))).toBeTruthy();
+    const details = screen.getByText(limitations).closest("details")!;
+    expect(details.querySelectorAll("li")).toHaveLength(1);
+    if (locale !== "en") expect(details.textContent).not.toContain("Uncertainty intervals are not calibrated");
+  });
+
+  it("shows concrete unknown warnings from new and legacy reports without losing caveats", () => {
+    const source = { ...report(), model_warnings: ["sensor_17: calibration mismatch", "Uncertainty intervals are not calibrated"],
+      methodology_warnings: ["Uncertainty intervals are not calibrated"], review_warnings: ["sensor_17: calibration mismatch"] };
+    const { rerender } = render(<AgentAnalysisPanel run={{ ...baseRun, events: [event(source)] }} />);
+    expect(screen.getByText("sensor_17: calibration mismatch")).toBeTruthy();
+    expect(screen.getByText("Предупреждения для проверки (1)")).toBeTruthy();
+    expect(screen.getByText("Постоянные ограничения методики (1)")).toBeTruthy();
+    rerender(<AgentAnalysisPanel run={{ ...baseRun, events: [event({ ...report(), model_warnings: ["legacy warning"] })] }} />);
+    expect(screen.getByText("legacy warning")).toBeTruthy();
+  });
+
+  it("rejects malformed warning classifications instead of hiding their content", () => {
+    const { container } = render(<AgentAnalysisPanel run={{ ...baseRun, events: [event({ ...report(), methodology_warnings: [42] })] }} />);
+    expect(container.textContent).toBe("");
+  });
+
   it("labels fixture units, keeps the advisory limits and shows actual report values", () => {
     render(<AgentAnalysisPanel run={{ ...baseRun, events: [event(report())] }} zone="Asia/Almaty" />);
     expect(screen.getByRole("heading", { name: "Анализ агента" })).toBeTruthy();

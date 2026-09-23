@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "checked_at": "2026-09-23T12:54:34.127319+00:00",
+  "scope": "Controlled exposure of two genuine archived GFS releases at a fixed issue time",
+  "is_demo": false,
+  "weather_values_modified": false,
+  "model_weights_modified": false,
+  "natural_archive_arrival_demonstrated": false,
+  "measures_forecast_accuracy": false,
+  "revisions": [
+    1,
+    1,
+    2
+  ],
+  "actions": [
+    "created",
+    "unchanged",
+    "recalculated"
+  ],
+  "run_id": "efae5e9e4103cada78eaba01",
+  "weather_model_runs": [
+    [
+      "2026-01-30T12:00:00Z"
+    ],
+    [
+      "2026-01-31T12:00:00Z"
+    ]
+  ],
+  "forecast_sha256": [
+    "0fa5d137cb99b19cbf02ec7037764071f7e0cdc5fd6d05e78e5f65a746312850",
+    "577478e24f671e6352169093790fdefed9900b159154f02427c02f112756bea7"
+  ],
+  "changed_predictions": 48,
+  "rows_per_revision": 48,
+  "all_raw_hashes_verified": true,
+  "all_weather_available_by_issue": true,
+  "unchanged_tick_preserves_forecast_bytes": true,
+  "model_package_sha256": {
+    "model.joblib": "8f54f869b02318db534e956d84e3abc0339f574089cefb75da9db7ad3782ede4",
+    "metadata.json": "aae00965b562752605787f5307bec17378223f5ed9f33ea76284693a1fbf13a4",
+    "validation.json": "f0a898e5086f889f3cbf0937200112a013f0655053980fef9a23e8d524ca4803"
+  },
+  "verification_script_sha256": "f9a17185c195a48639bacd773685fdb1a9acf75ca75c9b80de6ec51321b215a5",
+  "analysis_decision": "monitor_updates",
+  "limitations": [
+    "Release selection is deliberately controlled for this integration check.",
+    "No observed February generation is used; this is not an accuracy evaluation."
+  ]
+}

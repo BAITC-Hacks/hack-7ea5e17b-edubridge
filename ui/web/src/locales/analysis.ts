@@ -1,5 +1,20 @@
 /** Advisory diagnostics; translations do not alter reports or forecast values. */
 export const analysisMessages: Record<string, { ru?: string; kk: string; en: string }> = {
+  "Дополнительных диагностических причин для проверки нет. Наблюдение обновлений не подтверждает точность прогноза и не снимает ограничений методики.": {
+    kk: "Қосымша диагностикалық тексеру себептері анықталмады. Жаңартуларды бақылау болжам дәлдігін растамайды және әдістеме шектеулерін жоймайды.",
+    en: "No additional diagnostic reasons require review. Monitoring updates does not certify forecast accuracy or resolve methodological limitations.",
+  },
+  "Предупреждения для проверки ({count})": { kk: "Тексеруді қажет ететін ескертулер ({count})", en: "Warnings requiring review ({count})" },
+  "Постоянные ограничения методики ({count})": { kk: "Әдістеменің тұрақты шектеулері ({count})", en: "Standing methodological limitations ({count})" },
+  "Эти ограничения сохраняются при любом решении агента. Условия времени, нормализация и неопределённость требуют отдельного подтверждения.": {
+    kk: "Бұл шектеулер агенттің кез келген шешімінде сақталады. Уақыт шарттары, нормалау және белгісіздік бөлек растауды талап етеді.",
+    en: "These limitations remain under any agent decision. Time assumptions, normalisation and uncertainty need separate verification.",
+  },
+  "Unclassified model or input warnings require review; see review_warnings.": {
+    ru: "Неклассифицированные предупреждения модели или входных данных требуют проверки; подробности приведены ниже.",
+    kk: "Жіктелмеген модель немесе кіріс деректері ескертулерін тексеру қажет; толық мәлімет төменде берілген.",
+    en: "Unclassified model or input warnings require review; details are listed below.",
+  },
   "Анализ агента": { kk: "Агент талдауы", en: "Agent analysis" },
   "Диагностика прогноза · ревизия {revision} · не оценка точности": {
     kk: "Болжам диагностикасы · {revision}-ревизия · дәлдікті бағалау емес",

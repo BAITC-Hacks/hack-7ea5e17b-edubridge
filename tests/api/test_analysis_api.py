@@ -1,5 +1,6 @@
 """Diagnostics must remain associated with the immutable forecast revision."""
 from datetime import datetime, timezone
+import json
 from hashlib import sha256
 
 from fastapi.testclient import TestClient
@@ -32,6 +33,14 @@ def test_analysis_of_new_and_preexisting_revision_does_not_change_forecast(tmp_p
         assert report["limitations"]  # Diagnostics must not be presented as accuracy.
         event = next(event for event in service.get(record.run_id).events if "analysis" in event.details)
         assert event.details["analysis"] == report
+        # Upgrade old diagnostic policy in memory without rewriting saved evidence.
+        legacy = {key: value for key, value in report.items()
+                  if key not in {"methodology_warnings", "review_warnings", "decision_basis"}}
+        legacy_bytes = json.dumps(legacy).encode()
+        (directory / "analysis.json").write_bytes(legacy_bytes)
+        upgraded = client.get(f"/runs/{record.run_id}/analysis")
+        assert upgraded.status_code == 200 and upgraded.json() == report
+        assert (directory / "analysis.json").read_bytes() == legacy_bytes
         # Simulate a revision saved by the pre-diagnostics release.
         (directory / "analysis.json").unlink()
         recovered = client.get(f"/runs/{record.run_id}/analysis")

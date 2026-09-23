@@ -11,6 +11,16 @@ from wind_agent.contracts import ForecastRecord, WeatherRecord
 
 
 FLAT_FORECAST_HOURS = 24
+# Exact standing disclosures from the delivered model and service. New wording
+# remains actionable by default; never classify by substring or delete warnings.
+METHODOLOGY_WARNINGS = frozenset({
+    "Uncertainty intervals are not calibrated",
+    "Unconfirmed: all source labels use fixed UTC+5 and mark the start of a ten-minute mean; "
+    "reporting delay is zero and normalization remains unresolved.",
+    "Source-clock and target normalization semantics remain unconfirmed.",
+    "Weather availability uses archive-object metadata, not original NOAA publication proof.",
+    "Forecast target is normalized power; no conversion to MW/MWh is justified.",
+})
 
 
 def _number(value: Fraction, reasons: list[str]) -> float | None:
@@ -97,8 +107,10 @@ def analyse_forecast(
     """
     reasons: list[str] = []
     model_warnings = sorted({warning for row in forecasts for warning in row.warnings if warning})
-    if model_warnings:
-        reasons.append("Model or input warnings require review; see model_warnings.")
+    methodology_warnings = [warning for warning in model_warnings if warning in METHODOLOGY_WARNINGS]
+    review_warnings = [warning for warning in model_warnings if warning not in METHODOLOGY_WARNINGS]
+    if review_warnings:
+        reasons.append("Unclassified model or input warnings require review; see review_warnings.")
     is_demo = any(row.data_quality == "fixture" for row in forecasts) or any(
         row.provenance_kind == "fixture" or row.provider == "synthetic_fixture" for row in weather
     )
@@ -190,6 +202,10 @@ def analyse_forecast(
         "reasons": reasons,
         "is_demo": is_demo,
         "model_warnings": model_warnings,
+        "methodology_warnings": methodology_warnings,
+        "review_warnings": review_warnings,
+        "decision_basis": "Actionable diagnostics only; monitoring does not certify forecast "
+                          "accuracy or resolve methodological limitations.",
         "source_warnings": source_warnings,
         "per_turbine": per_turbine,
         "previous_comparison": comparison,

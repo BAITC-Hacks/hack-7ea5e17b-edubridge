@@ -1,6 +1,7 @@
 """Unit-test records below are stubs, not historical evidence."""
 
 import json
+from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -184,3 +185,60 @@ def test_finite_input_overflow_remains_json_safe_and_explicit():
     assert result["per_turbine"]["turbine_1"]["largest_hourly_ramp"]["absolute_delta"] is None
     assert result["decision"] == "review_required"
     assert any("JSON numeric range" in reason for reason in result["reasons"])
+
+
+def standing_warnings():
+    metadata = json.loads(Path("models/wind-power-v1/metadata.json").read_text())
+    return ["Uncertainty intervals are not calibrated", *metadata["metadata"]["warnings"]]
+
+
+def test_delivered_methodology_warnings_remain_visible_without_permanent_review():
+    records = forecast([0.1, 0.2, 0.4] * 8)
+    warnings = standing_warnings()
+    for row in records:
+        row.warnings = warnings.copy()
+    original = [row.model_dump(mode="json") for row in records]
+    result = analyse_forecast(records, archive_record_stubs(records))
+    assert result["decision"] == result["next_action"] == "monitor_updates"
+    assert result["reasons"] == result["review_warnings"] == []
+    assert result["methodology_warnings"] == result["model_warnings"] == sorted(warnings)
+    assert "does not certify forecast accuracy" in result["decision_basis"]
+    assert result["per_turbine"]["turbine_1"]["model_warnings"] == sorted(warnings)
+    assert [row.model_dump(mode="json") for row in records] == original
+
+
+@pytest.mark.parametrize("extra", [
+    "Unexpected missing turbine input",
+    "Uncertainty intervals are not calibrated; input sensor failed",
+    "uncertainty intervals are not calibrated",
+])
+def test_unknown_or_extended_warning_is_never_suppressed(extra):
+    records = forecast([0.1, 0.2, 0.4])
+    known = standing_warnings()
+    records[0].warnings = known + [extra]
+    result = analyse_forecast(records, archive_record_stubs(records))
+    assert result["decision"] == "review_required"
+    assert result["next_action"] == "review_inputs"
+    assert result["review_warnings"] == [extra]
+    assert result["methodology_warnings"] == sorted(known)
+    assert result["model_warnings"] == sorted(known + [extra])
+    assert any("review_warnings" in reason for reason in result["reasons"])
+
+
+@pytest.mark.parametrize("problem", ["flat", "missing_hour", "missing_evidence", "hindcast"])
+def test_methodology_classification_never_masks_actionable_diagnostics(problem):
+    records = forecast([0.1] * 24 if problem == "flat" else [0.1, 0.2, 0.4] * 8)
+    for row in records:
+        row.warnings = standing_warnings()
+    weather = archive_record_stubs(records)
+    if problem == "missing_hour":
+        weather.pop()
+    elif problem == "missing_evidence":
+        weather[0].availability_evidence = None
+    elif problem == "hindcast":
+        weather[0].provenance_kind = "hindcast"
+    result = analyse_forecast(records, weather)
+    assert result["decision"] == "review_required"
+    assert result["review_warnings"] == []
+    assert result["methodology_warnings"]
+    assert result["reasons"]

@@ -25,6 +25,9 @@ function currentAnalysis(run: Run): JsonObject | null {
       typeof report.is_demo !== "boolean" ||
       !Array.isArray(report.reasons) ||
       !report.reasons.every((reason) => typeof reason === "string") ||
+      ["model_warnings", "review_warnings", "methodology_warnings"].some((field) =>
+        report[field] !== undefined && (!Array.isArray(report[field]) ||
+          !(report[field] as unknown[]).every((warning) => typeof warning === "string"))) ||
       !turbines || !Object.keys(turbines).length ||
       Object.values(turbines).some((value) => {
         const turbine = object(value);
@@ -47,10 +50,18 @@ export default function AgentAnalysisPanel({ run, zone = "UTC" }: { run: Run; zo
   if (!report) return null;
   const turbines = object(report.per_turbine)!;
   const reasons = strings(report.reasons);
+  const methodologyWarnings = [...new Set(strings(report.methodology_warnings))];
+  // Older reports have only model_warnings; never silently discard an unclassified warning.
+  const reviewWarnings = [...new Set([
+    ...strings(report.review_warnings),
+    ...strings(report.model_warnings).filter((warning) => !methodologyWarnings.includes(warning)),
+  ])];
   const comparison = object(report.previous_comparison);
   const compared = comparison?.status === "compared";
   const fixture = report.is_demo === true ||
     Object.values(turbines).some((value) => object(value)?.target_unit === "fixture_dimensionless");
+
+  const needsReview = report.decision === "review_required" || fixture || reviewWarnings.length > 0;
 
   return (
     <article className="panel table-card" aria-labelledby="agent-analysis-title">
@@ -62,16 +73,28 @@ export default function AgentAnalysisPanel({ run, zone = "UTC" }: { run: Run; zo
           </div>
           <Activity size={23} />
         </div>
-        <div className="source-warnings">
-          {report.decision === "review_required" ? <TriangleAlert size={17} /> : <Activity size={17} />}
+        <div className={needsReview ? "source-warnings" : "evaluation-production"}>
+          {needsReview ? <TriangleAlert size={17} /> : <Activity size={17} />}
           <div>
             <strong>
-              {report.next_action === "review_inputs" ? t("Нужна проверка входов") : t("Наблюдать обновления")}
+              {needsReview ? t("Нужна проверка входов") : t("Наблюдать обновления")}
             </strong>
             {fixture && <p>{t("Синтетический fixture: анализ не описывает реальный эксплуатационный прогноз.")}</p>}
+            {!needsReview && <p>{t("Дополнительных диагностических причин для проверки нет. Наблюдение обновлений не подтверждает точность прогноза и не снимает ограничений методики.")}</p>}
             {reasons.map((reason, index) => <p key={index}>{message(reason)}</p>)}
+            {reviewWarnings.length > 0 && <>
+              <p>{t("Предупреждения для проверки ({count})", { count: number(reviewWarnings.length) })}</p>
+              <ul>{reviewWarnings.map((warning) => <li key={warning}>{message(warning)}</li>)}</ul>
+            </>}
           </div>
         </div>
+        {methodologyWarnings.length > 0 && (
+          <details className="evaluation-limitations">
+            <summary>{t("Постоянные ограничения методики ({count})", { count: number(methodologyWarnings.length) })}</summary>
+            <p>{t("Эти ограничения сохраняются при любом решении агента. Условия времени, нормализация и неопределённость требуют отдельного подтверждения.")}</p>
+            <ul>{methodologyWarnings.map((warning) => <li key={warning}>{message(warning)}</li>)}</ul>
+          </details>
+        )}
         <div className="provenance-grid">
           {Object.entries(turbines).map(([id, value]) => {
             const turbine = object(value)!;

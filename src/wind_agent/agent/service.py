@@ -313,7 +313,10 @@ class AgentService:
         directory = self._path(record.run_id) / "revisions" / str(record.revision)
         path = directory / "analysis.json"
         if path.exists():
-            return read_json(path)
+            saved = read_json(path)
+            if "methodology_warnings" in saved and "review_warnings" in saved:
+                return saved
+        # Recompute legacy diagnostics in memory with the current warning policy.
         # Older immutable revisions remain readable without rerunning the model
         # or fetching weather. GET does not modify the saved forecast or inputs.
         forecasts = [ForecastRecord.model_validate(row) for row in read_json(directory / "forecast.json")]

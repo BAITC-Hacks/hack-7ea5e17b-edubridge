@@ -156,6 +156,14 @@ npm run dev
 
 Үздіксіз режим: `watch --interval-seconds 60`. `watch` бөлек `monitor-jobs` каталогын қолданады. Уақыт күйі сақталатындықтан, бұрынғы тарихи уақытқа оралу үшін бөлек `artifact_dir` қажет. Толық нұсқаулық: [автоматты жаңарту](docs/agent-monitor.md).
 
+**Қазыларға көрсету:** таза monitor каталогында жоғарыдағы команданы іске қосып, `artifacts/agent-monitor/monitor-jobs/archive/monitor/last_session.json` ішінен `status=completed`, `completed_runs=2` мәндерін және әр шығарылымның 96 жазбасын тексеріңіз. [Бұрынғы нақты архив тексеруі](docs/evidence/agent-monitor-integration.json) алғашқы есептеуді, өзгермеген кірістің сақталуын және жаңа шығарылымды растайды. [Жаңа бақыланатын тексеру](docs/evidence/controlled-real-revision.json) бір `issue_time` үшін сол сәтте қолжетімді ескі NOAA шығарылымынан ең соңғы жарамды шығарылымға әдейі ауысады: бір ID ішінде `1 → 1 → 2` расталды, 48 болжамның 48-і өзгерді. Ауа райы мен қуат мәндері қолдан жасалмаған; бұл табиғи нақты уақыттағы дерек келуін немесе болжам дәлдігін дәлелдемейді.
+
+Оны қайталау үшін жаңа немесе бос output каталогын пайдаланыңыз (`--offline` тек қажетті ауа райы толық кэштелгенде):
+
+```sh
+.venv/bin/python scripts/verify_real_revision.py --cache artifacts/weather-cache --output artifacts/controlled-revision-check
+```
+
 **Ақпанды толық қайта есептеу:** дайын CSV-ді қарау үшін бұл ұзақ қадамды орындау міндетті емес. Кэшсіз жүктеу бірнеше GB орын мен трафикті талап етеді.
 
 ```sh
@@ -175,7 +183,7 @@ npm run dev
 3. **Шығарылым күні:** `2026-01-31`; **Уақыт, UTC:** `18:00`; **Турбиналар:** «Екі турбина»; **Болжам аралығы:** `48 сағ`.
 4. **Болжамды есептеу** батырмасын басыңыз. Бірінші сұрауда ауа райы жүктеледі, сондықтан бірнеше минут кетуі мүмкін. Аяқталған күй — `completed` / «Есептеу аяқталды».
 5. **96 мән** күтіледі: 48 сағат × 2 турбина. Уақыт аралығы — `2026-01-31T19:00:00Z` … `2026-02-02T18:00:00Z`; өлшем бірлігі — `normalized_power`. График пен кестедегі толымдылық модель дәлдігін білдірмейді.
-6. **Дереккөз және сапа**, **Модельді бағалау**, **Агент талдауы** бөлімдерін қараңыз. GFS шығарылымы, модель нұсқасы, оқыту шегі және ескертулер көрсетіледі. `review_required` ұсынысы кіріс жорамалдарына байланысты болуы мүмкін; ол есептеу қатесі деген сөз емес.
+6. **Дереккөз және сапа**, **Модельді бағалау**, **Агент талдауы** бөлімдерін қараңыз. Толық талдаудағы `methodology_warnings` уақыт жорамалдары мен калибрленбеген интервалдар сияқты ғылыми шектеулерді сақтайды; `review_warnings` нақты тексеруді қажет ететін диагностикаға арналған. `review_required` — тексеру ұсынысы, есептеу қатесі емес. `monitor_updates` нақты диагностикалық мәселе табылмағанын білдіреді; ол ғылыми шектеулерді жоймайды және дәлдікке кепілдік бермейді. Бастапқы ескертулер `model_warnings` ішінде сақталады.
 7. **CSV жүктеп алу** арқылы нәтижені сақтаңыз. Тілді өзгерткенде есептелген нәтиже сақталатынын тексеріңіз.
 8. Бірдей параметрлермен қайта іске қосқанда, кіріс өзгермесе, ID мен ревизия сақталады. `24 сағ` және бір турбинаны таңдағанда **24 жазба** күтіледі.
 
@@ -241,6 +249,8 @@ npm run build
 
 **Модель:** салмақтар мен метадеректер [models/wind-power-v1/](models/wind-power-v1/) ішінде. Болжам алу үшін бастапқы SCADA-ны қайта жүктеу немесе модельді қайта оқыту қажет емес. Оқытуды толық қайталау: [MODEL_REPRODUCIBILITY.md](docs/MODEL_REPRODUCIBILITY.md).
 
+**Оқыту кезеңі:** 2023 жылғы наурыз–2026 жылғы қаңтар тарихы тексерілгенімен, жеткізілген модель тек архивтік ауа райымен жұпталған **2025 жылғы желтоқсан–2026 жылғы қаңтардағы қысқы деректермен** оқытылған. Пакеттегі мақсатты сағаттардың UTC шектері: `2025-11-30T19:00:00Z` … `2026-01-31T18:00:00Z`; одан бұрынғы тарих модельді оқытуға кірмеген. Бұл барлық маусымдардағы сапаны тексеру емес ([модель сипаттамасы](docs/model-card.md)).
+
 **Бағалау нәтижесі:** төмендегі қателер `normalized_power` бірлігінде; аз болғаны жақсы.
 
 | Модель | Tuning MAE | Тәуелсіз holdout MAE |
@@ -249,6 +259,8 @@ npm run build
 | Қарапайым `wind_curve` | 0.248695 | 0.209460 |
 
 Holdout кезеңінде қарапайым жел қисығының қатесі төмен. Модель алдын ала белгіленген tuning критерийімен таңдалған; holdout нәтижесі бойынша жеңімпаз қайта таңдалмаған. Толық дәлел: [модель сипаттамасы](docs/model-card.md), [validation.json](models/wind-power-v1/validation.json).
+
+HGB таңдауы holdout-ты модель таңдау дерегіне айналдырмау үшін сақталды; бұл HGB baseline-нан жақсы деген тұжырым емес. Келесі тексеруде уақыт пен нормалау шарттарын растау, HGB пен baseline-ды бұрын таңдау үшін қолданылмаған бірнеше хронологиялық кезеңде бірдей сағаттармен салыстыру қажет. Ақпан дәлдігін тек нақты ақпан өндірісі алынғаннан кейін өлшеуге болады; MAE/RMSE «дәлдік пайызы» ретінде берілмейді.
 
 ### Шектеулер
 
@@ -426,6 +438,14 @@ Vite направляет запросы `/api` на адрес `http://127.0.0.
 
 Непрерывный режим: `watch --interval-seconds 60`. `watch` использует отдельный каталог `monitor-jobs`. Поскольку временное состояние сохраняется, для возврата к более раннему историческому времени нужен отдельный `artifact_dir`. Подробная инструкция: [автоматическое обновление](docs/agent-monitor.md).
 
+**Показ для жюри:** выполните команду выше с чистым каталогом monitor, проверьте `status=completed`, `completed_runs=2` в `artifacts/agent-monitor/monitor-jobs/archive/monitor/last_session.json` и 96 записей каждого выпуска. [Прежняя проверка реального архива](docs/evidence/agent-monitor-integration.json) подтверждает первый расчёт, сохранение неизменных входов и новый выпуск. [Новая контролируемая проверка](docs/evidence/controlled-real-revision.json) намеренно переключает старый доступный выпуск NOAA на последний допустимый для того же `issue_time`: подтверждено `1 → 1 → 2` одного ID, изменились 48 из 48 прогнозов. Погодные данные и значения мощности не выдуманы; это не доказательство естественного поступления данных по реальным часам или точности прогноза.
+
+Для повторения используйте новый или пустой каталог output (`--offline` — только если вся необходимая погода уже в кэше):
+
+```sh
+.venv/bin/python scripts/verify_real_revision.py --cache artifacts/weather-cache --output artifacts/controlled-revision-check
+```
+
 **Полный пересчёт февраля:** для просмотра готового CSV этот длительный шаг необязателен. Загрузка без кэша требует нескольких GB места и трафика.
 
 ```sh
@@ -445,7 +465,7 @@ Vite направляет запросы `/api` на адрес `http://127.0.0.
 3. **Дата выпуска:** `2026-01-31`; **Время, UTC:** `18:00`; **Турбины:** «Обе турбины»; **Горизонт:** `48 ч`.
 4. Нажмите **Рассчитать прогноз**. При первом запросе загружается погода, поэтому расчёт может занять несколько минут. Завершённое состояние — `completed` / «Расчёт завершён».
 5. Ожидаются **96 значений**: 48 часов × 2 турбины. Временной диапазон — `2026-01-31T19:00:00Z` … `2026-02-02T18:00:00Z`; единица — `normalized_power`. Полнота графика и таблицы не означает точность модели.
-6. Откройте разделы **Источник и качество**, **Оценка модели**, **Анализ агента**. В них показаны выпуск GFS, версия модели, граница обучения и предупреждения. Рекомендация `review_required` может быть связана с предположениями о входных данных; она не означает ошибку расчёта.
+6. Откройте разделы **Источник и качество**, **Оценка модели**, **Анализ агента**. В полном анализе `methodology_warnings` сохраняет научные ограничения, например временные предположения и некалиброванные интервалы; `review_warnings` содержит диагностику, требующую конкретной проверки. `review_required` — рекомендация проверить, а не ошибка расчёта. `monitor_updates` означает отсутствие обнаруженной диагностической проблемы; это не отменяет научные ограничения и не гарантирует точность. Исходные предупреждения сохраняются в `model_warnings`.
 7. Сохраните результат кнопкой **Скачать CSV**. Проверьте, что рассчитанный результат сохраняется при смене языка.
 8. При повторном запуске с теми же параметрами ID и ревизия сохраняются, если входы не изменились. При выборе `24 ч` и одной турбины ожидаются **24 записи**.
 
@@ -511,6 +531,8 @@ npm run build
 
 **Модель:** веса и метаданные находятся в [models/wind-power-v1/](models/wind-power-v1/). Для получения прогноза не нужно заново загружать исходную SCADA или переобучать модель. Полное воспроизведение обучения: [MODEL_REPRODUCIBILITY.md](docs/MODEL_REPRODUCIBILITY.md).
 
+**Период обучения:** хотя история с марта 2023 по январь 2026 проверена, поставленная модель обучена только на **зимних данных декабря 2025 — января 2026**, сопоставленных с архивной погодой. UTC-границы целевых часов в пакете: `2025-11-30T19:00:00Z` … `2026-01-31T18:00:00Z`; более ранняя история в обучение модели не вошла. Это не проверка качества на всех сезонах ([описание модели](docs/model-card.md)).
+
 **Результаты оценки:** ошибки ниже выражены в единицах `normalized_power`; меньше — лучше.
 
 | Модель | Tuning MAE | Независимый holdout MAE |
@@ -519,6 +541,8 @@ npm run build
 | Простая `wind_curve` | 0.248695 | 0.209460 |
 
 На holdout ошибка простой ветровой кривой ниже. Модель выбрана по заранее заданному tuning-критерию; победитель не выбирался заново по результатам holdout. Полное обоснование: [описание модели](docs/model-card.md), [validation.json](models/wind-power-v1/validation.json).
+
+Выбор HGB сохранён, чтобы не превратить holdout в данные для выбора модели; это не утверждение о превосходстве HGB над baseline. Следующий этап — подтвердить временные условия и нормализацию, сравнить HGB и baseline на одинаковых часах нескольких новых хронологических периодов, ранее не использованных для выбора. Февральскую точность можно измерить только после получения фактической выработки февраля; MAE/RMSE не представляются как «процент точности».
 
 ### Ограничения
 
@@ -696,6 +720,14 @@ Run the following Python commands from the repository root. On Windows, replace 
 
 Continuous mode: `watch --interval-seconds 60`. `watch` uses a separate `monitor-jobs` directory. Because its time state is persisted, returning to an earlier historical time requires a separate `artifact_dir`. Full instructions: [automatic updates](docs/agent-monitor.md).
 
+**For the judges:** run the command above with a fresh monitor directory, inspect `status=completed` and `completed_runs=2` in `artifacts/agent-monitor/monitor-jobs/archive/monitor/last_session.json`, and check the 96 records for each issue. The [earlier real-archive check](docs/evidence/agent-monitor-integration.json) demonstrates the first calculation, unchanged-input retention, and a new issue. The [new controlled check](docs/evidence/controlled-real-revision.json) deliberately switches from an older eligible NOAA release to the latest eligible release for the SAME `issue_time`: it verifies `1 → 1 → 2` for one ID, with 48 of 48 predictions changed. No weather or power values are fabricated; this does not demonstrate natural arrival of data in wall-clock time or forecast accuracy.
+
+To repeat it, use a new or empty output directory (`--offline` only when all required weather is fully cached):
+
+```sh
+.venv/bin/python scripts/verify_real_revision.py --cache artifacts/weather-cache --output artifacts/controlled-revision-check
+```
+
 **Replay all of February:** this lengthy step is not required to view the completed CSV. Downloading without a cache requires several GB of disk space and network traffic.
 
 ```sh
@@ -715,7 +747,7 @@ This configuration uses a storage directory separate from the API. Results: `art
 3. **Issue date:** `2026-01-31`; **Time, UTC:** `18:00`; **Turbines:** “Both turbines”; **Horizon:** `48 h`.
 4. Click **Calculate forecast**. The first request downloads weather data and may take several minutes. The completed status is `completed` / “Calculation complete”.
 5. Expect **96 values**: 48 hours × 2 turbines. The time range is `2026-01-31T19:00:00Z` … `2026-02-02T18:00:00Z`; the unit is `normalized_power`. Completeness in the chart and table does not establish model accuracy.
-6. Inspect **Source and quality**, **Model evaluation**, and **Agent analysis**. They show the GFS issue, model version, training cutoff, and warnings. A `review_required` recommendation may be due to input assumptions; it does not mean the calculation failed.
+6. Inspect **Source and quality**, **Model evaluation**, and **Agent analysis**. In the full analysis, `methodology_warnings` preserves scientific limitations such as time assumptions and uncalibrated intervals; `review_warnings` contains diagnostics that require a specific check. `review_required` recommends a review; it does not mean the calculation failed. `monitor_updates` means no actionable diagnostic concern was found; it does not remove scientific limitations or guarantee accuracy. Original warnings remain in `model_warnings`.
 7. Save the result with **Download CSV**. Check that changing the language preserves the calculated result.
 8. When you run the same parameters again, the ID and revision are retained if the inputs are unchanged. Selecting `24 h` and one turbine should produce **24 records**.
 
@@ -781,6 +813,8 @@ Verification evidence in the repository: [backend and monitor](docs/evidence/age
 
 **Model:** weights and metadata are in [models/wind-power-v1/](models/wind-power-v1/). Obtaining a forecast does not require downloading the original SCADA data again or retraining the model. To reproduce training in full, see [MODEL_REPRODUCIBILITY.md](docs/MODEL_REPRODUCIBILITY.md).
 
+**Training window:** although the March 2023–January 2026 history was audited, the delivered model was fitted only on **December 2025–January 2026 winter data** paired with archived weather. The package's target-hour boundaries in UTC are `2025-11-30T19:00:00Z` … `2026-01-31T18:00:00Z`; earlier history did not enter model fitting. This is not an evaluation across all seasons ([model card](docs/model-card.md)).
+
 **Evaluation results:** the errors below are in `normalized_power` units; lower is better.
 
 | Model | Tuning MAE | Independent holdout MAE |
@@ -789,6 +823,8 @@ Verification evidence in the repository: [backend and monitor](docs/evidence/age
 | Simple `wind_curve` | 0.248695 | 0.209460 |
 
 The simple wind curve has a lower error on the holdout period. The model was selected using the predefined tuning criterion; the winner was not reselected based on the holdout results. Full evidence: [model card](docs/model-card.md), [validation.json](models/wind-power-v1/validation.json).
+
+The HGB choice remains frozen to avoid turning holdout into model-selection data; this does not claim that HGB outperforms the baseline. The next evaluation should confirm time and normalization conventions, then compare HGB and the baseline on identical hours across several new chronological periods not previously used for selection. February accuracy can only be measured after actual February generation is provided; MAE/RMSE are not presented as an “accuracy percentage”.
 
 ### Limitations
 
