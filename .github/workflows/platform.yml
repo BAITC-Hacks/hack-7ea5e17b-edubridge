@@ -1,7 +1,7 @@
 name: Platform checks
 on:
   push:
-    branches: [feat/agent-platform]
+    branches: [feat/agent-platform, feat/forecast-model]
   pull_request:
     branches: [main]
 jobs:
@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
-      - run: python -m pip install -e '.[dev]'
+      - run: python -m pip install -e '.[dev,model]'
       - run: python -m pytest -q
-      - run: python -m ruff check src/wind_agent/agent src/wind_agent/weather src/wind_agent/api src/wind_agent/contracts.py src/wind_agent/config.py src/wind_agent/cli.py
+      - run: python -m ruff check src/wind_agent tests/model tests/weather scripts/validate_model_package.py
       - run: python -m wind_agent --config config/demo.json replay --horizon-hours 48
